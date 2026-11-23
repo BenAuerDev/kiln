@@ -24,6 +24,8 @@ An unofficial, open-source app for Storz & Bickel vaporizers: **Volcano Hybrid**
   boost, superboost and back to the base temperature
 - Device settings: charge limit, battery saver, vibrate when ready, boost on
   the LEDs, °C/°F, find my device
+- Ramps: the base rises step by step during a session (Gentle, Classic,
+  Quick); boost still works, and the ramp catches up when boost ends
 - Haptic feedback for every step and a "Saved" confirmation
 
 ### Volcano Hybrid
@@ -193,11 +195,11 @@ upgrading Flutter locally.
   router, theme (all colours in `kiln_palette.dart`), localisation and shared
   widgets.
 - `lib/features/`: `devices`, `portable` (Venty/Veazy), `volcano`,
-  `workflows` (Volcano workflows) and `app_settings`.
+  `workflows` (Volcano workflows), `ramps` (Venty/Veazy ramps) and
+  `app_settings`.
 
 ## Not done yet
 
-- Ramp profiles for Venty/Veazy
 - °F in the app (it always shows °C)
 - Crafty+ support
 - Insights, sharing setups, home-screen widgets

@@ -6,6 +6,7 @@ import '../app/app_view_model.dart';
 import '../features/app_settings/setup_dependencies.dart';
 import '../features/devices/setup_dependencies.dart';
 import '../features/portable/setup_dependencies.dart';
+import '../features/ramps/setup_dependencies.dart';
 import '../features/volcano/setup_dependencies.dart';
 import '../features/workflows/setup_dependencies.dart';
 import 'ble/ble_client.dart';
@@ -38,6 +39,7 @@ void setupServiceLocator() {
   setupAppSettingsDependencies();
   setupDevicesDependencies();
   setupPortableDependencies();
+  setupRampsDependencies();
   setupVolcanoDependencies();
   setupWorkflowsDependencies();
 }

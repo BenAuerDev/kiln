@@ -384,6 +384,21 @@ void main() {
   });
 
   group('notifications', () {
+    test('statusUpdatedAt follows status packets and clears on stop', () async {
+      expect(repository.statusUpdatedAt.value, isNull);
+      await startWithStatus(statusPacket());
+      final first = repository.statusUpdatedAt.value;
+      expect(first, isNotNull);
+      await repository.stopSession();
+      expect(repository.statusUpdatedAt.value, isNull);
+    });
+
+    test('sessionNumber goes up with every session start', () async {
+      expect(repository.sessionNumber.value, 0);
+      await startWithStatus(statusPacket());
+      expect(repository.sessionNumber.value, 1);
+    });
+
     test(
       'decode into the status signal (Veazy boost visualisation inverted)',
       () async {

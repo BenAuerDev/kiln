@@ -35,6 +35,7 @@ class PortableRepository {
     this._replyTimeout = const Duration(seconds: 2),
     this._firmwareInfoAttempts = 3,
     this._writeHold = const Duration(milliseconds: 1500),
+    this._clock = DateTime.now,
   }) : _dataSource = dataSource ?? sl<PortableBleDataSource>();
 
   final PortableBleDataSource _dataSource;
@@ -42,9 +43,12 @@ class PortableRepository {
   final Duration _replyTimeout;
   final int _firmwareInfoAttempts;
   final Duration _writeHold;
+  final DateTime Function() _clock;
 
   final _status = signal<PortableStatus?>(null);
   final _sessionActive = signal<bool>(false);
+  final _statusUpdatedAt = signal<DateTime?>(null);
+  final _sessionNumber = signal<int>(0);
 
   String? _deviceId;
   DeviceModel? _model;
@@ -69,6 +73,15 @@ class PortableRepository {
 
   /// `true` once the init sequence finished and the poll runs.
   ReadonlySignal<bool> get sessionActive => _sessionActive;
+
+  /// Goes up by one each time a session starts, so state tied to a session
+  /// (a finished ramp) can tell a new session from the one it belongs to.
+  ReadonlySignal<int> get sessionNumber => _sessionNumber;
+
+  /// When the last status packet arrived; `null` without a session. Stops
+  /// moving while polling is paused (app in the background), so callers that
+  /// act on the status can tell it is stale.
+  ReadonlySignal<DateTime?> get statusUpdatedAt => _statusUpdatedAt;
 
   /// Starts notifications, runs the init sequence and the status poll.
   /// Idempotent for the same device. Starting for another device stops the
@@ -306,6 +319,7 @@ class PortableRepository {
 
       _firmwareReply = null;
       _starting = null;
+      _sessionNumber.value++;
       _sessionActive.value = true;
       if (!_pollingPaused) _startPollTimer();
       return right(unit);
@@ -396,6 +410,7 @@ class PortableRepository {
     _vibration = null;
     _sessionActive.value = false;
     _status.value = null;
+    _statusUpdatedAt.value = null;
     final connectionSubscription = _connectionSubscription;
     _connectionSubscription = null;
     unawaited(connectionSubscription?.cancel());
@@ -432,6 +447,7 @@ class PortableRepository {
   }
 
   void _applyStatus(PortableStatusDto dto) {
+    _statusUpdatedAt.value = _clock();
     final previous = _status.value;
     final isVeazy = _model == DeviceModel.veazy;
     final decoded = PortableStatus(

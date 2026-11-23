@@ -2,6 +2,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
 import '../../../../core/service_locator.dart';
+import '../../../ramps/presentation/widgets/portable_ramp_card.dart';
 import '../view_models/portable_setup_view_model.dart';
 import '../view_models/portable_tab.dart';
 import '../widgets/common/portable_tab_scaffold.dart';
@@ -26,6 +27,8 @@ class PortableSetupScreen extends HookWidget {
         PortableLadderCard(vm: vm),
         const SizedBox(height: 20),
         PortableQuickSetupSection(vm: vm),
+        const SizedBox(height: 20),
+        const PortableRampCard(),
       ],
     );
   }

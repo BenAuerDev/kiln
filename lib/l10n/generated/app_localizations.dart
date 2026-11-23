@@ -1585,6 +1585,96 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Stopped. kiln couldn\'t reach the Volcano, so it may still be heating.'**
   String get workflowsStopFailed;
+
+  /// No description provided for @rampsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Ramp'**
+  String get rampsTitle;
+
+  /// No description provided for @rampsIntro.
+  ///
+  /// In en, this message translates to:
+  /// **'The base rises step by step while you session. Boost still works.'**
+  String get rampsIntro;
+
+  /// No description provided for @rampsChoose.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a ramp'**
+  String get rampsChoose;
+
+  /// No description provided for @rampsPresetGentle.
+  ///
+  /// In en, this message translates to:
+  /// **'Gentle'**
+  String get rampsPresetGentle;
+
+  /// No description provided for @rampsPresetClassic.
+  ///
+  /// In en, this message translates to:
+  /// **'Classic'**
+  String get rampsPresetClassic;
+
+  /// No description provided for @rampsPresetQuick.
+  ///
+  /// In en, this message translates to:
+  /// **'Quick'**
+  String get rampsPresetQuick;
+
+  /// No description provided for @rampsRange.
+  ///
+  /// In en, this message translates to:
+  /// **'{start}–{end}°'**
+  String rampsRange(int start, int end);
+
+  /// No description provided for @rampsSummary.
+  ///
+  /// In en, this message translates to:
+  /// **'+{step}° every {interval} · {total}'**
+  String rampsSummary(int step, String interval, String total);
+
+  /// No description provided for @rampsStart.
+  ///
+  /// In en, this message translates to:
+  /// **'Start ramp'**
+  String get rampsStart;
+
+  /// No description provided for @rampsStop.
+  ///
+  /// In en, this message translates to:
+  /// **'Stop ramp'**
+  String get rampsStop;
+
+  /// No description provided for @rampsNotWhileBoosting.
+  ///
+  /// In en, this message translates to:
+  /// **'Not while boosting'**
+  String get rampsNotWhileBoosting;
+
+  /// No description provided for @rampsNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Now {target}° · {next}° in {time}'**
+  String rampsNow(int target, int next, String time);
+
+  /// No description provided for @rampsWaitingForBoost.
+  ///
+  /// In en, this message translates to:
+  /// **'Now {target}° · {next}° after boost'**
+  String rampsWaitingForBoost(int target, int next);
+
+  /// No description provided for @rampsFinished.
+  ///
+  /// In en, this message translates to:
+  /// **'Ramp done · {target}°'**
+  String rampsFinished(int target);
+
+  /// No description provided for @rampsRunning.
+  ///
+  /// In en, this message translates to:
+  /// **'Ramp running'**
+  String get rampsRunning;
 }
 
 class _AppLocalizationsDelegate

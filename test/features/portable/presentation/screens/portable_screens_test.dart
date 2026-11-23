@@ -20,6 +20,7 @@ import 'package:kiln/features/portable/presentation/widgets/control/portable_hea
 import 'package:mocktail/mocktail.dart';
 
 import '../../../devices/helpers/demo_badge_stub.dart';
+import '../../../ramps/helpers/ramp_registration.dart';
 import '../../helpers/portable_fixtures.dart';
 import '../presentation_mocks.dart';
 import '../pump_app.dart';
@@ -43,6 +44,7 @@ void main() {
     h.activeDeviceId.value = deviceId;
     h.connectionStatus.value = ConnectionStatus.connected;
     registerDemoBadge();
+    registerRamp();
   });
 
   tearDown(sl.reset);

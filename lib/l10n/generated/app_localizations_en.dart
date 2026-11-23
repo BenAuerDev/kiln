@@ -912,4 +912,60 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get workflowsStopFailed =>
       'Stopped. kiln couldn\'t reach the Volcano, so it may still be heating.';
+
+  @override
+  String get rampsTitle => 'Ramp';
+
+  @override
+  String get rampsIntro =>
+      'The base rises step by step while you session. Boost still works.';
+
+  @override
+  String get rampsChoose => 'Choose a ramp';
+
+  @override
+  String get rampsPresetGentle => 'Gentle';
+
+  @override
+  String get rampsPresetClassic => 'Classic';
+
+  @override
+  String get rampsPresetQuick => 'Quick';
+
+  @override
+  String rampsRange(int start, int end) {
+    return '$start–$end°';
+  }
+
+  @override
+  String rampsSummary(int step, String interval, String total) {
+    return '+$step° every $interval · $total';
+  }
+
+  @override
+  String get rampsStart => 'Start ramp';
+
+  @override
+  String get rampsStop => 'Stop ramp';
+
+  @override
+  String get rampsNotWhileBoosting => 'Not while boosting';
+
+  @override
+  String rampsNow(int target, int next, String time) {
+    return 'Now $target° · $next° in $time';
+  }
+
+  @override
+  String rampsWaitingForBoost(int target, int next) {
+    return 'Now $target° · $next° after boost';
+  }
+
+  @override
+  String rampsFinished(int target) {
+    return 'Ramp done · $target°';
+  }
+
+  @override
+  String get rampsRunning => 'Ramp running';
 }

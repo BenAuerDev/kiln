@@ -284,7 +284,12 @@ shared_preferences, run screen per `Workflow.dc.html`, editor, third Volcano
 tab. Steps are heat (wait until reached, haptic buzz), hold and air; the last
 step can turn the heater off. A run pauses while the Volcano is not connected
 and resumes where it stopped; Stop turns pump and heater off. Ramp profiles for
-Venty/Veazy are still open.
+Venty/Veazy followed in the feature `ramps`: three presets (Gentle 170→190 °C
++5 every 2 min, Classic 180→200 °C +5 every 90 s, Quick 185→205 °C +10 every
+minute) on the Setup tab, a banner on the Control tab while one runs. Only the
+verified target write is used (clamped 40–210 °C) plus heater on at the start.
+A due step waits while boosting and is written when boost ends; a manual base
+change, heater off or another device stops the ramp. A custom ramp can follow.
 
 ## 5. Background connection and notifications (Android)
 

@@ -1,0 +1,34 @@
+import 'package:kiln/core/service_locator.dart';
+import 'package:kiln/features/portable/domain/models/portable_status.dart';
+import 'package:kiln/features/ramps/domain/repositories/ramp_run_repository.dart';
+import 'package:kiln/features/ramps/domain/services/ramp_service.dart';
+import 'package:kiln/features/ramps/presentation/view_models/ramp_view_model.dart';
+import 'package:mocktail/mocktail.dart';
+import 'package:signals_flutter/signals_flutter.dart';
+
+import '../mocks.dart';
+
+/// Registers the view model of the ramp card and banner on the portable
+/// screens; no ramp runs unless [runs] holds one.
+void registerRamp({RampRunRepository? runs, PortableStatus? status}) {
+  final portable = MockPortableRepository();
+  when(() => portable.status).thenReturn(signal(status));
+  when(() => portable.sessionActive).thenReturn(signal(status != null));
+  when(() => portable.sessionNumber).thenReturn(signal(1));
+  final connection = MockConnectionRepository();
+  when(() => connection.activeDeviceId).thenReturn(signal('veazy-id'));
+  sl.registerFactory(
+    () => RampViewModel(
+      runs: runs ?? RampRunRepository(),
+      portable: portable,
+      connection: connection,
+      ramps: RampService(),
+      startRamp: MockStartRampUseCase(),
+      stopRamp: MockStopRampUseCase(),
+      l10n: FakeL10nService(),
+      haptics: MockHapticsService(),
+      toast: MockToastService(),
+      refresh: const Duration(hours: 1),
+    ),
+  );
+}

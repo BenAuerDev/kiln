@@ -717,5 +717,73 @@
   },
   "workflowsSaved": "Workflow saved",
   "workflowsDeleted": "Workflow deleted",
-  "workflowsStopFailed": "Stopped. kiln couldn't reach the Volcano, so it may still be heating."
+  "workflowsStopFailed": "Stopped. kiln couldn't reach the Volcano, so it may still be heating.",
+  "rampsTitle": "Ramp",
+  "rampsIntro": "The base rises step by step while you session. Boost still works.",
+  "rampsChoose": "Choose a ramp",
+  "rampsPresetGentle": "Gentle",
+  "rampsPresetClassic": "Classic",
+  "rampsPresetQuick": "Quick",
+  "rampsRange": "{start}–{end}°",
+  "@rampsRange": {
+    "placeholders": {
+      "start": {
+        "type": "int"
+      },
+      "end": {
+        "type": "int"
+      }
+    }
+  },
+  "rampsSummary": "+{step}° every {interval} · {total}",
+  "@rampsSummary": {
+    "placeholders": {
+      "step": {
+        "type": "int"
+      },
+      "interval": {
+        "type": "String"
+      },
+      "total": {
+        "type": "String"
+      }
+    }
+  },
+  "rampsStart": "Start ramp",
+  "rampsStop": "Stop ramp",
+  "rampsNotWhileBoosting": "Not while boosting",
+  "rampsNow": "Now {target}° · {next}° in {time}",
+  "@rampsNow": {
+    "placeholders": {
+      "target": {
+        "type": "int"
+      },
+      "next": {
+        "type": "int"
+      },
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "rampsWaitingForBoost": "Now {target}° · {next}° after boost",
+  "@rampsWaitingForBoost": {
+    "placeholders": {
+      "target": {
+        "type": "int"
+      },
+      "next": {
+        "type": "int"
+      }
+    }
+  },
+  "rampsFinished": "Ramp done · {target}°",
+  "@rampsFinished": {
+    "placeholders": {
+      "target": {
+        "type": "int"
+      }
+    }
+  },
+  "rampsRunning": "Ramp running"
 }
