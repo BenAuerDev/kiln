@@ -24,7 +24,9 @@ Visual spec: `design/DESIGN.md`. Protocol: `docs/protocol.md`.
    data layer (`<Feature>WriteSafety`). A disabled write returns
    `Left(AppError.writeNotVerified)` and the UI shows a toast. Boost (heater
    mode 2) was verified on a Veazy and a Venty on 2026-11-23 and is allowed;
-   ending boost sends heater off, then on. Superboost stays disabled.
+   ending boost sends heater off, then on. Superboost (heater mode 3) was
+   verified on a Veazy and a Venty later the same day and is allowed too (second pass,
+   step 3).
 6. **Fonts** are bundled as static TTFs (OFL) in `assets/fonts/`.
 7. **Kiln-only tokens** (gradient, glow, accent text, on-accent, raised
    surface, track) live in `KilnTokens`, provided by `KilnThemeScope` and read
@@ -180,3 +182,170 @@ portable:      PortableBleDataSource (lazy); PortableRepository (lazy); portable
                PortableControlViewModel, PortableSetupViewModel, PortableSettingsViewModel (factory)
 volcano:       VolcanoBleDataSource (lazy); VolcanoRepository (lazy); volcano use cases (factory); VolcanoControlViewModel (factory)
 ```
+
+---
+
+# Second pass: plan
+
+Order and ground rules: releases, demo mode, superboost, workflows and ramp
+profiles, background connection, widgets, insights, sharing, presence. Each
+step ends with `dart format`, `flutter analyze`, `flutter test`, a review by
+someone who did not write the code, and a suggested commit. Items marked
+**owner** need a decision or a hardware test before the step can finish.
+
+## 1. Releases
+
+- `android/app/build.gradle.kts` reads `android/key.properties` (git-ignored,
+  like `*.jks` and `*.keystore`). Without it, release builds fall back to the
+  debug key with a Gradle warning, so contributors can still build.
+- `.github/workflows/release.yml` runs on a pushed `v*` tag: checks the tag
+  against `pubspec.yaml`, runs format/analyze/test, writes the keystore from
+  secrets into `$RUNNER_TEMP`, builds the APK, refuses a debug-signed or
+  unsigned APK (`apksigner`; v2/v3 signatures only, keytool cannot read them),
+  and publishes `kiln-vX.Y.Z.apk` plus its SHA-256 with `gh release create`.
+  No third-party release action; Flutter is pinned to the local version.
+- One universal APK (no per-ABI split): simplest for friends to install.
+- Secrets: `KILN_KEYSTORE_BASE64`, `KILN_KEYSTORE_PASSWORD`, `KILN_KEY_ALIAS`,
+  `KILN_KEY_PASSWORD`. README "Releases" has the keystore and `gh secret`
+  commands and the release steps.
+
+## 2. Demo mode
+
+**Approach: a simulated peripheral inside `BleClient`.** Device ids starting
+with `demo:` (`demo:volcano`, `demo:venty`, `demo:veazy`) are routed by
+`BleClient` to `BleSimulator` (`lib/core/ble/demo/`) instead of
+flutter_blue_plus. Everything above `BleClient` is unchanged: data sources,
+codecs, `WriteSafety`, repositories, reconnect rules and UI all run for real.
+
+- Why here: no abstract class plus implementation, no second data source or
+  repository per feature, and the demo exercises the real protocol code, so it
+  doubles as an end-to-end check of packets and the allow-list.
+- The simulator is a fake *device*: it answers bytes per `docs/protocol.md` and
+  is written independently of the app's encoders (it does not import
+  `features/`), so a bug in an encoder is not mirrored by the fake.
+  - Venty/Veazy: answers `02` (application running), `01 00` status, `06`
+    settings, `05` identity (Veazy reports blue); applies `01` writes by their
+    mask; heater modes 1–3 heat towards base / base+boost / base+boost+super
+    and set the "reached" bit; battery drains slowly while heating; current
+    temperature stays `0x8000` like the real devices.
+  - Volcano: temperature notifications in ~4 °C steps like the real one, but
+    sped up (about 30 s to 185 °C); heater/pump on/off; register 1 bits.
+  - Unknown or not-allow-listed writes never reach it, as with real devices.
+- Demo devices are never persisted: `KnownDevicesRepository` keeps them in a
+  separate in-memory list, they never become the "last device" and are never
+  auto-reconnected. Leaving the demo disconnects and removes them.
+- Entry: "Try the demo" on the welcome screen and the devices screen, then a
+  choice of Volcano Hybrid, Venty or Veazy (`/demo`). Device screens show a
+  "Demo ×" badge in the header that leaves the demo; the devices list labels
+  the demo device "Demo".
+- Starting a demo from the welcome screen does not complete the welcome: the
+  router lets the app past the welcome while any device is known (saved or
+  demo). Leaving a demo with no saved device returns to the welcome, so the
+  Bluetooth explainer still comes before the system permission prompt.
+- Leaving the demo does not count as a disconnect by the user, so the last
+  real device is reconnected on the next resume as usual.
+- The README screenshot tool keeps its mocks for now (deterministic pixels);
+  it can move to the demo later if the mocks get in the way.
+
+## 3. Superboost (done)
+
+- Verified on a Veazy and a Venty on 2026-11-23 with an opt-in
+  `--dart-define` build and the debug log (docs/protocol.md, Superboost). The
+  switch is gone and `heaterSuperBoost` is on `PortableWriteSafety`'s
+  allow-list.
+- The Boost button cycles boost → superboost → off, then on at base.
+
+## 4. Volcano workflows and portable ramp profiles
+
+- Domain: `Workflow { id, name, steps, builtIn }`, sealed `WorkflowStep`:
+  `HeatTo(°C)` (wait until reached, then haptic "buzz"), `Hold(duration)`,
+  `Air(duration)` (pump on, then off), `HeaterOff`. Presets per
+  `Workflow.dc.html` ("Three-balloon session" and a couple more); user
+  workflows stored as JSON in shared_preferences.
+- `WorkflowRunRepository` holds the run (workflow, step index, step start,
+  progress, finished/stopped) in signals and owns the job (Addendum 1).
+  `StartWorkflowRunUseCase`, `SkipWorkflowStepUseCase`,
+  `StopWorkflowRunUseCase` drive it; step completion and progress are pure
+  functions in `WorkflowStepService` (tested). Temperatures are clamped by the
+  existing Volcano rules. A dropped connection pauses the run, stop turns heater
+  and pump off.
+- Ramp profiles (Venty/Veazy): `RampProfile { name, start, step °C, every
+  duration, end }`; `PortableRampRepository` runs it. While boost or
+  superboost is active, target writes are blocked, so the ramp waits and
+  resumes with the next due step after boost ends. A manual base change stops
+  the ramp.
+- Screens: Volcano gets a Workflows tab (list, run screen per mockup, editor);
+  portables get the ramp on the Setup tab.
+- Until step 5 exists, a run only continues while kiln is open.
+
+## 5. Background connection and notifications (Android)
+
+Proposal (**owner** to confirm):
+- An own Kotlin foreground service (`foregroundServiceType="connectedDevice"`),
+  no plugin. It holds no logic: it keeps the process at foreground priority and
+  shows the notification. All BLE, workflow and reconnect logic stays in Dart
+  in the main isolate, which keeps running while the process lives.
+- A method channel (`dev.bespokecode.kiln/background`) starts, updates and
+  stops the service. `BackgroundSessionUseCase` starts it only while a heater
+  is on (Volcano heater, portable mode ≥ 1) and stops it when the heater goes
+  off or the link drops for good. Existing reconnect rules stay as they are.
+- Notification: device and temperature (target on portables), "ready"
+  alert as a separate high-priority notification once per heat-up
+  (`Live.dc.html`). Android 13+ asks for `POST_NOTIFICATIONS` the first time.
+- Swiping kiln away from recents ends the service and the connection
+  (`stopWithTask`). Keeping Dart alive after that would need a cached engine;
+  not worth it now.
+
+## 6. Home-screen widgets (Android first)
+
+- Own `AppWidgetProvider`s with RemoteViews (no plugin). Dart writes the last
+  known values into a small SharedPreferences file through the same method
+  channel and asks the widgets to refresh.
+- Veazy/Venty widget: battery, base / boost / superboost. Works without the
+  service (last known values, timestamp).
+- Volcano widget: live temperature and target while the service runs; Heat and
+  Air buttons send an intent that the service forwards to Dart. Without a
+  running service they open kiln.
+
+## 7. Sessions and insights
+
+- A session = heater on → heater off (or link lost), per device: start, end,
+  target(s) used, boost/superboost use, time to "ready". Recorded by a
+  `SessionRecorderRepository` watching the device repositories; stored as JSON
+  in shared_preferences, pruned to 12 months. Demo sessions are not recorded.
+- Insights screen per `Insights.dc.html`: sessions this week and per day, most
+  used temperature, average heat-up per device, cleaning card. Footer "Stored
+  only on this phone."
+- Volcano heating hours: read-only characteristics `10110015` (hours) and
+  `10110016` (minutes), listed in `docs/brief.md`, not yet in
+  `docs/protocol.md`. **owner**: one read with the debug log, compared with the
+  hours the Volcano shows in its menu, before kiln relies on the format.
+  Cleaning reminder: interval 10 h by default, "Done" stores the current hours
+  as the new baseline.
+
+## 8. Sharing setups
+
+- Payload: model, base, boost, superboost (Volcano: target or a workflow), a
+  setup name and an optional sender name, versioned and compact.
+- Share sheet per `Share.dc.html`: QR code and "Copy link" / "Share…".
+  Receive screen per `Receive.dc.html`: old → new values, "Apply", "Save for
+  later". Values are clamped on apply like any other write.
+- **owner**: the link needs a home. An `https://` link on a domain you control
+  (with `/.well-known/assetlinks.json`) opens kiln directly from any messenger
+  and any camera app; a `kiln://` link is not clickable in most messengers.
+  New dependency proposed: `qr_flutter` (BSD) for drawing the QR code.
+
+## 9. Connect when the device switches on
+
+- Android `CompanionDeviceManager`: associate a known device once (system
+  dialog), then `startObservingDevicePresence`; a presence event starts the
+  service and connects. Own Kotlin, after step 5.
+- **owner**: hardware check whether a switched-off Venty/Veazy keeps
+  advertising (protocol.md: Bluetooth stays up after switching off). If it
+  does, presence cannot tell "switched on" from "in range", and kiln would
+  only connect, never heat.
+
+## Credits
+
+venty-android (MIT) has ramp profiles, sessions, widgets and a demo mode. Ideas
+borrowed from it are credited in the README; no code is copied.
