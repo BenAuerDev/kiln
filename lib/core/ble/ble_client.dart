@@ -234,7 +234,11 @@ class BleClient {
     return characteristic.first;
   }
 
-  /// Debug builds only: one line per packet, e.g.
+  /// Logs in release builds too, for hardware tests on the installed,
+  /// release-signed app: `flutter run --release --dart-define=KILN_BLE_LOG=true`.
+  static const _logInRelease = bool.fromEnvironment('KILN_BLE_LOG');
+
+  /// Debug builds (or with [_logInRelease]): one line per packet, e.g.
   /// `kiln ble 18:42:07.123 tx 00000001 01 02 00 00 3a 07 …`; packets of a
   /// demo device read `kiln ble 18:42:07.123 demo tx …`.
   void _log(
@@ -243,7 +247,7 @@ class BleClient {
     List<int> value, {
     bool demo = false,
   }) {
-    if (!kDebugMode) return;
+    if (!kDebugMode && !_logInRelease) return;
     final hex = value.map((b) => b.toRadixString(16).padLeft(2, '0')).join(' ');
     final time = DateTime.now().toIso8601String().substring(11, 23);
     debugPrint(

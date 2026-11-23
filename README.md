@@ -94,6 +94,7 @@ not work in the iOS simulator or the Android emulator.
 ```sh
 flutter pub get          # also fetches Obers UI from GitHub
 flutter run              # debug build, logs every Bluetooth packet
+flutter run --release --dart-define=KILN_BLE_LOG=true   # same log, release build
 flutter build apk        # release APK in build/app/outputs/flutter-apk/
 ```
 
