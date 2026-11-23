@@ -1675,6 +1675,72 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Ramp running'**
   String get rampsRunning;
+
+  /// No description provided for @backgroundChannelSession.
+  ///
+  /// In en, this message translates to:
+  /// **'Running session'**
+  String get backgroundChannelSession;
+
+  /// No description provided for @backgroundChannelReady.
+  ///
+  /// In en, this message translates to:
+  /// **'Ready alerts'**
+  String get backgroundChannelReady;
+
+  /// No description provided for @backgroundTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'{device} · {temperature}°'**
+  String backgroundTitle(String device, int temperature);
+
+  /// No description provided for @backgroundHeating.
+  ///
+  /// In en, this message translates to:
+  /// **'Heating to {target}°'**
+  String backgroundHeating(int target);
+
+  /// No description provided for @backgroundReady.
+  ///
+  /// In en, this message translates to:
+  /// **'Ready at {target}°'**
+  String backgroundReady(int target);
+
+  /// No description provided for @backgroundWithBattery.
+  ///
+  /// In en, this message translates to:
+  /// **'{text} · battery {battery}%'**
+  String backgroundWithBattery(String text, int battery);
+
+  /// No description provided for @backgroundWorkflow.
+  ///
+  /// In en, this message translates to:
+  /// **'{name}: {step}'**
+  String backgroundWorkflow(String name, String step);
+
+  /// No description provided for @backgroundReadyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'{device} is ready · {temperature}°'**
+  String backgroundReadyTitle(String device, int temperature);
+
+  /// No description provided for @backgroundReadyBoost.
+  ///
+  /// In en, this message translates to:
+  /// **'Double-click for boost {boost}°'**
+  String backgroundReadyBoost(int boost);
+
+  /// No description provided for @backgroundReadyVolcano.
+  ///
+  /// In en, this message translates to:
+  /// **'Time to fill a balloon.'**
+  String get backgroundReadyVolcano;
+
+  /// No description provided for @backgroundReadyPlain.
+  ///
+  /// In en, this message translates to:
+  /// **'Ready to go.'**
+  String get backgroundReadyPlain;
 }
 
 class _AppLocalizationsDelegate

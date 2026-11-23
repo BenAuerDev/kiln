@@ -785,5 +785,77 @@
       }
     }
   },
-  "rampsRunning": "Ramp running"
+  "rampsRunning": "Ramp running",
+  "backgroundChannelSession": "Running session",
+  "backgroundChannelReady": "Ready alerts",
+  "backgroundTitle": "{device} · {temperature}°",
+  "@backgroundTitle": {
+    "placeholders": {
+      "device": {
+        "type": "String"
+      },
+      "temperature": {
+        "type": "int"
+      }
+    }
+  },
+  "backgroundHeating": "Heating to {target}°",
+  "@backgroundHeating": {
+    "placeholders": {
+      "target": {
+        "type": "int"
+      }
+    }
+  },
+  "backgroundReady": "Ready at {target}°",
+  "@backgroundReady": {
+    "placeholders": {
+      "target": {
+        "type": "int"
+      }
+    }
+  },
+  "backgroundWithBattery": "{text} · battery {battery}%",
+  "@backgroundWithBattery": {
+    "placeholders": {
+      "text": {
+        "type": "String"
+      },
+      "battery": {
+        "type": "int"
+      }
+    }
+  },
+  "backgroundWorkflow": "{name}: {step}",
+  "@backgroundWorkflow": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "step": {
+        "type": "String"
+      }
+    }
+  },
+  "backgroundReadyTitle": "{device} is ready · {temperature}°",
+  "@backgroundReadyTitle": {
+    "placeholders": {
+      "device": {
+        "type": "String"
+      },
+      "temperature": {
+        "type": "int"
+      }
+    }
+  },
+  "backgroundReadyBoost": "Double-click for boost {boost}°",
+  "@backgroundReadyBoost": {
+    "placeholders": {
+      "boost": {
+        "type": "int"
+      }
+    }
+  },
+  "backgroundReadyVolcano": "Time to fill a balloon.",
+  "backgroundReadyPlain": "Ready to go."
 }

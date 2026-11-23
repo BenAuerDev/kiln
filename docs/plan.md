@@ -309,6 +309,15 @@ Proposal (**owner** to confirm):
   (`stopWithTask`). Keeping Dart alive after that would need a cached engine;
   not worth it now.
 
+**Status:** built (feature `background`, `KilnSessionService.kt`). The service
+runs while the active device heats (portable heater on, Volcano heater on or a
+workflow running on it); the notification shows device and temperature, the
+workflow step or the battery; a "ready" alert fires once per heat-up while
+kiln is not in front. The Venty/Veazy poll now pauses in the background only
+while nothing heats. Android 12+ refuses to start a foreground service from
+the background, so a heater switched on at the device while kiln is hidden
+starts the service when kiln is opened. **owner**: test on the phone.
+
 ## 6. Home-screen widgets (Android first)
 
 - Own `AppWidgetProvider`s with RemoteViews (no plugin). Dart writes the last

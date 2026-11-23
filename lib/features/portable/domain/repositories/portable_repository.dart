@@ -49,6 +49,7 @@ class PortableRepository {
   final _sessionActive = signal<bool>(false);
   final _statusUpdatedAt = signal<DateTime?>(null);
   final _sessionNumber = signal<int>(0);
+  final _startFailed = signal<bool>(false);
 
   String? _deviceId;
   DeviceModel? _model;
@@ -58,6 +59,7 @@ class PortableRepository {
   StreamSubscription<BleConnectionState>? _connectionSubscription;
   Completer<PortableFirmwareInfoDto>? _firmwareReply;
   Completer<PortableIdentityDto>? _identityReply;
+  Future<Either<AppError, Option<int>>>? _colorRead;
   Timer? _pollTimer;
   bool _pollInFlight = false;
 
@@ -77,6 +79,10 @@ class PortableRepository {
   /// Goes up by one each time a session starts, so state tied to a session
   /// (a finished ramp) can tell a new session from the one it belongs to.
   ReadonlySignal<int> get sessionNumber => _sessionNumber;
+
+  /// The last session start failed (and was not superseded): the device is
+  /// connected but reports nothing. Reset by the next start.
+  ReadonlySignal<bool> get startFailed => _startFailed;
 
   /// When the last status packet arrived; `null` without a session. Stops
   /// moving while polling is paused (app in the background), so callers that
@@ -99,6 +105,7 @@ class PortableRepository {
       if (starting != null) return starting;
     }
     _teardown();
+    _startFailed.value = false;
     final generation = _generation;
     _deviceId = deviceId;
     _model = model;
@@ -225,7 +232,12 @@ class PortableRepository {
 
   /// Reads the colour index the device reports in its identity reply.
   /// `none()` when the reply carries no colour byte.
-  Future<Either<AppError, Option<int>>> readColorIndex() async {
+  /// A read that is already under way is shared, not sent twice (the second
+  /// request would orphan the first one's reply).
+  Future<Either<AppError, Option<int>>> readColorIndex() =>
+      _colorRead ??= _readColorIndex().whenComplete(() => _colorRead = null);
+
+  Future<Either<AppError, Option<int>>> _readColorIndex() async {
     final reply = _identityReply = Completer<PortableIdentityDto>();
     reply.future.ignore();
     final sent = await _write(
@@ -304,6 +316,7 @@ class PortableRepository {
       if (generation != _generation) return left(const AppError.notConnected());
       if (!info.applicationRunning) {
         _teardown();
+        _startFailed.value = true;
         return left(const AppError.protocol('device is in bootloader mode'));
       }
 
@@ -324,10 +337,10 @@ class PortableRepository {
       if (!_pollingPaused) _startPollTimer();
       return right(unit);
     } on TimeoutException {
-      if (generation == _generation) _teardown();
+      _failStart(generation);
       return left(const AppError.timeout());
     } catch (e) {
-      if (generation == _generation) _teardown();
+      _failStart(generation);
       return left(BleErrorMapper.toAppError(e));
     }
   }
@@ -382,6 +395,12 @@ class PortableRepository {
     } else if (_sessionActive.value) {
       _teardown();
     }
+  }
+
+  void _failStart(int generation) {
+    if (generation != _generation) return;
+    _teardown();
+    _startFailed.value = true;
   }
 
   /// Stops everything and invalidates a running init.

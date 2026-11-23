@@ -20,7 +20,6 @@ import 'package:kiln/features/portable/domain/models/heater_mode.dart';
 import 'package:kiln/features/portable/domain/models/portable_settings.dart';
 import 'package:kiln/features/portable/domain/models/portable_status.dart';
 import 'package:kiln/features/portable/domain/repositories/portable_repository.dart';
-import 'package:kiln/features/portable/domain/use_cases/set_portable_polling_use_case.dart';
 import 'package:kiln/features/portable/domain/use_cases/sync_portable_reconnect_use_case.dart';
 import 'package:kiln/features/workflows/domain/models/workflow_run.dart';
 import 'package:kiln/features/workflows/domain/repositories/workflow_run_repository.dart';
@@ -56,9 +55,6 @@ class MockConnectionRepository extends Mock implements ConnectionRepository {}
 class MockStopWorkflowRunUseCase extends Mock
     implements StopWorkflowRunUseCase {}
 
-class MockSetPortablePollingUseCase extends Mock
-    implements SetPortablePollingUseCase {}
-
 void main() {
   late Signal<String?> localeCode;
   late Signal<KnownDevice?> activeDevice;
@@ -74,7 +70,6 @@ void main() {
   late MockHapticsService haptics;
   late MockConnectionRepository connection;
   late MockStopWorkflowRunUseCase stopRun;
-  late MockSetPortablePollingUseCase setPolling;
   late AppViewModel vm;
 
   setUpAll(() => registerFallbackValue(const [Locale('en')]));
@@ -111,7 +106,6 @@ void main() {
     when(
       () => stopRun(deviceId: any(named: 'deviceId')),
     ).thenAnswer((_) async => right(unit));
-    setPolling = MockSetPortablePollingUseCase();
     vm = AppViewModel(
       settings: settings,
       knownDevices: knownDevices,
@@ -119,7 +113,6 @@ void main() {
       systemLocale: systemLocaleService,
       l10n: l10n,
       reconnectLastDevice: reconnect,
-      setPortablePolling: setPolling,
       portable: portable,
       syncPortableReconnect: syncReconnect,
       connection: connection,
@@ -230,30 +223,6 @@ void main() {
       lifecycle.value = AppLifecycleState.paused;
 
       verifyNever(() => reconnect());
-    });
-  });
-
-  group('portable polling', () {
-    test('pauses when the app goes to the background', () {
-      lifecycle.value = AppLifecycleState.hidden;
-
-      verify(() => setPolling(active: false)).called(1);
-    });
-
-    test('resumes when the app is visible again', () {
-      clearInteractions(setPolling);
-      lifecycle.value = AppLifecycleState.paused;
-      lifecycle.value = AppLifecycleState.resumed;
-
-      verify(() => setPolling(active: false)).called(1);
-      verify(() => setPolling(active: true)).called(1);
-    });
-
-    test('keeps polling while only inactive', () {
-      clearInteractions(setPolling);
-      lifecycle.value = AppLifecycleState.inactive;
-
-      verifyNever(() => setPolling(active: any(named: 'active')));
     });
   });
 

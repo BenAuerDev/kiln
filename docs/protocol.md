@@ -45,7 +45,8 @@ overwrite another field with zero.
 3. `01 00…`: first status request.
 4. `06 00 00 00 00 00 00`: read vibration and brightness.
 5. Poll `01 00…` every 500 ms. kiln pauses the poll while the app is in the
-   background.
+   background, unless a heater is on (then the background service keeps kiln
+   running and the poll continues).
 
 The official app also sends `1D`, `04`, `23`, `05` and `30 06` (`qvap.js:46–53`).
 kiln skips them. **Tested:** writes work without them.

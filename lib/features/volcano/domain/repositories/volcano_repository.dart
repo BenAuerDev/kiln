@@ -30,6 +30,12 @@ class VolcanoRepository {
   ReadonlySignal<VolcanoStatus?> get status => _status;
   ReadonlySignal<bool> get sessionActive => _sessionActive;
 
+  final _startFailed = signal<bool>(false);
+
+  /// The last session start failed (and was not superseded): the device is
+  /// connected but reports nothing. Reset by the next start.
+  ReadonlySignal<bool> get startFailed => _startFailed;
+
   Future<Either<AppError, Unit>> startSession(String deviceId) {
     if (_sessionActive.value && _deviceId == deviceId) {
       return Future.value(right(unit));
@@ -37,6 +43,7 @@ class VolcanoRepository {
     final pending = _pending;
     if (pending != null && _pendingDeviceId == deviceId) return pending;
     final generation = ++_generation;
+    _startFailed.value = false;
     final future = _start(deviceId, generation);
     _pending = future;
     _pendingDeviceId = deviceId;
@@ -101,7 +108,10 @@ class VolcanoRepository {
       _sessionActive.value = true;
       return right(unit);
     } catch (e) {
-      if (generation == _generation) await _teardown();
+      if (generation == _generation) {
+        await _teardown();
+        _startFailed.value = true;
+      }
       return left(BleErrorMapper.toAppError(e));
     }
   }

@@ -127,6 +127,25 @@ void main() {
       ]);
     });
 
+    test('two reads at once share one request and one reply', () async {
+      await startWithStatus(statusPacket());
+      replyTo = (request) =>
+          request[0] == 0x05 ? identityReply(color: 2) : null;
+
+      final results = await Future.wait([
+        repository.readColorIndex(),
+        repository.readColorIndex(),
+      ]);
+
+      expect(results.map((r) => r.getRight().toNullable()?.toNullable()), [
+        2,
+        2,
+      ]);
+      expect(writes, [
+        packet({0: 0x05}),
+      ]);
+    });
+
     test('returns none() when the reply has no colour byte', () async {
       await startWithStatus(statusPacket());
       replyTo = (request) => request[0] == 0x05 ? identityReply() : null;
@@ -192,6 +211,7 @@ void main() {
 
       expect(result.getLeft().toNullable(), isA<ProtocolError>());
       expect(repository.sessionActive.value, isFalse);
+      expect(repository.startFailed.value, isTrue);
       expect(writes, [_firmwareRequest]);
     });
 
@@ -214,6 +234,7 @@ void main() {
 
       expect(result.getLeft().toNullable(), isA<ConnectionFailedError>());
       expect(repository.sessionActive.value, isFalse);
+      expect(repository.startFailed.value, isTrue);
     });
 
     test('maps a notification error during init to an AppError', () async {

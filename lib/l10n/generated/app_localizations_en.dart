@@ -968,4 +968,51 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get rampsRunning => 'Ramp running';
+
+  @override
+  String get backgroundChannelSession => 'Running session';
+
+  @override
+  String get backgroundChannelReady => 'Ready alerts';
+
+  @override
+  String backgroundTitle(String device, int temperature) {
+    return '$device · $temperature°';
+  }
+
+  @override
+  String backgroundHeating(int target) {
+    return 'Heating to $target°';
+  }
+
+  @override
+  String backgroundReady(int target) {
+    return 'Ready at $target°';
+  }
+
+  @override
+  String backgroundWithBattery(String text, int battery) {
+    return '$text · battery $battery%';
+  }
+
+  @override
+  String backgroundWorkflow(String name, String step) {
+    return '$name: $step';
+  }
+
+  @override
+  String backgroundReadyTitle(String device, int temperature) {
+    return '$device is ready · $temperature°';
+  }
+
+  @override
+  String backgroundReadyBoost(int boost) {
+    return 'Double-click for boost $boost°';
+  }
+
+  @override
+  String get backgroundReadyVolcano => 'Time to fill a balloon.';
+
+  @override
+  String get backgroundReadyPlain => 'Ready to go.';
 }

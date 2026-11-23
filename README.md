@@ -46,6 +46,10 @@ saved; the device screens show a "Demo" badge that leaves the demo.
 
 ### All devices
 
+- Keeps the connection in the background while a heater is on (Android): a
+  notification shows the device and temperature, plus a "ready" alert when
+  kiln is not in front. Nothing runs in the background otherwise.
+
 - Remembers your devices and reconnects to the last one on its own
 - App colours follow your device's finish (Ember, Lava, Blue, Pink, Mono),
   detected automatically on the Veazy

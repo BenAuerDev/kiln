@@ -18,7 +18,6 @@ import '../features/devices/domain/services/welcome_gate.dart';
 import '../features/devices/domain/use_cases/reconnect_last_device_use_case.dart';
 import '../features/devices/presentation/extensions/device_finish_x.dart';
 import '../features/portable/domain/repositories/portable_repository.dart';
-import '../features/portable/domain/use_cases/set_portable_polling_use_case.dart';
 import '../features/portable/domain/use_cases/sync_portable_reconnect_use_case.dart';
 import '../features/workflows/domain/models/workflow_run.dart';
 import '../features/workflows/domain/repositories/workflow_run_repository.dart';
@@ -33,7 +32,6 @@ class AppViewModel {
     SystemLocaleService? systemLocale,
     L10nService? l10n,
     ReconnectLastDeviceUseCase? reconnectLastDevice,
-    SetPortablePollingUseCase? setPortablePolling,
     PortableRepository? portable,
     SyncPortableReconnectUseCase? syncPortableReconnect,
     ConnectionRepository? connection,
@@ -48,8 +46,6 @@ class AppViewModel {
        _l10n = l10n ?? sl<L10nService>(),
        _reconnectLastDevice =
            reconnectLastDevice ?? sl<ReconnectLastDeviceUseCase>(),
-       _setPortablePolling =
-           setPortablePolling ?? sl<SetPortablePollingUseCase>(),
        _portable = portable ?? sl<PortableRepository>(),
        _syncPortableReconnect =
            syncPortableReconnect ?? sl<SyncPortableReconnectUseCase>(),
@@ -74,16 +70,10 @@ class AppViewModel {
       )
       ..add(
         effect(() {
-          switch (_lifecycle.state.value) {
-            case AppLifecycleState.resumed:
-              untracked(() {
-                _setPortablePolling(active: true);
-                unawaited(_reconnectLastDevice());
-              });
-            case AppLifecycleState.hidden || AppLifecycleState.paused:
-              untracked(() => _setPortablePolling(active: false));
-            case AppLifecycleState.inactive || AppLifecycleState.detached:
-              break;
+          // The Venty/Veazy poll follows BackgroundViewModel (it keeps
+          // polling in the background while a heater is on).
+          if (_lifecycle.state.value == AppLifecycleState.resumed) {
+            untracked(() => unawaited(_reconnectLastDevice()));
           }
         }),
       )
@@ -115,7 +105,6 @@ class AppViewModel {
   final SystemLocaleService _systemLocale;
   final L10nService _l10n;
   final ReconnectLastDeviceUseCase _reconnectLastDevice;
-  final SetPortablePollingUseCase _setPortablePolling;
   final PortableRepository _portable;
   final SyncPortableReconnectUseCase _syncPortableReconnect;
   final ConnectionRepository _connection;

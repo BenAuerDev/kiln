@@ -262,5 +262,16 @@
   "rampsNow": "Jetzt {target}° · {next}° in {time}",
   "rampsWaitingForBoost": "Jetzt {target}° · {next}° nach dem Boost",
   "rampsFinished": "Rampe fertig · {target}°",
-  "rampsRunning": "Rampe läuft"
+  "rampsRunning": "Rampe läuft",
+  "backgroundChannelSession": "Laufende Session",
+  "backgroundChannelReady": "Bereit-Hinweise",
+  "backgroundTitle": "{device} · {temperature}°",
+  "backgroundHeating": "Heizt auf {target}°",
+  "backgroundReady": "Bereit bei {target}°",
+  "backgroundWithBattery": "{text} · Akku {battery} %",
+  "backgroundWorkflow": "{name}: {step}",
+  "backgroundReadyTitle": "{device} ist bereit · {temperature}°",
+  "backgroundReadyBoost": "Doppelklick für Boost {boost}°",
+  "backgroundReadyVolcano": "Zeit, einen Ballon zu füllen.",
+  "backgroundReadyPlain": "Kann losgehen."
 }

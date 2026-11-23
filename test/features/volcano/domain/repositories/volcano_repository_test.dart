@@ -132,6 +132,7 @@ void main() {
       expect(result.getLeft().toNullable(), isA<TimeoutError>());
       expect(repository.status.value, isNull);
       expect(repository.sessionActive.value, isFalse);
+      expect(repository.startFailed.value, isTrue);
     });
 
     test('an unreadable target is a protocol error', () async {

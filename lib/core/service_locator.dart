@@ -4,6 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../app/app_view_model.dart';
 
 import '../features/app_settings/setup_dependencies.dart';
+import '../features/background/setup_dependencies.dart';
 import '../features/devices/setup_dependencies.dart';
 import '../features/portable/setup_dependencies.dart';
 import '../features/ramps/setup_dependencies.dart';
@@ -42,4 +43,5 @@ void setupServiceLocator() {
   setupRampsDependencies();
   setupVolcanoDependencies();
   setupWorkflowsDependencies();
+  setupBackgroundDependencies();
 }
