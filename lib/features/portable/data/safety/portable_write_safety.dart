@@ -13,7 +13,7 @@ enum PortableWrite {
   /// Not sent by the official app; verified on a Veazy and a Venty.
   heaterBoost,
 
-  /// Never sent by the official app and not tested (docs/protocol.md).
+  /// Not sent by the official app; verified on a Veazy and a Venty.
   heaterSuperBoost,
   setting,
   vibration,
@@ -21,7 +21,7 @@ enum PortableWrite {
 }
 
 /// Allow-list of writes whose byte layout matches the official web app or
-/// was verified on hardware (boost).
+/// was verified on hardware (boost, superboost).
 abstract final class PortableWriteSafety {
   static const allowed = {
     PortableWrite.statusPoll,
@@ -34,6 +34,7 @@ abstract final class PortableWriteSafety {
     PortableWrite.heaterOn,
     PortableWrite.heaterOff,
     PortableWrite.heaterBoost,
+    PortableWrite.heaterSuperBoost,
     PortableWrite.setting,
     PortableWrite.vibration,
     PortableWrite.findDevice,

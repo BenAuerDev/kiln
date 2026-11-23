@@ -68,6 +68,7 @@
   "portableHeaterOff": "Heizung aus",
   "portableBoost": "Boost",
   "portableBoostOn": "Boost +{value}°",
+  "portableSuperBoostOn": "Superboost +{value}°",
   "portableSettingsBack": "Zurück",
   "portableFindTitle": "Finde meinen {deviceName}",
   "portableFindSubtitle": "Lässt ihn vibrieren und blinken",

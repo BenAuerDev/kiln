@@ -79,6 +79,7 @@ Settings bit `0x10` is used by the official app as "changed on the device".
 | Superboost offset | `01 08`, byte 7 = offset | `qvap.js:101` |
 | Heater off / normal | `01 20`, byte 11 = `00` / `01` | `qvap.js:90` |
 | Boost | `01 20`, byte 11 = `02` | not in the official app, **tested** |
+| Superboost | `01 20`, byte 11 = `03` | not in the official app, **tested** |
 | Setting | `01 80`, byte 14 = new value, byte 15 = bit to change | `qvap.js:31, 34, 36, 95` |
 | Vibration | `06 08 00 00 00 01/00 00` (7 bytes) | `qvap.js:29` |
 | Find my device | `0D 01` | `qvap.js:37` |
@@ -96,7 +97,19 @@ kiln limits: target 40–210 °C, offsets 1–30 °C (the official app allows up
   boost with off, then on at the base temperature.
 - Target writes are blocked while boosting, because it is unknown whether they
   would set the base or the boosted value.
-- Superboost (mode 3) is not sent. kiln has no button for it.
+
+### Superboost
+
+**Tested on a Veazy and a Venty** (2026-11-23, base 185, boost +15,
+superboost +15), with the same result on both:
+
+- Heater mode 3 (`01 20`, byte 11 = `03`) is accepted straight from boost.
+- Bytes 4–5 then hold base + boost + superboost, capped at 210 °C (here 210,
+  not 215). The "reached" bit follows a few seconds later.
+- Off, then on, ends superboost like boost: mode 1 at the base temperature.
+- The auto-off countdown (byte 9) restarts at 119 s with every mode change.
+
+kiln's Boost button cycles boost → superboost → off, then on at base.
 
 ### Connection behaviour
 
@@ -133,8 +146,7 @@ On the Volcano it rules out the `…-1989-…` bootloader services and the
 
 ## Still open
 
-1. Superboost over BLE (heater mode 3).
-2. What a Venty sends in identity byte 18 (kiln does not ask a Venty).
-3. Whether the 500 ms poll keeps a device from sleeping while kiln is open.
-4. The full length of the Volcano temperature characteristics (kiln reads the
+1. What a Venty sends in identity byte 18 (kiln does not ask a Venty).
+2. Whether the 500 ms poll keeps a device from sleeping while kiln is open.
+3. The full length of the Volcano temperature characteristics (kiln reads the
    first 2 bytes).

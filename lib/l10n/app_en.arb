@@ -233,6 +233,14 @@
       }
     }
   },
+  "portableSuperBoostOn": "Superboost +{value}°",
+  "@portableSuperBoostOn": {
+    "placeholders": {
+      "value": {
+        "type": "int"
+      }
+    }
+  },
   "portableSettingsBack": "Back",
   "portableFindTitle": "Find my {deviceName}",
   "@portableFindTitle": {

@@ -60,8 +60,7 @@ abstract final class PortablePackets {
       ..[7] = offset;
   }
 
-  /// `01 20 … [11]=1/0`. Only normal heating and off are verified; boost and
-  /// superboost (2/3) are never built.
+  /// `01 20 … [11]=1/0`.
   static List<int> heater({required bool on}) => _heaterMode(
     on ? PortableHeaterModeCode.normal : PortableHeaterModeCode.off,
   );
@@ -69,6 +68,12 @@ abstract final class PortablePackets {
   /// `01 20 … [11]=02`: verified on a Veazy and a Venty (not sent by the
   /// official app).
   static List<int> heaterBoost() => _heaterMode(PortableHeaterModeCode.boost);
+
+  /// `01 20 … [11]=03`: verified on a Veazy and a Venty (not sent by the
+  /// official app). Accepted straight from boost; the device caps the
+  /// setpoint at 210 °C.
+  static List<int> heaterSuperBoost() =>
+      _heaterMode(PortableHeaterModeCode.superBoost);
 
   static List<int> _heaterMode(int code) =>
       _packet(PortableCommand.status, PortableWriteMask.heater)..[11] = code;

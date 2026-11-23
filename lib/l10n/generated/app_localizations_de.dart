@@ -261,6 +261,11 @@ class AppLocalizationsDe extends AppLocalizations {
   }
 
   @override
+  String portableSuperBoostOn(int value) {
+    return 'Superboost +$value°';
+  }
+
+  @override
   String get portableSettingsBack => 'Zurück';
 
   @override

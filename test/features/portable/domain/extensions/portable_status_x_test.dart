@@ -45,6 +45,10 @@ void main() {
     expect(testStatus(heaterMode: HeaterMode.superboost).boostActive, isTrue);
   });
 
+  test('superBoostTotal stacks boost and superboost', () {
+    expect(testStatus(boost: 15, superBoost: 10).superBoostTotal, 25);
+  });
+
   test('battery', () {
     expect(
       testStatus().copyWith(batteryPercent: 72, charging: true).battery,

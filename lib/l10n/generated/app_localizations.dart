@@ -506,6 +506,12 @@ abstract class AppLocalizations {
   /// **'Boost +{value}°'**
   String portableBoostOn(int value);
 
+  /// No description provided for @portableSuperBoostOn.
+  ///
+  /// In en, this message translates to:
+  /// **'Superboost +{value}°'**
+  String portableSuperBoostOn(int value);
+
   /// No description provided for @portableSettingsBack.
   ///
   /// In en, this message translates to:

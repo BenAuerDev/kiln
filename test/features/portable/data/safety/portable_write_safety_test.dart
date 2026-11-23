@@ -13,6 +13,7 @@ void main() {
       PortableWrite.heaterOn,
       PortableWrite.heaterOff,
       PortableWrite.heaterBoost,
+      PortableWrite.heaterSuperBoost,
       PortableWrite.setting,
       PortableWrite.vibration,
       PortableWrite.findDevice,
@@ -23,16 +24,6 @@ void main() {
         reason: write.name,
       );
     }
-  });
-
-  test('superboost is disabled', () {
-    expect(
-      PortableWriteSafety.isAllowed(
-        PortableWrite.heaterSuperBoost,
-        boostActive: false,
-      ),
-      isFalse,
-    );
   });
 
   test('target writes are disabled while boosting', () {

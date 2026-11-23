@@ -123,8 +123,6 @@ class PortableRepository {
     },
   );
 
-  /// Only [HeaterMode.off] and [HeaterMode.normal] are verified. Boost and
-  /// superboost return `writeNotVerified` without touching BLE.
   Future<Either<AppError, Unit>> setHeaterMode(HeaterMode mode) => _write(
     switch (mode) {
       HeaterMode.off => PortableWrite.heaterOff,
@@ -132,11 +130,11 @@ class PortableRepository {
       HeaterMode.boost => PortableWrite.heaterBoost,
       HeaterMode.superboost => PortableWrite.heaterSuperBoost,
     },
-    // Superboost never gets here, and boost only with the experiment on:
-    // the safety check rejects them first.
-    () => mode == HeaterMode.boost
-        ? PortablePackets.heaterBoost()
-        : PortablePackets.heater(on: mode == HeaterMode.normal),
+    () => switch (mode) {
+      HeaterMode.boost => PortablePackets.heaterBoost(),
+      HeaterMode.superboost => PortablePackets.heaterSuperBoost(),
+      _ => PortablePackets.heater(on: mode == HeaterMode.normal),
+    },
     onSuccess: () {
       _hold(_HeldField.heater);
       _updateStatus((s) => s.copyWith(heaterMode: mode));

@@ -23,9 +23,13 @@ class PortableActionRow extends SignalWidget {
     final heaterOn = (status?.heaterMode ?? HeaterMode.off) != HeaterMode.off;
     final boostOn = status?.boostActive ?? false;
     final enabled = vm.controlsEnabled.value;
-    final boostLabel = boostOn
-        ? l10n.portableBoostOn(status!.boostOffset)
-        : l10n.portableBoost;
+    final boostLabel = switch (status?.heaterMode) {
+      HeaterMode.boost => l10n.portableBoostOn(status!.boostOffset),
+      HeaterMode.superboost => l10n.portableSuperBoostOn(
+        status!.superBoostTotal,
+      ),
+      _ => l10n.portableBoost,
+    };
     return Row(
       spacing: 12,
       children: [

@@ -13,8 +13,15 @@ void main() {
     expect(PortablePackets.firmwareInfoRequest(), packet({0: 0x02}));
   });
 
-  test('experimental boost sets only the heater mask and mode 2', () {
+  test('boost sets only the heater mask and mode 2', () {
     expect(PortablePackets.heaterBoost(), packet({0: 0x01, 1: 0x20, 11: 0x02}));
+  });
+
+  test('superboost sets only the heater mask and mode 3', () {
+    expect(
+      PortablePackets.heaterSuperBoost(),
+      packet({0: 0x01, 1: 0x20, 11: 0x03}),
+    );
   });
 
   test('identity request is 05 and 19 zero bytes', () {

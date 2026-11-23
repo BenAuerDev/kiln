@@ -15,6 +15,9 @@ extension PortableStatusX on PortableStatus {
   bool get boostActive =>
       heaterMode == HeaterMode.boost || heaterMode == HeaterMode.superboost;
 
+  /// Degrees above base in superboost: boost and superboost stack.
+  int get superBoostTotal => boostOffset + superBoostOffset;
+
   PortableBattery get battery =>
       PortableBattery(percent: batteryPercent, charging: charging);
 

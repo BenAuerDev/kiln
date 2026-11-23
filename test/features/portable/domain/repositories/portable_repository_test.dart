@@ -611,13 +611,16 @@ void main() {
       expect(repository.status.value?.heaterMode, HeaterMode.boost);
     });
 
-    test('superboost is not verified', () async {
-      await startWithStatus(statusPacket());
+    test('superboost writes heater mode 3', () async {
+      await startWithStatus(statusPacket(heaterMode: 2));
 
       final result = await repository.setHeaterMode(HeaterMode.superboost);
 
-      expect(result.getLeft().toNullable(), isA<WriteNotVerifiedError>());
-      expect(writes, isEmpty);
+      expect(result.isRight(), isTrue);
+      expect(writes, [
+        packet({0: 0x01, 1: 0x20, 11: 0x03}),
+      ]);
+      expect(repository.status.value?.heaterMode, HeaterMode.superboost);
     });
 
     test('target writes are rejected while boosting', () async {

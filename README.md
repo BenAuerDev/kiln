@@ -20,7 +20,8 @@ An unofficial, open-source app for Storz & Bickel vaporizers: **Volcano Hybrid**
 - Live status: target temperature, heating / ready, battery and charging
 - "Set it once" setup: base temperature, boost and superboost offsets, with
   quick setups (Flavour, Balanced, Full)
-- Heater and boost on and off from the phone
+- Heater, boost and superboost from the phone: the Boost button steps through
+  boost, superboost and back to the base temperature
 - Device settings: charge limit, battery saver, vibrate when ready, boost on
   the LEDs, °C/°F, find my device
 - Haptic feedback for every step and a "Saved" confirmation
@@ -192,7 +193,6 @@ upgrading Flutter locally.
 
 ## Not done yet
 
-- Superboost from the app (the device button works and kiln shows it)
 - °F in the app (it always shows °C)
 - Crafty+ support
 - Insights, Volcano workflows, sharing setups, home-screen widgets
