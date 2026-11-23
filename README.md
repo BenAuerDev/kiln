@@ -58,8 +58,18 @@ Bluetooth, so kiln shows the target for those.
 kiln is not in any app store. Apple does not allow vaporizer apps in the App
 Store, so for now there is no iPhone version you can just install.
 
-**Android:** build it yourself (see below) and install the APK, or run it
-straight onto a phone connected over USB:
+**Android:** download `kiln-vX.Y.Z.apk` from the
+[latest release](https://github.com/BenAuerDev/kiln/releases/latest) and open
+it on your phone (allow installing from your browser or file manager when
+Android asks). Updates install over the old version. The `.sha256` file next to
+the APK lets you check the download:
+
+```sh
+sha256sum -c kiln-vX.Y.Z.apk.sha256
+```
+
+Or build it yourself (see below) and run it straight onto a phone connected
+over USB:
 
 ```sh
 flutter run --release
@@ -94,6 +104,69 @@ screenshots are rendered with sample data:
 ```sh
 flutter test tool/screenshots/readme_screenshots_test.dart --update-goldens
 ```
+
+### Releases
+
+Release APKs are signed with kiln's own key. The keystore and its passwords
+never enter the repo: `android/key.properties`, `*.jks` and `*.keystore` are
+git-ignored. Without `key.properties`, a release build is signed with the debug
+key (Gradle prints a warning), so anyone can still build and run kiln.
+
+**One-time setup: create the keystore.** Keep it outside the repo and back it
+up together with its password. If it is lost, no update can be installed over
+an existing kiln; everyone would have to uninstall first.
+
+```sh
+mkdir -p ~/keys
+keytool -genkeypair -v \
+  -keystore ~/keys/kiln-release.jks -storetype PKCS12 \
+  -keyalg RSA -keysize 4096 -validity 10000 \
+  -alias kiln
+```
+
+PKCS12 uses one password for the store and the key. To sign local release
+builds, create `android/key.properties`:
+
+```properties
+storeFile=/home/<you>/keys/kiln-release.jks
+storePassword=<password>
+keyAlias=kiln
+keyPassword=<password>
+```
+
+**One-time setup: GitHub secrets** (Settings → Secrets and variables →
+Actions), or with the GitHub CLI:
+
+| Secret | Value |
+|---|---|
+| `KILN_KEYSTORE_BASE64` | the keystore, base64-encoded on one line |
+| `KILN_KEYSTORE_PASSWORD` | the keystore password |
+| `KILN_KEY_ALIAS` | `kiln` |
+| `KILN_KEY_PASSWORD` | the key password (same as the keystore password for PKCS12) |
+
+```sh
+base64 -w0 ~/keys/kiln-release.jks | gh secret set KILN_KEYSTORE_BASE64
+gh secret set KILN_KEYSTORE_PASSWORD
+gh secret set KILN_KEY_ALIAS --body kiln
+gh secret set KILN_KEY_PASSWORD
+```
+
+**Cutting a release:**
+
+1. Bump `version:` in `pubspec.yaml`, e.g. `0.2.0+2`. The part after `+` is
+   Android's version code and must go up with every release.
+2. Commit, then tag with the same version and push the tag:
+   ```sh
+   git tag v0.2.0
+   git push origin v0.2.0
+   ```
+3. [`.github/workflows/release.yml`](.github/workflows/release.yml) checks that
+   the tag matches `pubspec.yaml`, runs format, analyze and the tests, builds
+   the APK, checks it is not signed with the debug key and publishes a GitHub
+   release with `kiln-v0.2.0.apk`, its SHA-256 and generated release notes.
+
+The workflow pins the Flutter version; update `flutter-version` there when
+upgrading Flutter locally.
 
 ### Where things are
 

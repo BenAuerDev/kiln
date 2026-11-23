@@ -1,0 +1,116 @@
+# Builds a signed release APK for a pushed version tag (v1.2.3) and attaches
+# it to a GitHub release. The tag must match `version:` in pubspec.yaml.
+# Setup and secrets: README, "Releases".
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  apk:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          # The token stays out of .git/config while third-party code (pub,
+          # Gradle, tests) runs; only `gh release create` gets it.
+          persist-credentials: false
+
+      - name: Check that the tag matches pubspec.yaml
+        id: version
+        run: |
+          tag="${GITHUB_REF_NAME}"
+          version="$(sed -n 's/^version:[[:space:]]*\([^+[:space:]]*\).*/\1/p' pubspec.yaml)"
+          if [ "v${version}" != "${tag}" ]; then
+            echo "::error::Tag ${tag} does not match pubspec.yaml version ${version} (expected v${version})."
+            exit 1
+          fi
+          echo "version=${version}" >> "$GITHUB_OUTPUT"
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          flutter-version: "3.44.8"
+          cache: true
+
+      - run: flutter pub get
+
+      - name: Format, analyze, test
+        run: |
+          dart format --output=none --set-exit-if-changed .
+          flutter analyze
+          flutter test
+
+      - name: Write the signing key
+        env:
+          KEYSTORE_BASE64: ${{ secrets.KILN_KEYSTORE_BASE64 }}
+          KEYSTORE_PASSWORD: ${{ secrets.KILN_KEYSTORE_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.KILN_KEY_ALIAS }}
+          KEY_PASSWORD: ${{ secrets.KILN_KEY_PASSWORD }}
+        run: |
+          if [ -z "${KEYSTORE_BASE64}" ] || [ -z "${KEYSTORE_PASSWORD}" ] || [ -z "${KEY_ALIAS}" ] || [ -z "${KEY_PASSWORD}" ]; then
+            echo "::error::Signing secrets are missing. See README, Releases."
+            exit 1
+          fi
+          keystore="${RUNNER_TEMP}/kiln-release.jks"
+          echo "${KEYSTORE_BASE64}" | base64 --decode > "${keystore}"
+          {
+            echo "storeFile=${keystore}"
+            echo "storePassword=${KEYSTORE_PASSWORD}"
+            echo "keyAlias=${KEY_ALIAS}"
+            echo "keyPassword=${KEY_PASSWORD}"
+          } > android/key.properties
+
+      - name: Build the APK
+        run: flutter build apk --release
+
+      - name: Check the APK is signed with the release key
+        id: apk
+        env:
+          VERSION: ${{ steps.version.outputs.version }}
+        run: |
+          apk="build/app/outputs/flutter-apk/app-release.apk"
+          # minSdk >= 24 gives only v2/v3 signatures, which keytool cannot read.
+          apksigner="$(ls -d "${ANDROID_HOME}"/build-tools/*/ | sort -V | tail -1)apksigner"
+          certs="$("${apksigner}" verify --print-certs "${apk}" 2>/dev/null)"
+          echo "${certs}" | grep -E "certificate (DN|SHA-256)"
+          if [ -z "${certs}" ] || echo "${certs}" | grep -q "CN=Android Debug"; then
+            echo "::error::The APK is unsigned or signed with the debug key."
+            exit 1
+          fi
+          name="kiln-v${VERSION}.apk"
+          mv "${apk}" "${name}"
+          sha256sum "${name}" > "${name}.sha256"
+          echo "name=${name}" >> "$GITHUB_OUTPUT"
+
+      - name: Remove the signing key
+        if: always()
+        run: rm -f android/key.properties "${RUNNER_TEMP}/kiln-release.jks"
+
+      - name: Create the GitHub release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          APK: ${{ steps.apk.outputs.name }}
+        run: |
+          gh release create "${GITHUB_REF_NAME}" \
+            "${APK}" \
+            "${APK}.sha256" \
+            --title "kiln ${GITHUB_REF_NAME}" \
+            --generate-notes \
+            --verify-tag
