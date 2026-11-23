@@ -31,6 +31,9 @@ An unofficial, open-source app for Storz & Bickel vaporizers: **Volcano Hybrid**
 - Live temperature on a gauge, counting up smoothly while it heats
 - Target temperature with − / + and presets
 - Heater and air on and off
+- Workflows: step by step, e.g. heat to 175 °C, fill a balloon, heat to
+  185 °C, fill the next one, heater off. Presets plus your own, with a live
+  step timeline; Skip and Stop at any time (Stop turns heater and air off)
 
 ### Demo mode
 
@@ -189,14 +192,15 @@ upgrading Flutter locally.
 - `lib/core/`: Bluetooth client (with the demo devices in `ble/demo/`),
   router, theme (all colours in `kiln_palette.dart`), localisation and shared
   widgets.
-- `lib/features/`: `devices`, `portable` (Venty/Veazy), `volcano` and
-  `app_settings`.
+- `lib/features/`: `devices`, `portable` (Venty/Veazy), `volcano`,
+  `workflows` (Volcano workflows) and `app_settings`.
 
 ## Not done yet
 
+- Ramp profiles for Venty/Veazy
 - °F in the app (it always shows °C)
 - Crafty+ support
-- Insights, Volcano workflows, sharing setups, home-screen widgets
+- Insights, sharing setups, home-screen widgets
 - iOS build and alternate iOS icons per finish
 
 ## Credits

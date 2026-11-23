@@ -6,11 +6,13 @@ import 'package:signals_flutter/signals_flutter.dart';
 import '../core/l10n/l10n_service.dart';
 import '../core/service_locator.dart';
 import '../core/services/app_lifecycle_service.dart';
+import '../core/services/haptics_service.dart';
 import '../core/services/system_locale_service.dart';
 import '../core/theme/kiln_palette.dart';
 import '../core/theme/kiln_tokens.dart';
 import '../features/app_settings/domain/repositories/app_settings_repository.dart';
 import '../features/devices/domain/extensions/known_device_x.dart';
+import '../features/devices/domain/repositories/connection_repository.dart';
 import '../features/devices/domain/repositories/known_devices_repository.dart';
 import '../features/devices/domain/services/welcome_gate.dart';
 import '../features/devices/domain/use_cases/reconnect_last_device_use_case.dart';
@@ -18,6 +20,10 @@ import '../features/devices/presentation/extensions/device_finish_x.dart';
 import '../features/portable/domain/repositories/portable_repository.dart';
 import '../features/portable/domain/use_cases/set_portable_polling_use_case.dart';
 import '../features/portable/domain/use_cases/sync_portable_reconnect_use_case.dart';
+import '../features/workflows/domain/models/workflow_run.dart';
+import '../features/workflows/domain/repositories/workflow_run_repository.dart';
+import '../features/workflows/domain/services/workflow_step_service.dart';
+import '../features/workflows/domain/use_cases/stop_workflow_run_use_case.dart';
 
 class AppViewModel {
   AppViewModel({
@@ -30,6 +36,11 @@ class AppViewModel {
     SetPortablePollingUseCase? setPortablePolling,
     PortableRepository? portable,
     SyncPortableReconnectUseCase? syncPortableReconnect,
+    ConnectionRepository? connection,
+    StopWorkflowRunUseCase? stopWorkflowRun,
+    WorkflowRunRepository? workflowRuns,
+    WorkflowStepService? workflowSteps,
+    HapticsService? haptics,
   }) : _settings = settings ?? sl<AppSettingsRepository>(),
        _knownDevices = knownDevices ?? sl<KnownDevicesRepository>(),
        _lifecycle = lifecycle ?? sl<AppLifecycleService>(),
@@ -41,7 +52,16 @@ class AppViewModel {
            setPortablePolling ?? sl<SetPortablePollingUseCase>(),
        _portable = portable ?? sl<PortableRepository>(),
        _syncPortableReconnect =
-           syncPortableReconnect ?? sl<SyncPortableReconnectUseCase>() {
+           syncPortableReconnect ?? sl<SyncPortableReconnectUseCase>(),
+       _connection = connection ?? sl<ConnectionRepository>(),
+       _stopWorkflowRun = stopWorkflowRun ?? sl<StopWorkflowRunUseCase>(),
+       _workflowRuns = workflowRuns ?? sl<WorkflowRunRepository>(),
+       _workflowSteps = workflowSteps ?? sl<WorkflowStepService>(),
+       _haptics = haptics ?? sl<HapticsService>() {
+    // Before kiln lets go of a Volcano, a workflow on it is stopped, so the
+    // pump and heater are not left running out of reach.
+    _connection.beforeRelease = (deviceId) =>
+        _stopWorkflowRun(deviceId: deviceId).then((_) {});
     _effects
       ..add(
         effect(() {
@@ -74,6 +94,18 @@ class AppViewModel {
           final status = _portable.status.value;
           if (status != null) untracked(() => _syncPortableReconnect(status));
         }),
+      )
+      ..add(
+        effect(() {
+          // A buzz when a workflow step is reached, on whatever screen.
+          final run = _workflowRuns.run.value;
+          untracked(() {
+            if (_workflowSteps.reachedMilestone(_lastRun, run)) {
+              unawaited(_haptics.success());
+            }
+            _lastRun = run;
+          });
+        }),
       );
   }
 
@@ -86,6 +118,12 @@ class AppViewModel {
   final SetPortablePollingUseCase _setPortablePolling;
   final PortableRepository _portable;
   final SyncPortableReconnectUseCase _syncPortableReconnect;
+  final ConnectionRepository _connection;
+  final StopWorkflowRunUseCase _stopWorkflowRun;
+  final WorkflowRunRepository _workflowRuns;
+  final WorkflowStepService _workflowSteps;
+  final HapticsService _haptics;
+  WorkflowRun? _lastRun;
   final List<void Function()> _effects = [];
 
   /// Drives the router redirect: until the welcome is completed or a device
@@ -114,6 +152,7 @@ class AppViewModel {
   late final Computed<String> title = computed(() => _l10n.strings.appTitle);
 
   void dispose() {
+    _connection.beforeRelease = null;
     for (final dispose in _effects) {
       dispose();
     }

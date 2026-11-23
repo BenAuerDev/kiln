@@ -4,6 +4,7 @@ import 'package:obers_ui/obers_ui.dart';
 
 import '../../../../core/service_locator.dart';
 import '../../../../core/theme/build_context_x.dart';
+import '../../../workflows/presentation/widgets/common/workflow_run_banner.dart';
 import '../view_models/volcano_control_view_model.dart';
 import '../view_models/volcano_tab.dart';
 import '../widgets/volcano_bottom_bar.dart';
@@ -33,7 +34,9 @@ class VolcanoControlScreen extends HookWidget {
                   breakpoint: OiBreakpoint.compact,
                   children: [
                     VolcanoHeader(vm: vm),
-                    const SizedBox(height: 20),
+                    const SizedBox(height: 16),
+                    const WorkflowRunBanner(),
+                    const SizedBox(height: 4),
                     VolcanoGaugeSection(vm: vm),
                     const SizedBox(height: 4),
                     VolcanoTargetControl(vm: vm),

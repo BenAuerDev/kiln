@@ -24,6 +24,7 @@ import '../../domain/use_cases/stop_volcano_session_use_case.dart';
 import '../../domain/use_cases/toggle_volcano_heater_use_case.dart';
 import '../../domain/use_cases/toggle_volcano_pump_use_case.dart';
 import '../navigation/volcano_navigator.dart';
+import 'volcano_session_sync.dart';
 import 'volcano_tab.dart';
 
 class VolcanoControlViewModel {
@@ -45,8 +46,6 @@ class VolcanoControlViewModel {
   }) : _repository = repository ?? sl<VolcanoRepository>(),
        _connection = connection ?? sl<ConnectionRepository>(),
        _knownDevices = knownDevices ?? sl<KnownDevicesRepository>(),
-       _startSession = startSession ?? sl<StartVolcanoSessionUseCase>(),
-       _stopSession = stopSession ?? sl<StopVolcanoSessionUseCase>(),
        _setTarget = setTarget ?? sl<SetVolcanoTargetUseCase>(),
        _adjustTarget = adjustTarget ?? sl<AdjustVolcanoTargetUseCase>(),
        _toggleHeater = toggleHeater ?? sl<ToggleVolcanoHeaterUseCase>(),
@@ -55,14 +54,18 @@ class VolcanoControlViewModel {
        _toasts = toasts ?? sl<ToastService>(),
        _l10n = l10n ?? sl<L10nService>(),
        _navigator = navigator ?? sl<VolcanoNavigator>() {
-    _effects.add(effect(_syncSession));
+    _session = VolcanoSessionSync(
+      connection: _connection,
+      repository: _repository,
+      startSession: startSession,
+      stopSession: stopSession,
+      onError: _showError,
+    );
   }
 
   final VolcanoRepository _repository;
   final ConnectionRepository _connection;
   final KnownDevicesRepository _knownDevices;
-  final StartVolcanoSessionUseCase _startSession;
-  final StopVolcanoSessionUseCase _stopSession;
   final SetVolcanoTargetUseCase _setTarget;
   final AdjustVolcanoTargetUseCase _adjustTarget;
   final ToggleVolcanoHeaterUseCase _toggleHeater;
@@ -75,7 +78,7 @@ class VolcanoControlViewModel {
   /// Quiet period after the last −/+ step before "Saved to …" is shown.
   final Duration savedFeedbackDelay;
 
-  final List<void Function()> _effects = [];
+  late final VolcanoSessionSync _session;
   Timer? _savedFeedback;
 
   List<int> get presets => VolcanoTargetRules.presets;
@@ -124,39 +127,20 @@ class VolcanoControlViewModel {
     (await _togglePump()).match(_showError, (_) => _confirmSaved());
   }
 
-  void selectTab(VolcanoTab tab) {
-    if (tab == VolcanoTab.devices) _navigator.goToDevices();
-  }
+  void selectTab(VolcanoTab tab) => switch (tab) {
+    VolcanoTab.control => null,
+    VolcanoTab.workflows => _navigator.goToWorkflows(),
+    VolcanoTab.devices => _navigator.goToDevices(),
+  };
 
   void dispose() {
     _savedFeedback?.cancel();
-    for (final dispose in _effects) {
-      dispose();
-    }
+    _session.dispose();
     deviceName.dispose();
     phase.dispose();
     currentFraction.dispose();
     targetFraction.dispose();
     controlsEnabled.dispose();
-  }
-
-  void _syncSession() {
-    final deviceId = _connection.activeDeviceId.value;
-    final connected = _connection.status.value == ConnectionStatus.connected;
-    untracked(() {
-      if (connected && deviceId != null) {
-        unawaited(_start(deviceId));
-      } else if (_repository.sessionActive.value) {
-        unawaited(_stopSession());
-      }
-    });
-  }
-
-  Future<void> _start(String deviceId) async {
-    (await _startSession(deviceId)).match((error) {
-      // A start superseded by a newer connection change is not worth a toast.
-      if (error is! NotConnectedError) _showError(error);
-    }, (_) {});
   }
 
   Future<void> _step(int delta) async {

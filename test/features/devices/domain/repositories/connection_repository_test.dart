@@ -91,6 +91,36 @@ void main() {
   });
 
   group('disconnect', () {
+    test('calls beforeRelease while the device is still connected', () async {
+      await repository.connect('a');
+      final calls = <String>[];
+      repository.beforeRelease = (id) async {
+        calls.add(id);
+        expect(repository.status.value, ConnectionStatus.connected);
+        verifyNever(() => dataSource.disconnect(any()));
+      };
+
+      await repository.disconnect();
+
+      expect(calls, ['a']);
+      verify(() => dataSource.disconnect('a')).called(1);
+    });
+
+    test('connecting another device releases the current one first', () async {
+      await repository.connect('a');
+      final calls = <String>[];
+      repository.beforeRelease = (id) async => calls.add(id);
+      await repository.connect('b');
+      expect(calls, ['a']);
+    });
+
+    test('no beforeRelease without a connected device', () async {
+      final calls = <String>[];
+      repository.beforeRelease = (id) async => calls.add(id);
+      await repository.disconnect();
+      expect(calls, isEmpty);
+    });
+
     test('clears the state and remembers it was on purpose', () async {
       await repository.connect('a');
 

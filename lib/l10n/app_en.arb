@@ -71,6 +71,7 @@
   "navControl": "Control",
   "navSetup": "Setup",
   "navDevices": "Devices",
+  "navWorkflows": "Workflows",
   "portableDefaultName": "Vaporizer",
   "portableBatteryLevel": "{percent}% battery",
   "@portableBatteryLevel": {
@@ -490,5 +491,231 @@
   },
   "devicesDemoBadge": "Demo",
   "devicesDemoLeaveSemantics": "Leave the demo and go back",
-  "devicesDemoStart": "Start"
+  "devicesDemoStart": "Start",
+  "workflowsTitle": "Workflows",
+  "workflowsIntro": "Step by step: heat, wait, fill a balloon. kiln does the rest.",
+  "workflowsPresets": "Presets",
+  "workflowsYours": "Your workflows",
+  "workflowsNoneYet": "None yet. Edit a preset to make it yours, or start from scratch.",
+  "workflowsNew": "New workflow",
+  "workflowsStart": "Start",
+  "workflowsStartSemantics": "Start {name}",
+  "@workflowsStartSemantics": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "workflowsEditSemantics": "Edit {name}",
+  "@workflowsEditSemantics": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "workflowsStepCount": "{count, plural, =1{1 step} other{{count} steps}}",
+  "@workflowsStepCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "durationAboutMinutes": "about {minutes} min",
+  "@durationAboutMinutes": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "durationUnderAMinute": "under a minute",
+  "workflowsSummary": "{steps} · {duration}",
+  "@workflowsSummary": {
+    "placeholders": {
+      "steps": {
+        "type": "String"
+      },
+      "duration": {
+        "type": "String"
+      }
+    }
+  },
+  "workflowsDeviceSummary": "Volcano Hybrid · {summary}",
+  "@workflowsDeviceSummary": {
+    "placeholders": {
+      "summary": {
+        "type": "String"
+      }
+    }
+  },
+  "workflowsRunningNow": "Running now",
+  "workflowsOpenRun": "Open",
+  "workflowsPresetThreeBalloons": "Three-balloon session",
+  "workflowsPresetSingleBalloon": "One balloon",
+  "workflowsPresetFlavourLadder": "Flavour ladder",
+  "workflowsRunTitle": "Workflow",
+  "workflowsBack": "Back",
+  "workflowsEdit": "Edit workflow",
+  "workflowsStepOf": "Step {current} of {total} · {kind}",
+  "@workflowsStepOf": {
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      },
+      "kind": {
+        "type": "String"
+      }
+    }
+  },
+  "workflowsKindHeat": "Heat",
+  "workflowsKindHold": "Hold",
+  "workflowsKindAir": "Air",
+  "workflowsPaused": "Paused · Volcano not connected",
+  "workflowsFinished": "Done",
+  "workflowsStopped": "Stopped",
+  "workflowsInterrupted": "Stopped · Volcano out of reach, it may still be on",
+  "workflowsSkip": "Skip step",
+  "workflowsStop": "Stop",
+  "workflowsDone": "Done",
+  "workflowsRunAgain": "Run again",
+  "workflowsNoRun": "No workflow is running.",
+  "workflowsHeatTitle": "Heat to {celsius} °C",
+  "@workflowsHeatTitle": {
+    "placeholders": {
+      "celsius": {
+        "type": "int"
+      }
+    }
+  },
+  "workflowsHoldTitle": "Hold {duration}",
+  "@workflowsHoldTitle": {
+    "placeholders": {
+      "duration": {
+        "type": "String"
+      }
+    }
+  },
+  "workflowsAirTitle": "Air {duration}",
+  "@workflowsAirTitle": {
+    "placeholders": {
+      "duration": {
+        "type": "String"
+      }
+    }
+  },
+  "workflowsHeatSubtitle": "Wait until ready, then buzz",
+  "workflowsHoldSubtitle": "Keep the temperature",
+  "workflowsAirSubtitle": "Fill balloon {number}",
+  "@workflowsAirSubtitle": {
+    "placeholders": {
+      "number": {
+        "type": "int"
+      }
+    }
+  },
+  "workflowsThenHeaterOff": "{subtitle}, heater off after",
+  "@workflowsThenHeaterOff": {
+    "placeholders": {
+      "subtitle": {
+        "type": "String"
+      }
+    }
+  },
+  "workflowsTagDone": "Done",
+  "workflowsTagNow": "Now",
+  "durationSeconds": "{seconds} s",
+  "@durationSeconds": {
+    "placeholders": {
+      "seconds": {
+        "type": "int"
+      }
+    }
+  },
+  "durationMinutes": "{minutes} min",
+  "@durationMinutes": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "durationMinutesSeconds": "{minutes} min {seconds} s",
+  "@durationMinutesSeconds": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      },
+      "seconds": {
+        "type": "int"
+      }
+    }
+  },
+  "workflowsEditorNewTitle": "New workflow",
+  "workflowsEditorEditTitle": "Edit workflow",
+  "workflowsEditorName": "Name",
+  "workflowsEditorNameHint": "e.g. Evening session",
+  "workflowsEditorSteps": "Steps",
+  "workflowsEditorNoSteps": "Add at least one step.",
+  "workflowsEditorAddSemantics": "Add a {kind} step",
+  "@workflowsEditorAddSemantics": {
+    "placeholders": {
+      "kind": {
+        "type": "String"
+      }
+    }
+  },
+  "workflowsEditorHeaterOff": "Heater off at the end",
+  "workflowsEditorHeaterOffHint": "Recommended, so the Volcano doesn't keep heating.",
+  "workflowsEditorSave": "Save",
+  "workflowsEditorDelete": "Delete workflow",
+  "workflowsEditorDeleteConfirm": "Tap again to delete",
+  "workflowsEditorLower": "Lower: {step}",
+  "@workflowsEditorLower": {
+    "placeholders": {
+      "step": {
+        "type": "String"
+      }
+    }
+  },
+  "workflowsEditorRaise": "Raise: {step}",
+  "@workflowsEditorRaise": {
+    "placeholders": {
+      "step": {
+        "type": "String"
+      }
+    }
+  },
+  "workflowsEditorMoveUp": "Move up: {step}",
+  "@workflowsEditorMoveUp": {
+    "placeholders": {
+      "step": {
+        "type": "String"
+      }
+    }
+  },
+  "workflowsEditorMoveDown": "Move down: {step}",
+  "@workflowsEditorMoveDown": {
+    "placeholders": {
+      "step": {
+        "type": "String"
+      }
+    }
+  },
+  "workflowsEditorRemove": "Remove: {step}",
+  "@workflowsEditorRemove": {
+    "placeholders": {
+      "step": {
+        "type": "String"
+      }
+    }
+  },
+  "workflowsSaved": "Workflow saved",
+  "workflowsDeleted": "Workflow deleted",
+  "workflowsStopFailed": "Stopped. kiln couldn't reach the Volcano, so it may still be heating."
 }

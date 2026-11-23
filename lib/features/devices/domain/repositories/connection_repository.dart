@@ -65,6 +65,12 @@ class ConnectionRepository {
   /// the app does not undo the user's choice.
   ReadonlySignal<bool> get disconnectedByUser => _disconnectedByUser;
 
+  /// Called with the active device id before kiln lets go of it (disconnect,
+  /// forget, or connecting to another device), while it can still be
+  /// written to: a running Volcano workflow switches pump and heater off
+  /// here. Errors are the callback's own business.
+  Future<void> Function(String deviceId)? beforeRelease;
+
   /// Whether an unexpected drop of the current connection should be
   /// reconnected. Device features turn it off while the device is idle, so
   /// a device that hangs up to go to sleep is left alone. Every explicit
@@ -117,6 +123,14 @@ class ConnectionRepository {
   /// the next connect. Leaving the demo passes `false`, so the last real
   /// device comes back on the next resume.
   Future<Either<AppError, Unit>> disconnect({bool byUser = true}) async {
+    final current = _activeDeviceId.value;
+    final hook = beforeRelease;
+    if (current != null &&
+        hook != null &&
+        _status.value == ConnectionStatus.connected) {
+      await hook(current);
+    }
+    // Read again: a connect may have replaced the device during the hook.
     final id = _activeDeviceId.value;
     _generation++;
     _reconnectJob = null;

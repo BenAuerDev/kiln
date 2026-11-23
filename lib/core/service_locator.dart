@@ -7,6 +7,7 @@ import '../features/app_settings/setup_dependencies.dart';
 import '../features/devices/setup_dependencies.dart';
 import '../features/portable/setup_dependencies.dart';
 import '../features/volcano/setup_dependencies.dart';
+import '../features/workflows/setup_dependencies.dart';
 import 'ble/ble_client.dart';
 import 'ble/demo/ble_simulator.dart';
 import 'l10n/l10n_service.dart';
@@ -38,4 +39,5 @@ void setupServiceLocator() {
   setupDevicesDependencies();
   setupPortableDependencies();
   setupVolcanoDependencies();
+  setupWorkflowsDependencies();
 }

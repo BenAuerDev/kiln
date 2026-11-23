@@ -96,6 +96,9 @@ class AppLocalizationsDe extends AppLocalizations {
   String get navDevices => 'Geräte';
 
   @override
+  String get navWorkflows => 'Abläufe';
+
+  @override
   String get portableDefaultName => 'Vaporizer';
 
   @override
@@ -659,4 +662,258 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get devicesDemoStart => 'Starten';
+
+  @override
+  String get workflowsTitle => 'Abläufe';
+
+  @override
+  String get workflowsIntro =>
+      'Schritt für Schritt: heizen, warten, Ballon füllen. kiln macht den Rest.';
+
+  @override
+  String get workflowsPresets => 'Vorlagen';
+
+  @override
+  String get workflowsYours => 'Deine Abläufe';
+
+  @override
+  String get workflowsNoneYet =>
+      'Noch keine. Bearbeite eine Vorlage oder fang neu an.';
+
+  @override
+  String get workflowsNew => 'Neuer Ablauf';
+
+  @override
+  String get workflowsStart => 'Starten';
+
+  @override
+  String workflowsStartSemantics(String name) {
+    return '$name starten';
+  }
+
+  @override
+  String workflowsEditSemantics(String name) {
+    return '$name bearbeiten';
+  }
+
+  @override
+  String workflowsStepCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count Schritte',
+      one: '1 Schritt',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String durationAboutMinutes(int minutes) {
+    return 'etwa $minutes Min.';
+  }
+
+  @override
+  String get durationUnderAMinute => 'unter einer Minute';
+
+  @override
+  String workflowsSummary(String steps, String duration) {
+    return '$steps · $duration';
+  }
+
+  @override
+  String workflowsDeviceSummary(String summary) {
+    return 'Volcano Hybrid · $summary';
+  }
+
+  @override
+  String get workflowsRunningNow => 'Läuft gerade';
+
+  @override
+  String get workflowsOpenRun => 'Öffnen';
+
+  @override
+  String get workflowsPresetThreeBalloons => 'Drei-Ballon-Session';
+
+  @override
+  String get workflowsPresetSingleBalloon => 'Ein Ballon';
+
+  @override
+  String get workflowsPresetFlavourLadder => 'Aroma-Leiter';
+
+  @override
+  String get workflowsRunTitle => 'Ablauf';
+
+  @override
+  String get workflowsBack => 'Zurück';
+
+  @override
+  String get workflowsEdit => 'Ablauf bearbeiten';
+
+  @override
+  String workflowsStepOf(int current, int total, String kind) {
+    return 'Schritt $current von $total · $kind';
+  }
+
+  @override
+  String get workflowsKindHeat => 'Heizen';
+
+  @override
+  String get workflowsKindHold => 'Halten';
+
+  @override
+  String get workflowsKindAir => 'Luft';
+
+  @override
+  String get workflowsPaused => 'Pausiert · Volcano nicht verbunden';
+
+  @override
+  String get workflowsFinished => 'Fertig';
+
+  @override
+  String get workflowsStopped => 'Gestoppt';
+
+  @override
+  String get workflowsInterrupted =>
+      'Gestoppt · Volcano nicht erreichbar, er läuft eventuell noch';
+
+  @override
+  String get workflowsSkip => 'Schritt überspringen';
+
+  @override
+  String get workflowsStop => 'Stopp';
+
+  @override
+  String get workflowsDone => 'Fertig';
+
+  @override
+  String get workflowsRunAgain => 'Nochmal starten';
+
+  @override
+  String get workflowsNoRun => 'Gerade läuft kein Ablauf.';
+
+  @override
+  String workflowsHeatTitle(int celsius) {
+    return 'Auf $celsius °C heizen';
+  }
+
+  @override
+  String workflowsHoldTitle(String duration) {
+    return '$duration halten';
+  }
+
+  @override
+  String workflowsAirTitle(String duration) {
+    return 'Luft $duration';
+  }
+
+  @override
+  String get workflowsHeatSubtitle => 'Warten bis bereit, dann vibrieren';
+
+  @override
+  String get workflowsHoldSubtitle => 'Temperatur halten';
+
+  @override
+  String workflowsAirSubtitle(int number) {
+    return 'Ballon $number füllen';
+  }
+
+  @override
+  String workflowsThenHeaterOff(String subtitle) {
+    return '$subtitle, danach Heizung aus';
+  }
+
+  @override
+  String get workflowsTagDone => 'Fertig';
+
+  @override
+  String get workflowsTagNow => 'Jetzt';
+
+  @override
+  String durationSeconds(int seconds) {
+    return '$seconds s';
+  }
+
+  @override
+  String durationMinutes(int minutes) {
+    return '$minutes Min.';
+  }
+
+  @override
+  String durationMinutesSeconds(int minutes, int seconds) {
+    return '$minutes Min. $seconds s';
+  }
+
+  @override
+  String get workflowsEditorNewTitle => 'Neuer Ablauf';
+
+  @override
+  String get workflowsEditorEditTitle => 'Ablauf bearbeiten';
+
+  @override
+  String get workflowsEditorName => 'Name';
+
+  @override
+  String get workflowsEditorNameHint => 'z. B. Abendsession';
+
+  @override
+  String get workflowsEditorSteps => 'Schritte';
+
+  @override
+  String get workflowsEditorNoSteps => 'Füge mindestens einen Schritt hinzu.';
+
+  @override
+  String workflowsEditorAddSemantics(String kind) {
+    return 'Schritt hinzufügen: $kind';
+  }
+
+  @override
+  String get workflowsEditorHeaterOff => 'Am Ende Heizung aus';
+
+  @override
+  String get workflowsEditorHeaterOffHint =>
+      'Empfohlen, damit der Volcano nicht weiterheizt.';
+
+  @override
+  String get workflowsEditorSave => 'Speichern';
+
+  @override
+  String get workflowsEditorDelete => 'Ablauf löschen';
+
+  @override
+  String get workflowsEditorDeleteConfirm => 'Zum Löschen nochmal tippen';
+
+  @override
+  String workflowsEditorLower(String step) {
+    return 'Verringern: $step';
+  }
+
+  @override
+  String workflowsEditorRaise(String step) {
+    return 'Erhöhen: $step';
+  }
+
+  @override
+  String workflowsEditorMoveUp(String step) {
+    return 'Nach oben: $step';
+  }
+
+  @override
+  String workflowsEditorMoveDown(String step) {
+    return 'Nach unten: $step';
+  }
+
+  @override
+  String workflowsEditorRemove(String step) {
+    return 'Entfernen: $step';
+  }
+
+  @override
+  String get workflowsSaved => 'Ablauf gespeichert';
+
+  @override
+  String get workflowsDeleted => 'Ablauf gelöscht';
+
+  @override
+  String get workflowsStopFailed =>
+      'Gestoppt. kiln hat den Volcano nicht erreicht, er heizt eventuell noch.';
 }

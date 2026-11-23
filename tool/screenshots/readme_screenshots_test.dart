@@ -32,6 +32,7 @@ import 'package:obers_ui/obers_ui.dart';
 import 'package:signals_flutter/signals_flutter.dart';
 
 import '../../test/features/devices/helpers/demo_badge_stub.dart';
+import '../../test/features/workflows/helpers/run_banner_registration.dart';
 import '../../test/features/portable/helpers/portable_fixtures.dart';
 import '../../test/features/portable/presentation/presentation_mocks.dart';
 import '../../test/features/volcano/mocks.dart' as volcano;
@@ -126,7 +127,10 @@ void main() {
     await _loadFonts();
   });
 
-  setUp(registerDemoBadge);
+  setUp(() {
+    registerDemoBadge();
+    registerRunBanner();
+  });
 
   tearDown(sl.reset);
 

@@ -4,7 +4,7 @@ import 'package:obers_ui/obers_ui.dart';
 import '../../../../core/l10n/get_app_localizations.dart';
 import '../view_models/volcano_tab.dart';
 
-/// Control / Devices. Workflows and Insights join once they exist.
+/// Control / Workflows / Devices. Insights joins once it exists.
 class VolcanoBottomBar extends StatelessWidget {
   const VolcanoBottomBar({
     required this.current,
@@ -27,6 +27,10 @@ class VolcanoBottomBar extends StatelessWidget {
             VolcanoTab.control => OiNavigationItem(
               icon: OiIcons.gauge,
               label: l10n.navControl,
+            ),
+            VolcanoTab.workflows => OiNavigationItem(
+              icon: OiIcons.listOrdered,
+              label: l10n.navWorkflows,
             ),
             VolcanoTab.devices => OiNavigationItem(
               icon: OiIcons.bluetooth,

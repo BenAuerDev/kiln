@@ -5,6 +5,7 @@ import 'package:fpdart/fpdart.dart';
 import 'package:kiln/app/app_view_model.dart';
 import 'package:kiln/core/l10n/l10n_service.dart';
 import 'package:kiln/core/services/app_lifecycle_service.dart';
+import 'package:kiln/core/services/haptics_service.dart';
 import 'package:kiln/core/services/system_locale_service.dart';
 import 'package:kiln/core/theme/kiln_palette.dart';
 import 'package:kiln/features/app_settings/domain/repositories/app_settings_repository.dart';
@@ -12,6 +13,7 @@ import 'package:kiln/features/devices/domain/models/device_finish.dart';
 import 'package:kiln/features/devices/domain/models/device_model.dart';
 import 'package:kiln/features/devices/domain/models/finish_preference.dart';
 import 'package:kiln/features/devices/domain/models/known_device.dart';
+import 'package:kiln/features/devices/domain/repositories/connection_repository.dart';
 import 'package:kiln/features/devices/domain/repositories/known_devices_repository.dart';
 import 'package:kiln/features/devices/domain/use_cases/reconnect_last_device_use_case.dart';
 import 'package:kiln/features/portable/domain/models/heater_mode.dart';
@@ -20,6 +22,11 @@ import 'package:kiln/features/portable/domain/models/portable_status.dart';
 import 'package:kiln/features/portable/domain/repositories/portable_repository.dart';
 import 'package:kiln/features/portable/domain/use_cases/set_portable_polling_use_case.dart';
 import 'package:kiln/features/portable/domain/use_cases/sync_portable_reconnect_use_case.dart';
+import 'package:kiln/features/workflows/domain/models/workflow_run.dart';
+import 'package:kiln/features/workflows/domain/repositories/workflow_run_repository.dart';
+import 'package:kiln/features/workflows/domain/services/workflow_presets.dart';
+import 'package:kiln/features/workflows/domain/services/workflow_step_service.dart';
+import 'package:kiln/features/workflows/domain/use_cases/stop_workflow_run_use_case.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:signals_flutter/signals_flutter.dart';
 
@@ -37,13 +44,20 @@ class MockSystemLocaleService extends Mock implements SystemLocaleService {}
 class MockReconnectLastDeviceUseCase extends Mock
     implements ReconnectLastDeviceUseCase {}
 
-class MockSetPortablePollingUseCase extends Mock
-    implements SetPortablePollingUseCase {}
-
 class MockPortableRepository extends Mock implements PortableRepository {}
 
 class MockSyncPortableReconnectUseCase extends Mock
     implements SyncPortableReconnectUseCase {}
+
+class MockHapticsService extends Mock implements HapticsService {}
+
+class MockConnectionRepository extends Mock implements ConnectionRepository {}
+
+class MockStopWorkflowRunUseCase extends Mock
+    implements StopWorkflowRunUseCase {}
+
+class MockSetPortablePollingUseCase extends Mock
+    implements SetPortablePollingUseCase {}
 
 void main() {
   late Signal<String?> localeCode;
@@ -52,11 +66,15 @@ void main() {
   late Signal<List<Locale>> systemLocales;
   late MockL10nService l10n;
   late MockReconnectLastDeviceUseCase reconnect;
-  late MockSetPortablePollingUseCase setPolling;
   late MockSyncPortableReconnectUseCase syncReconnect;
   late Signal<PortableStatus?> portableStatus;
   late Signal<bool> welcomeCompleted;
   late Signal<List<KnownDevice>> devices;
+  late WorkflowRunRepository workflowRuns;
+  late MockHapticsService haptics;
+  late MockConnectionRepository connection;
+  late MockStopWorkflowRunUseCase stopRun;
+  late MockSetPortablePollingUseCase setPolling;
   late AppViewModel vm;
 
   setUpAll(() => registerFallbackValue(const [Locale('en')]));
@@ -73,7 +91,6 @@ void main() {
     final lifecycleService = MockAppLifecycleService();
     l10n = MockL10nService();
     reconnect = MockReconnectLastDeviceUseCase();
-    setPolling = MockSetPortablePollingUseCase();
     syncReconnect = MockSyncPortableReconnectUseCase();
     portableStatus = signal(null);
     final portable = MockPortableRepository();
@@ -86,6 +103,15 @@ void main() {
     when(() => knownDevices.activeDevice).thenReturn(activeDevice);
     when(() => lifecycleService.state).thenReturn(lifecycle);
     when(() => reconnect()).thenAnswer((_) async => right(none()));
+    workflowRuns = WorkflowRunRepository();
+    haptics = MockHapticsService();
+    when(() => haptics.success()).thenAnswer((_) async {});
+    connection = MockConnectionRepository();
+    stopRun = MockStopWorkflowRunUseCase();
+    when(
+      () => stopRun(deviceId: any(named: 'deviceId')),
+    ).thenAnswer((_) async => right(unit));
+    setPolling = MockSetPortablePollingUseCase();
     vm = AppViewModel(
       settings: settings,
       knownDevices: knownDevices,
@@ -96,10 +122,37 @@ void main() {
       setPortablePolling: setPolling,
       portable: portable,
       syncPortableReconnect: syncReconnect,
+      connection: connection,
+      stopWorkflowRun: stopRun,
+      workflowRuns: workflowRuns,
+      workflowSteps: WorkflowStepService(),
+      haptics: haptics,
     );
   });
 
   tearDown(() => vm.dispose());
+
+  test('stops a workflow before kiln lets go of its device', () async {
+    final hook =
+        verify(() => connection.beforeRelease = captureAny()).captured.single
+            as Future<void> Function(String);
+    await hook('volcano-id');
+    verify(() => stopRun(deviceId: 'volcano-id')).called(1);
+  });
+
+  test('buzzes when a workflow reaches a heat step, on any screen', () {
+    final run = WorkflowRun(
+      deviceId: 'v',
+      workflow: WorkflowPresets.all.first,
+      stepIndex: 0,
+      stepStartedAt: DateTime(2026),
+    );
+    workflowRuns.update(run);
+    workflowRuns.update(run.copyWith(stepIndex: 1));
+    verifyNever(() => haptics.success());
+    workflowRuns.update(run.copyWith(stepIndex: 1, heatStepsReached: 1));
+    verify(() => haptics.success()).called(1);
+  });
 
   group('pastWelcome', () {
     test('is false before the welcome is completed', () {

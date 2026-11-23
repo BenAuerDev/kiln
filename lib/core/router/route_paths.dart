@@ -7,4 +7,10 @@ abstract final class RoutePaths {
   static const portableSetup = '/portable/setup';
   static const portableSettings = '/portable/settings';
   static const volcanoControl = '/volcano/control';
+  static const volcanoWorkflows = '/volcano/workflows';
+  static const workflowRun = '/volcano/workflows/run';
+
+  /// Query `id`: the workflow to edit (a preset is copied). Without it, a
+  /// new workflow.
+  static const workflowEditor = '/volcano/workflows/edit';
 }

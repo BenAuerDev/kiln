@@ -236,6 +236,12 @@ abstract class AppLocalizations {
   /// **'Devices'**
   String get navDevices;
 
+  /// No description provided for @navWorkflows.
+  ///
+  /// In en, this message translates to:
+  /// **'Workflows'**
+  String get navWorkflows;
+
   /// No description provided for @portableDefaultName.
   ///
   /// In en, this message translates to:
@@ -1177,6 +1183,408 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Start'**
   String get devicesDemoStart;
+
+  /// No description provided for @workflowsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Workflows'**
+  String get workflowsTitle;
+
+  /// No description provided for @workflowsIntro.
+  ///
+  /// In en, this message translates to:
+  /// **'Step by step: heat, wait, fill a balloon. kiln does the rest.'**
+  String get workflowsIntro;
+
+  /// No description provided for @workflowsPresets.
+  ///
+  /// In en, this message translates to:
+  /// **'Presets'**
+  String get workflowsPresets;
+
+  /// No description provided for @workflowsYours.
+  ///
+  /// In en, this message translates to:
+  /// **'Your workflows'**
+  String get workflowsYours;
+
+  /// No description provided for @workflowsNoneYet.
+  ///
+  /// In en, this message translates to:
+  /// **'None yet. Edit a preset to make it yours, or start from scratch.'**
+  String get workflowsNoneYet;
+
+  /// No description provided for @workflowsNew.
+  ///
+  /// In en, this message translates to:
+  /// **'New workflow'**
+  String get workflowsNew;
+
+  /// No description provided for @workflowsStart.
+  ///
+  /// In en, this message translates to:
+  /// **'Start'**
+  String get workflowsStart;
+
+  /// No description provided for @workflowsStartSemantics.
+  ///
+  /// In en, this message translates to:
+  /// **'Start {name}'**
+  String workflowsStartSemantics(String name);
+
+  /// No description provided for @workflowsEditSemantics.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit {name}'**
+  String workflowsEditSemantics(String name);
+
+  /// No description provided for @workflowsStepCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 step} other{{count} steps}}'**
+  String workflowsStepCount(int count);
+
+  /// No description provided for @durationAboutMinutes.
+  ///
+  /// In en, this message translates to:
+  /// **'about {minutes} min'**
+  String durationAboutMinutes(int minutes);
+
+  /// No description provided for @durationUnderAMinute.
+  ///
+  /// In en, this message translates to:
+  /// **'under a minute'**
+  String get durationUnderAMinute;
+
+  /// No description provided for @workflowsSummary.
+  ///
+  /// In en, this message translates to:
+  /// **'{steps} · {duration}'**
+  String workflowsSummary(String steps, String duration);
+
+  /// No description provided for @workflowsDeviceSummary.
+  ///
+  /// In en, this message translates to:
+  /// **'Volcano Hybrid · {summary}'**
+  String workflowsDeviceSummary(String summary);
+
+  /// No description provided for @workflowsRunningNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Running now'**
+  String get workflowsRunningNow;
+
+  /// No description provided for @workflowsOpenRun.
+  ///
+  /// In en, this message translates to:
+  /// **'Open'**
+  String get workflowsOpenRun;
+
+  /// No description provided for @workflowsPresetThreeBalloons.
+  ///
+  /// In en, this message translates to:
+  /// **'Three-balloon session'**
+  String get workflowsPresetThreeBalloons;
+
+  /// No description provided for @workflowsPresetSingleBalloon.
+  ///
+  /// In en, this message translates to:
+  /// **'One balloon'**
+  String get workflowsPresetSingleBalloon;
+
+  /// No description provided for @workflowsPresetFlavourLadder.
+  ///
+  /// In en, this message translates to:
+  /// **'Flavour ladder'**
+  String get workflowsPresetFlavourLadder;
+
+  /// No description provided for @workflowsRunTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Workflow'**
+  String get workflowsRunTitle;
+
+  /// No description provided for @workflowsBack.
+  ///
+  /// In en, this message translates to:
+  /// **'Back'**
+  String get workflowsBack;
+
+  /// No description provided for @workflowsEdit.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit workflow'**
+  String get workflowsEdit;
+
+  /// No description provided for @workflowsStepOf.
+  ///
+  /// In en, this message translates to:
+  /// **'Step {current} of {total} · {kind}'**
+  String workflowsStepOf(int current, int total, String kind);
+
+  /// No description provided for @workflowsKindHeat.
+  ///
+  /// In en, this message translates to:
+  /// **'Heat'**
+  String get workflowsKindHeat;
+
+  /// No description provided for @workflowsKindHold.
+  ///
+  /// In en, this message translates to:
+  /// **'Hold'**
+  String get workflowsKindHold;
+
+  /// No description provided for @workflowsKindAir.
+  ///
+  /// In en, this message translates to:
+  /// **'Air'**
+  String get workflowsKindAir;
+
+  /// No description provided for @workflowsPaused.
+  ///
+  /// In en, this message translates to:
+  /// **'Paused · Volcano not connected'**
+  String get workflowsPaused;
+
+  /// No description provided for @workflowsFinished.
+  ///
+  /// In en, this message translates to:
+  /// **'Done'**
+  String get workflowsFinished;
+
+  /// No description provided for @workflowsStopped.
+  ///
+  /// In en, this message translates to:
+  /// **'Stopped'**
+  String get workflowsStopped;
+
+  /// No description provided for @workflowsInterrupted.
+  ///
+  /// In en, this message translates to:
+  /// **'Stopped · Volcano out of reach, it may still be on'**
+  String get workflowsInterrupted;
+
+  /// No description provided for @workflowsSkip.
+  ///
+  /// In en, this message translates to:
+  /// **'Skip step'**
+  String get workflowsSkip;
+
+  /// No description provided for @workflowsStop.
+  ///
+  /// In en, this message translates to:
+  /// **'Stop'**
+  String get workflowsStop;
+
+  /// No description provided for @workflowsDone.
+  ///
+  /// In en, this message translates to:
+  /// **'Done'**
+  String get workflowsDone;
+
+  /// No description provided for @workflowsRunAgain.
+  ///
+  /// In en, this message translates to:
+  /// **'Run again'**
+  String get workflowsRunAgain;
+
+  /// No description provided for @workflowsNoRun.
+  ///
+  /// In en, this message translates to:
+  /// **'No workflow is running.'**
+  String get workflowsNoRun;
+
+  /// No description provided for @workflowsHeatTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Heat to {celsius} °C'**
+  String workflowsHeatTitle(int celsius);
+
+  /// No description provided for @workflowsHoldTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Hold {duration}'**
+  String workflowsHoldTitle(String duration);
+
+  /// No description provided for @workflowsAirTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Air {duration}'**
+  String workflowsAirTitle(String duration);
+
+  /// No description provided for @workflowsHeatSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Wait until ready, then buzz'**
+  String get workflowsHeatSubtitle;
+
+  /// No description provided for @workflowsHoldSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Keep the temperature'**
+  String get workflowsHoldSubtitle;
+
+  /// No description provided for @workflowsAirSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Fill balloon {number}'**
+  String workflowsAirSubtitle(int number);
+
+  /// No description provided for @workflowsThenHeaterOff.
+  ///
+  /// In en, this message translates to:
+  /// **'{subtitle}, heater off after'**
+  String workflowsThenHeaterOff(String subtitle);
+
+  /// No description provided for @workflowsTagDone.
+  ///
+  /// In en, this message translates to:
+  /// **'Done'**
+  String get workflowsTagDone;
+
+  /// No description provided for @workflowsTagNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Now'**
+  String get workflowsTagNow;
+
+  /// No description provided for @durationSeconds.
+  ///
+  /// In en, this message translates to:
+  /// **'{seconds} s'**
+  String durationSeconds(int seconds);
+
+  /// No description provided for @durationMinutes.
+  ///
+  /// In en, this message translates to:
+  /// **'{minutes} min'**
+  String durationMinutes(int minutes);
+
+  /// No description provided for @durationMinutesSeconds.
+  ///
+  /// In en, this message translates to:
+  /// **'{minutes} min {seconds} s'**
+  String durationMinutesSeconds(int minutes, int seconds);
+
+  /// No description provided for @workflowsEditorNewTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'New workflow'**
+  String get workflowsEditorNewTitle;
+
+  /// No description provided for @workflowsEditorEditTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit workflow'**
+  String get workflowsEditorEditTitle;
+
+  /// No description provided for @workflowsEditorName.
+  ///
+  /// In en, this message translates to:
+  /// **'Name'**
+  String get workflowsEditorName;
+
+  /// No description provided for @workflowsEditorNameHint.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. Evening session'**
+  String get workflowsEditorNameHint;
+
+  /// No description provided for @workflowsEditorSteps.
+  ///
+  /// In en, this message translates to:
+  /// **'Steps'**
+  String get workflowsEditorSteps;
+
+  /// No description provided for @workflowsEditorNoSteps.
+  ///
+  /// In en, this message translates to:
+  /// **'Add at least one step.'**
+  String get workflowsEditorNoSteps;
+
+  /// No description provided for @workflowsEditorAddSemantics.
+  ///
+  /// In en, this message translates to:
+  /// **'Add a {kind} step'**
+  String workflowsEditorAddSemantics(String kind);
+
+  /// No description provided for @workflowsEditorHeaterOff.
+  ///
+  /// In en, this message translates to:
+  /// **'Heater off at the end'**
+  String get workflowsEditorHeaterOff;
+
+  /// No description provided for @workflowsEditorHeaterOffHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Recommended, so the Volcano doesn\'t keep heating.'**
+  String get workflowsEditorHeaterOffHint;
+
+  /// No description provided for @workflowsEditorSave.
+  ///
+  /// In en, this message translates to:
+  /// **'Save'**
+  String get workflowsEditorSave;
+
+  /// No description provided for @workflowsEditorDelete.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete workflow'**
+  String get workflowsEditorDelete;
+
+  /// No description provided for @workflowsEditorDeleteConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap again to delete'**
+  String get workflowsEditorDeleteConfirm;
+
+  /// No description provided for @workflowsEditorLower.
+  ///
+  /// In en, this message translates to:
+  /// **'Lower: {step}'**
+  String workflowsEditorLower(String step);
+
+  /// No description provided for @workflowsEditorRaise.
+  ///
+  /// In en, this message translates to:
+  /// **'Raise: {step}'**
+  String workflowsEditorRaise(String step);
+
+  /// No description provided for @workflowsEditorMoveUp.
+  ///
+  /// In en, this message translates to:
+  /// **'Move up: {step}'**
+  String workflowsEditorMoveUp(String step);
+
+  /// No description provided for @workflowsEditorMoveDown.
+  ///
+  /// In en, this message translates to:
+  /// **'Move down: {step}'**
+  String workflowsEditorMoveDown(String step);
+
+  /// No description provided for @workflowsEditorRemove.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove: {step}'**
+  String workflowsEditorRemove(String step);
+
+  /// No description provided for @workflowsSaved.
+  ///
+  /// In en, this message translates to:
+  /// **'Workflow saved'**
+  String get workflowsSaved;
+
+  /// No description provided for @workflowsDeleted.
+  ///
+  /// In en, this message translates to:
+  /// **'Workflow deleted'**
+  String get workflowsDeleted;
+
+  /// No description provided for @workflowsStopFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Stopped. kiln couldn\'t reach the Volcano, so it may still be heating.'**
+  String get workflowsStopFailed;
 }
 
 class _AppLocalizationsDelegate

@@ -16,6 +16,7 @@ import 'package:obers_ui/obers_ui.dart';
 import 'package:signals_flutter/signals_flutter.dart';
 
 import '../../../devices/helpers/demo_badge_stub.dart';
+import '../../../workflows/helpers/run_banner_registration.dart';
 import '../../mocks.dart';
 
 void main() {
@@ -62,6 +63,7 @@ void main() {
     when(() => togglePump()).thenAnswer((_) async => right(true));
 
     registerDemoBadge();
+    registerRunBanner();
     sl.registerFactory(
       () => VolcanoControlViewModel(
         repository: repository,

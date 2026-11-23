@@ -278,6 +278,14 @@ codecs, `WriteSafety`, repositories, reconnect rules and UI all run for real.
   portables get the ramp on the Setup tab.
 - Until step 5 exists, a run only continues while kiln is open.
 
+**Status:** Volcano workflows done (feature `workflows`): presets (three
+balloons, one balloon, flavour ladder) and user workflows in
+shared_preferences, run screen per `Workflow.dc.html`, editor, third Volcano
+tab. Steps are heat (wait until reached, haptic buzz), hold and air; the last
+step can turn the heater off. A run pauses while the Volcano is not connected
+and resumes where it stopped; Stop turns pump and heater off. Ramp profiles for
+Venty/Veazy are still open.
+
 ## 5. Background connection and notifications (Android)
 
 Proposal (**owner** to confirm):
