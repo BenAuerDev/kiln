@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Kiln – first launch</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Space+Grotesk:wght@500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#9CA3AF}a:hover{color:#F9FAFB}
+@keyframes kilnRing{0%{transform:scale(.35);opacity:.8}100%{transform:scale(1);opacity:0}}
+@keyframes kilnFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+@keyframes kilnIn{0%{opacity:0;transform:translateY(16px) scale(.97)}100%{opacity:1;transform:translateY(0) scale(1)}}
+.kiln-ring{position:absolute;left:0;top:0;width:240px;height:240px;border-radius:50%;border:2px solid rgba(255,138,51,.7);animation:kilnRing 2.4s cubic-bezier(.2,.6,.3,1) infinite}
+.kiln-core{animation:kilnFloat 3s ease-in-out infinite}
+.kiln-in{animation:kilnIn .45s cubic-bezier(.2,.9,.3,1.2) both}
+.kiln-press{transition:transform .1s,background .2s}
+.kiln-press:active{transform:scale(.98)}
+</style>
+</helmet>
+<div style="width: 390px; height: 844px; box-sizing: border-box; background: #0A0A0F; color: #F9FAFB; font-family: Inter, system-ui, sans-serif; display: flex; flex-direction: column; overflow: hidden">
+
+  <div style="display: flex; align-items: center; justify-content: space-between; padding: 20px 20px 0">
+    <span style="font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 22px; letter-spacing: -0.02em">kiln</span>
+    <div role="radiogroup" aria-label="Language" style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); padding: 3px; border-radius: 12px; background: #111118; border: 1px solid #1F2937">
+      <button role="radio" aria-checked="true" style="width: 44px; height: 30px; border-radius: 9px; border: none; background: #1C1C26; color: #F9FAFB; font-family: Inter, sans-serif; font-size: 13px; font-weight: 600">EN</button>
+      <button role="radio" aria-checked="false" style="width: 44px; height: 30px; border-radius: 9px; border: none; background: transparent; color: #9CA3AF; font-family: Inter, sans-serif; font-size: 13px; font-weight: 600">DE</button>
+    </div>
+  </div>
+
+  <div style="position: relative; width: 240px; height: 240px; margin: 40px auto 0">
+    <sc-if value="{{scanning}}" hint-placeholder-val="{{ false }}">
+      <span class="kiln-ring"></span>
+      <span class="kiln-ring" style="animation-delay: .8s"></span>
+      <span class="kiln-ring" style="animation-delay: 1.6s"></span>
+    </sc-if>
+    <div class="kiln-core" style="position: absolute; left: 70px; top: 70px; width: 100px; height: 100px; border-radius: 32px; background: #111118; border: 1px solid #1F2937; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 48px rgba(255,122,26,.35)">
+      <svg aria-hidden="true" width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="#FF8A33" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7l10 10-5 5V2l5 5L7 17"></path></svg>
+    </div>
+  </div>
+
+  <sc-if value="{{intro}}" hint-placeholder-val="{{ true }}">
+    <div class="kiln-in" style="padding: 36px 24px 0; display: flex; flex-direction: column; gap: 12px">
+      <h1 style="margin: 0; font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 32px; line-height: 1.1; letter-spacing: -0.02em">Let's find your vaporizer</h1>
+      <p style="margin: 0; font-size: 15px; line-height: 1.55; color: #9CA3AF">kiln talks to your device over Bluetooth. Your phone will ask for permission next.</p>
+      <ul style="list-style: none; margin: 12px 0 0; padding: 0; display: flex; flex-direction: column; gap: 14px">
+        <li style="display: flex; gap: 12px; align-items: center; font-size: 14px; color: #D1D5DB">
+          <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#FF8A33" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="10" rx="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+          No account. Nothing leaves your phone.
+        </li>
+        <li style="display: flex; gap: 12px; align-items: center; font-size: 14px; color: #D1D5DB">
+          <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#FF8A33" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-3-6.7L21 8"></path><path d="M21 3v5h-5"></path></svg>
+          Reconnects by itself next time.
+        </li>
+        <li style="display: flex; gap: 12px; align-items: center; font-size: 14px; color: #D1D5DB">
+          <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#FF8A33" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="10" rx="5"></rect><circle cx="16" cy="12" r="3"></circle></svg>
+          Volcano Hybrid, Venty, Veazy and Crafty+.
+        </li>
+      </ul>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{scanning}}" hint-placeholder-val="{{ false }}">
+    <div style="padding: 36px 24px 0; display: flex; flex-direction: column; gap: 16px">
+      <div style="display: flex; flex-direction: column; gap: 8px">
+        <h1 style="margin: 0; font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 32px; line-height: 1.1; letter-spacing: -0.02em">{{scanTitle}}</h1>
+        <p style="margin: 0; font-size: 15px; line-height: 1.55; color: #9CA3AF">Switch it on and keep it close.</p>
+      </div>
+      <sc-if value="{{found}}" hint-placeholder-val="{{ false }}">
+        <div class="kiln-in" style="display: flex; align-items: center; gap: 14px; padding: 14px; border-radius: 20px; background: #111118; border: 1px solid #FF7A1A">
+          <div style="width: 52px; height: 52px; border-radius: 14px; background: #1C1C26; display: flex; align-items: center; justify-content: center; color: #FF8A33">
+            <svg aria-hidden="true" width="34" height="34" viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="22" width="28" height="12" rx="4"></rect><circle cx="20" cy="16" r="6"></circle><path d="M15 6c1 1.5 1 2.5 0 4M20 4c1 1.5 1 2.5 0 4M25 6c1 1.5 1 2.5 0 4"></path></svg>
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 2px; flex-grow: 1">
+            <span style="font-size: 16px; font-weight: 600">Volcano Hybrid</span>
+            <span style="font-size: 13px; color: #9CA3AF">Right next to you</span>
+          </div>
+          <a href="Main.dc.html" style="height: 44px; padding: 0 18px; border-radius: 22px; background: #FF7A1A; color: #111111; font-size: 15px; font-weight: 600; text-decoration: none; display: flex; align-items: center">Connect</a>
+        </div>
+      </sc-if>
+    </div>
+  </sc-if>
+
+  <div style="flex-grow: 1"></div>
+
+  <sc-if value="{{intro}}" hint-placeholder-val="{{ true }}">
+    <div style="padding: 0 20px 32px; display: flex; flex-direction: column; gap: 8px">
+      <button onClick="{{start}}" class="kiln-press" style="height: 60px; border-radius: 18px; border: none; background: #FF7A1A; color: #111111; font-family: Inter, sans-serif; font-size: 16px; font-weight: 600; cursor: pointer">Continue</button>
+      <span style="font-size: 12px; color: #9CA3AF; text-align: center">Unofficial app, not affiliated with Storz &amp; Bickel.</span>
+    </div>
+  </sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { step: 'intro', found: false };
+  }
+  componentWillUnmount() { clearTimeout(this.foundTimer); }
+  renderVals() {
+    var self = this;
+    var s = this.state;
+    return {
+      intro: s.step === 'intro',
+      scanning: s.step === 'scan',
+      found: s.found,
+      scanTitle: s.found ? 'Found one' : 'Looking around…',
+      start: function () {
+        self.setState({ step: 'scan', found: false });
+        clearTimeout(self.foundTimer);
+        self.foundTimer = setTimeout(function () { self.setState({ found: true }); }, 2200);
+      }
+    };
+  }
+}
+</script>
+</body>
+</html>

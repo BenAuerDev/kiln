@@ -1,0 +1,222 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Kiln – Veazy ladder</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Space+Grotesk:wght@500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#9CA3AF}a:hover{color:#F9FAFB}
+.kiln-btn{transition:background .2s,color .2s,transform .1s}
+.kiln-btn:active{transform:scale(.94)}
+.kiln-marker{transition:left .35s cubic-bezier(.2,.9,.3,1.2)}
+.kiln-fill{transition:left .35s cubic-bezier(.2,.9,.3,1.2),width .35s cubic-bezier(.2,.9,.3,1.2)}
+.kiln-num{transition:color .2s}
+@keyframes kilnSaved{0%{opacity:0;transform:translateY(8px) scale(.96)}100%{opacity:1;transform:translateY(0) scale(1)}}
+.kiln-saved{animation:kilnSaved .28s cubic-bezier(.2,.9,.3,1.2) both}
+</style>
+</helmet>
+<div style="width: 390px; height: 844px; box-sizing: border-box; background: #0A0A0F; color: #F9FAFB; font-family: Inter, system-ui, sans-serif; display: flex; flex-direction: column; overflow: hidden; position: relative">
+
+  <div style="display: flex; align-items: flex-start; justify-content: space-between; padding: 20px 20px 0">
+    <div style="display: flex; flex-direction: column; gap: 6px">
+      <span style="font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 30px; letter-spacing: -0.02em">Veazy</span>
+      <span style="display: flex; align-items: center; gap: 6px; font-size: 13px; color: #9CA3AF">
+        <span aria-hidden="true" style="width: 8px; height: 8px; border-radius: 50%; background: {{f.accent}}"></span>
+        Connected · 72% battery
+      </span>
+    </div>
+    <a href="Finish.dc.html" aria-label="Veazy settings" class="kiln-btn" style="width: 44px; height: 44px; border-radius: 22px; border: 1px solid #1F2937; background: #111118; color: #F9FAFB; display: flex; align-items: center; justify-content: center">
+      <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 21v-7M4 10V3M12 21v-9M12 8V3M20 21v-5M20 12V3M1 14h6M9 8h6M17 16h6"></path></svg>
+    </a>
+  </div>
+
+  <p style="margin: 14px 20px 0; font-size: 14px; line-height: 1.5; color: #9CA3AF">Your Veazy keeps these settings. Set them here once, then just use the button.</p>
+
+  <div style="margin: 18px 20px 0; padding: 20px 18px 8px; border-radius: 24px; background: #111118; border: 1px solid #1F2937; display: flex; flex-direction: column">
+
+    <div style="position: relative; height: 40px; margin: 0 6px">
+      <div style="position: absolute; left: 0; right: 0; top: 17px; height: 6px; border-radius: 3px; background: #1F2937"></div>
+      <div class="kiln-fill" style="position: absolute; top: 17px; height: 6px; border-radius: 3px; left: {{fillLeft}}%; width: {{fillWidth}}%; background: linear-gradient(90deg, {{f.g1}}, {{f.g2}}); box-shadow: 0 0 12px {{f.glow}}"></div>
+      <sc-for list="{{markers}}" as="m" hint-placeholder-count="3">
+        <div class="kiln-marker" style="position: absolute; top: 8px; left: calc({{m.left}}% - 12px); width: 24px; height: 24px; border-radius: 12px; background: {{m.bg}}; border: 3px solid {{f.accent}}; box-sizing: border-box; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 700; color: {{m.fg}}">{{m.n}}</div>
+      </sc-for>
+    </div>
+    <div style="display: flex; justify-content: space-between; margin: 2px 6px 6px; font-size: 12px; color: #9CA3AF; font-variant-numeric: tabular-nums">
+      <span>40°</span>
+      <span>210°</span>
+    </div>
+
+    <sc-for list="{{rows}}" as="r" hint-placeholder-count="3">
+      <div style="display: flex; align-items: center; gap: 12px; padding: 14px 0; border-top: 1px solid #1F2937">
+        <div style="width: 40px; height: 40px; border-radius: 12px; background: #1C1C26; display: flex; align-items: center; justify-content: center; color: {{f.text}}; flex-shrink: 0">
+          <sc-if value="{{r.isBase}}" hint-placeholder-val="{{ true }}">
+            <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v10"></path><path d="M18.4 6.6a9 9 0 1 1-12.8 0"></path></svg>
+          </sc-if>
+          <sc-if value="{{r.isBoost}}" hint-placeholder-val="{{ false }}">
+            <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L4 14h7l-1 8 9-12h-7z"></path></svg>
+          </sc-if>
+          <sc-if value="{{r.isSuper}}" hint-placeholder-val="{{ false }}">
+            <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 2L3 12h5l-1 7 6-9H8z"></path><path d="M17 5l-4 6h4l-1 6 5-8h-4z"></path></svg>
+          </sc-if>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 2px; flex-grow: 1; min-width: 0">
+          <span style="font-size: 15px; font-weight: 600">{{r.name}}</span>
+          <span style="font-size: 12px; color: #9CA3AF">{{r.hint}}</span>
+        </div>
+        <div style="display: flex; flex-direction: column; align-items: flex-end; min-width: 64px">
+          <span class="kiln-num" style="font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 24px; line-height: 1.1; font-variant-numeric: tabular-nums">{{r.main}}</span>
+          <span style="font-size: 12px; color: {{r.subColor}}; font-variant-numeric: tabular-nums">{{r.sub}}</span>
+        </div>
+        <div style="display: flex; gap: 6px">
+          <button aria-label="{{r.downLabel}}" onClick="{{r.down}}" class="kiln-btn" style="width: 44px; height: 44px; border-radius: 14px; border: 1px solid #1F2937; background: #1C1C26; color: #F9FAFB; display: flex; align-items: center; justify-content: center; cursor: pointer; padding: 0">
+            <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14"></path></svg>
+          </button>
+          <button aria-label="{{r.upLabel}}" onClick="{{r.up}}" class="kiln-btn" style="width: 44px; height: 44px; border-radius: 14px; border: 1px solid #1F2937; background: #1C1C26; color: #F9FAFB; display: flex; align-items: center; justify-content: center; cursor: pointer; padding: 0">
+            <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"></path></svg>
+          </button>
+        </div>
+      </div>
+    </sc-for>
+  </div>
+
+  <div style="padding: 20px 20px 0; display: flex; flex-direction: column; gap: 10px">
+    <span style="font-size: 12px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: #9CA3AF">Quick setups</span>
+    <div role="radiogroup" aria-label="Quick setups" style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); padding: 4px; border-radius: 16px; background: #111118; border: 1px solid #1F2937">
+      <sc-for list="{{setups}}" as="s" hint-placeholder-count="3">
+        <button role="radio" aria-checked="{{s.checked}}" onClick="{{s.pick}}" class="kiln-btn" style="height: 44px; border-radius: 12px; border: none; background: {{s.bg}}; color: {{s.fg}}; font-family: Inter, sans-serif; font-size: 14px; font-weight: 600; cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1px">
+          <span>{{s.name}}</span>
+          <span style="font-size: 11px; font-weight: 500; opacity: .8; font-variant-numeric: tabular-nums">{{s.range}}</span>
+        </button>
+      </sc-for>
+    </div>
+  </div>
+
+  <div style="margin: 16px 20px 0; padding: 14px 16px; border-radius: 18px; background: #111118; border: 1px solid #1F2937; display: flex; align-items: center; gap: 12px">
+    <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#9CA3AF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 2"></path></svg>
+    <span style="font-size: 13px; color: #9CA3AF; flex-grow: 1">Last used yesterday · cleaning due in about 2 h of heating</span>
+  </div>
+
+  <div style="flex-grow: 1"></div>
+
+  <sc-if value="{{showSaved}}" hint-placeholder-val="{{ false }}">
+    <div style="position: absolute; left: 0; right: 0; bottom: 104px; display: flex; justify-content: center; pointer-events: none">
+      <span class="kiln-saved" role="status" style="display: flex; align-items: center; gap: 8px; padding: 10px 16px; border-radius: 999px; background: #F9FAFB; color: #111827; font-size: 14px; font-weight: 600; box-shadow: 0 8px 24px rgba(0,0,0,.4)">
+        <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L20 7"></path></svg>
+        Saved to Veazy
+      </span>
+    </div>
+  </sc-if>
+
+  <nav style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border-top: 1px solid #1F2937; background: #111118; padding: 8px 8px 24px">
+    <a href="#" style="display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 6px 0; text-decoration: none; font-size: 12px; font-weight: 600; color: {{f.text}}">
+      <svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4.5 16.5a8.5 8.5 0 1 1 15 0"></path><path d="M12 12l3.5-3.5"></path></svg>
+      Device
+    </a>
+    <a href="Insights.dc.html" style="display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 6px 0; text-decoration: none; font-size: 12px; font-weight: 500; color: #9CA3AF">
+      <svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"></path></svg>
+      Insights
+    </a>
+    <a href="Devices.dc.html" style="display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 6px 0; text-decoration: none; font-size: 12px; font-weight: 500; color: #9CA3AF">
+      <svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="4" y="9" width="16" height="11" rx="3"></rect><circle cx="12" cy="5" r="2"></circle></svg>
+      Devices
+    </a>
+  </nav>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"finish":{"editor":"enum","options":["blue","orange","pink","black"],"default":"blue"},"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { base: 180, boost: 15, superBoost: 15, saved: 0 };
+  }
+  componentWillUnmount() { clearTimeout(this.savedTimer); }
+  commit(next) {
+    var self = this;
+    clearTimeout(this.savedTimer);
+    next.saved = (this.state.saved || 0) + 1;
+    this.setState(next);
+    this.savedTimer = setTimeout(function () { self.setState({ saved: 0 }); }, 1800);
+  }
+  renderVals() {
+    var self = this;
+    var MIN = 40, MAX = 210;
+    var finishes = {
+      blue: { accent: '#3D8BFF', text: '#6AA6FF', on: '#0B0B0C', g1: '#9CC4FF', g2: '#2F6BFF', glow: 'rgba(61,139,255,.45)' },
+      orange: { accent: '#FF7A1A', text: '#FF8A33', on: '#111111', g1: '#FFC285', g2: '#FF6A00', glow: 'rgba(255,122,26,.45)' },
+      pink: { accent: '#FF5FA2', text: '#FF7EB6', on: '#111111', g1: '#FFB3D3', g2: '#FF3D8B', glow: 'rgba(255,95,162,.4)' },
+      black: { accent: '#F9FAFB', text: '#F9FAFB', on: '#111111', g1: '#4B5563', g2: '#FFFFFF', glow: 'rgba(255,255,255,.25)' }
+    };
+    var f = finishes[this.props.finish || 'blue'] || finishes.blue;
+    var s = this.state;
+    var clamp = function (v, lo, hi) { return Math.max(lo, Math.min(hi, v)); };
+    var t1 = s.base;
+    var t2 = Math.min(MAX, t1 + s.boost);
+    var t3 = Math.min(MAX, t2 + s.superBoost);
+    var pos = function (v) { return ((v - MIN) / (MAX - MIN) * 100).toFixed(2); };
+    var markers = [t1, t2, t3].map(function (v, i) {
+      return { left: pos(v), n: String(i + 1), bg: i === 0 ? f.accent : '#0A0A0F', fg: i === 0 ? f.on : f.text };
+    });
+    var rows = [
+      {
+        isBase: true, isBoost: false, isSuper: false,
+        name: 'Base', hint: 'When you switch it on',
+        main: t1 + '°', sub: 'start', subColor: '#9CA3AF',
+        downLabel: 'Lower base temperature', upLabel: 'Raise base temperature',
+        down: function () { self.commit({ base: clamp(s.base - 1, MIN, MAX) }); },
+        up: function () { self.commit({ base: clamp(s.base + 1, MIN, MAX) }); }
+      },
+      {
+        isBase: false, isBoost: true, isSuper: false,
+        name: 'Boost', hint: 'Double-click',
+        main: '+' + s.boost + '°', sub: '→ ' + t2 + '°' + (t2 === MAX ? ' max' : ''), subColor: f.text,
+        downLabel: 'Lower boost', upLabel: 'Raise boost',
+        down: function () { self.commit({ boost: clamp(s.boost - 1, 1, 30) }); },
+        up: function () { self.commit({ boost: clamp(s.boost + 1, 1, 30) }); }
+      },
+      {
+        isBase: false, isBoost: false, isSuper: true,
+        name: 'Superboost', hint: 'Double-click again',
+        main: '+' + s.superBoost + '°', sub: '→ ' + t3 + '°' + (t3 === MAX ? ' max' : ''), subColor: f.text,
+        downLabel: 'Lower superboost', upLabel: 'Raise superboost',
+        down: function () { self.commit({ superBoost: clamp(s.superBoost - 1, 1, 30) }); },
+        up: function () { self.commit({ superBoost: clamp(s.superBoost + 1, 1, 30) }); }
+      }
+    ];
+    var presets = [
+      { name: 'Flavour', base: 175, boost: 10, superBoost: 10 },
+      { name: 'Balanced', base: 180, boost: 15, superBoost: 15 },
+      { name: 'Full', base: 190, boost: 10, superBoost: 10 }
+    ];
+    var setups = presets.map(function (p) {
+      var on = p.base === s.base && p.boost === s.boost && p.superBoost === s.superBoost;
+      var top = Math.min(MAX, p.base + p.boost + p.superBoost);
+      return {
+        name: p.name,
+        range: p.base + '–' + top + '°',
+        checked: on ? 'true' : 'false',
+        bg: on ? f.accent : 'transparent',
+        fg: on ? f.on : '#F9FAFB',
+        pick: function () { self.commit({ base: p.base, boost: p.boost, superBoost: p.superBoost }); }
+      };
+    });
+    return {
+      f: f,
+      markers: markers,
+      fillLeft: pos(t1),
+      fillWidth: (pos(t3) - pos(t1)).toFixed(2),
+      rows: rows,
+      setups: setups,
+      showSaved: s.saved > 0
+    };
+  }
+}
+</script>
+</body>
+</html>

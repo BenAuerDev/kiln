@@ -1,0 +1,469 @@
+{
+  "@@locale": "en",
+  "appTitle": "kiln",
+  "commonUnofficialNotice": "Unofficial app, not affiliated with Storz & Bickel.",
+  "commonSavedTo": "Saved to {deviceName}",
+  "@commonSavedTo": {
+    "placeholders": {
+      "deviceName": {
+        "type": "String"
+      }
+    }
+  },
+  "commonDegrees": "{value}°",
+  "@commonDegrees": {
+    "placeholders": {
+      "value": {
+        "type": "int"
+      }
+    }
+  },
+  "commonDegreesCelsius": "{value} °C",
+  "@commonDegreesCelsius": {
+    "placeholders": {
+      "value": {
+        "type": "int"
+      }
+    }
+  },
+  "commonDegreesFahrenheit": "{value} °F",
+  "@commonDegreesFahrenheit": {
+    "placeholders": {
+      "value": {
+        "type": "int"
+      }
+    }
+  },
+  "commonCancel": "Cancel",
+  "commonSemanticsWithDetail": "{label}, {detail}",
+  "@commonSemanticsWithDetail": {
+    "placeholders": {
+      "label": {
+        "type": "String"
+      },
+      "detail": {
+        "type": "String"
+      }
+    }
+  },
+  "commonSemanticsTitleSubtitle": "{title}. {subtitle}",
+  "@commonSemanticsTitleSubtitle": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      },
+      "subtitle": {
+        "type": "String"
+      }
+    }
+  },
+  "errorBluetoothUnavailable": "Bluetooth is off or not available.",
+  "errorPermissionDenied": "kiln needs Bluetooth permission to talk to your device.",
+  "errorDeviceNotFound": "Device not found. Is it switched on and nearby?",
+  "errorConnectionFailed": "Couldn't connect. Try again.",
+  "errorConnectionLost": "Connection lost.",
+  "errorTimeout": "The device didn't answer in time.",
+  "errorProtocol": "The device sent something unexpected.",
+  "errorStorage": "Couldn't save on this phone.",
+  "errorWriteNotVerified": "This command is disabled until it has been verified.",
+  "errorNotConnected": "No device connected.",
+  "errorUnknown": "Something went wrong.",
+  "navControl": "Control",
+  "navSetup": "Setup",
+  "navDevices": "Devices",
+  "portableDefaultName": "Vaporizer",
+  "portableBatteryLevel": "{percent}% battery",
+  "@portableBatteryLevel": {
+    "placeholders": {
+      "percent": {
+        "type": "int"
+      }
+    }
+  },
+  "portableBatteryCharging": "{percent}% · charging",
+  "@portableBatteryCharging": {
+    "placeholders": {
+      "percent": {
+        "type": "int"
+      }
+    }
+  },
+  "portableStatusLine": "{first} · {second}",
+  "@portableStatusLine": {
+    "placeholders": {
+      "first": {
+        "type": "String"
+      },
+      "second": {
+        "type": "String"
+      }
+    }
+  },
+  "portableOpenSettings": "{deviceName} settings",
+  "@portableOpenSettings": {
+    "placeholders": {
+      "deviceName": {
+        "type": "String"
+      }
+    }
+  },
+  "portableSetupIntro": "Your {deviceName} keeps these settings. Set them here once, then just use the button.",
+  "@portableSetupIntro": {
+    "placeholders": {
+      "deviceName": {
+        "type": "String"
+      }
+    }
+  },
+  "portableScaleLabel": "Base {base}, boost {boost}, superboost {superBoost}",
+  "@portableScaleLabel": {
+    "placeholders": {
+      "base": {
+        "type": "String"
+      },
+      "boost": {
+        "type": "String"
+      },
+      "superBoost": {
+        "type": "String"
+      }
+    }
+  },
+  "portableBaseName": "Base",
+  "portableBaseHint": "When you switch it on",
+  "portableBaseSub": "start",
+  "portableBoostName": "Boost",
+  "portableBoostHint": "Double-click",
+  "portableSuperBoostName": "Superboost",
+  "portableSuperBoostHint": "Double-click again",
+  "portableOffset": "+{value}°",
+  "@portableOffset": {
+    "placeholders": {
+      "value": {
+        "type": "int"
+      }
+    }
+  },
+  "portableLadderTo": "→ {temperature}",
+  "@portableLadderTo": {
+    "placeholders": {
+      "temperature": {
+        "type": "String"
+      }
+    }
+  },
+  "portableLadderToMax": "→ {temperature} max",
+  "@portableLadderToMax": {
+    "placeholders": {
+      "temperature": {
+        "type": "String"
+      }
+    }
+  },
+  "portableLowerBase": "Lower base temperature",
+  "portableRaiseBase": "Raise base temperature",
+  "portableLowerBoost": "Lower boost",
+  "portableRaiseBoost": "Raise boost",
+  "portableLowerSuperBoost": "Lower superboost",
+  "portableRaiseSuperBoost": "Raise superboost",
+  "portableQuickSetups": "Quick setups",
+  "portableQuickSetupFlavour": "Flavour",
+  "portableQuickSetupBalanced": "Balanced",
+  "portableQuickSetupFull": "Full",
+  "portableQuickSetupRange": "{from}–{to}°",
+  "@portableQuickSetupRange": {
+    "placeholders": {
+      "from": {
+        "type": "int"
+      },
+      "to": {
+        "type": "int"
+      }
+    }
+  },
+  "portableGaugeLabel": "Temperature gauge",
+  "portablePhaseOff": "Heater off",
+  "portablePhaseHeating": "Heating",
+  "portablePhaseReady": "Ready",
+  "portableNoTemperature": "–",
+  "portableCurrentTemperatureLabel": "Current temperature {temperature}",
+  "@portableCurrentTemperatureLabel": {
+    "placeholders": {
+      "temperature": {
+        "type": "String"
+      }
+    }
+  },
+  "portableTargetTemperatureLabel": "Target temperature {temperature}",
+  "@portableTargetTemperatureLabel": {
+    "placeholders": {
+      "temperature": {
+        "type": "String"
+      }
+    }
+  },
+  "portableTargetLine": "target {temperature}",
+  "@portableTargetLine": {
+    "placeholders": {
+      "temperature": {
+        "type": "String"
+      }
+    }
+  },
+  "portableTargetOnlyLine": "target temperature",
+  "portableSetTemperature": "set temperature",
+  "portableLowerTarget": "Lower target temperature",
+  "portableRaiseTarget": "Raise target temperature",
+  "portablePresetLabel": "Set target to {temperature}",
+  "@portablePresetLabel": {
+    "placeholders": {
+      "temperature": {
+        "type": "String"
+      }
+    }
+  },
+  "portableHeaterOn": "Heater on",
+  "portableHeaterOff": "Heater off",
+  "portableBoost": "Boost",
+  "portableBoostOn": "Boost +{value}°",
+  "@portableBoostOn": {
+    "placeholders": {
+      "value": {
+        "type": "int"
+      }
+    }
+  },
+  "portableSettingsBack": "Back",
+  "portableFindTitle": "Find my {deviceName}",
+  "@portableFindTitle": {
+    "placeholders": {
+      "deviceName": {
+        "type": "String"
+      }
+    }
+  },
+  "portableFindSubtitle": "Makes it vibrate and blink",
+  "portableFindingTitle": "Buzzing your {deviceName}…",
+  "@portableFindingTitle": {
+    "placeholders": {
+      "deviceName": {
+        "type": "String"
+      }
+    }
+  },
+  "portableFindingSubtitle": "Listen for the vibration",
+  "portableBatteryHeading": "Battery",
+  "portableChargeLimitTitle": "Charge limit",
+  "portableChargeLimitSubtitle": "Stops charging around 90% so the battery lasts more years.",
+  "portableBatterySaverTitle": "Battery saver",
+  "portableBatterySaverSubtitle": "Heats a little gentler for more sessions per charge.",
+  "portableDeviceHeading": "Device",
+  "portableVibrateTitle": "Vibrate when ready",
+  "portableVibrateSubtitle": "Buzzes once it reaches temperature.",
+  "portableBoostLedsTitle": "Show boost on LEDs",
+  "portableBoostLedsSubtitle": "The light tells you which level you are on.",
+  "portableUnitTitle": "Temperature unit",
+  "portableUnitCelsius": "°C",
+  "portableUnitFahrenheit": "°F",
+  "portableThemeHeading": "App theme",
+  "portableThemeMatchTitle": "Match my device",
+  "portableThemeMatchDetected": "{finish}, read from your {deviceName}",
+  "@portableThemeMatchDetected": {
+    "placeholders": {
+      "finish": {
+        "type": "String"
+      },
+      "deviceName": {
+        "type": "String"
+      }
+    }
+  },
+  "portableThemeMatchUnknown": "Not read yet, Ember until then",
+  "portableThemeSwatchLabel": "{finish} theme",
+  "@portableThemeSwatchLabel": {
+    "placeholders": {
+      "finish": {
+        "type": "String"
+      }
+    }
+  },
+  "portableThemeNote": "Only for this {deviceName}. Each device keeps its own theme.",
+  "@portableThemeNote": {
+    "placeholders": {
+      "deviceName": {
+        "type": "String"
+      }
+    }
+  },
+  "portableForgetDevice": "Forget this device",
+  "portableForgetTitle": "Forget {deviceName}?",
+  "@portableForgetTitle": {
+    "placeholders": {
+      "deviceName": {
+        "type": "String"
+      }
+    }
+  },
+  "portableForgetBody": "kiln disconnects and removes it from your devices, together with its theme.",
+  "portableForgetConfirm": "Forget",
+  "volcanoDefaultName": "Volcano Hybrid",
+  "volcanoDeviceLine": "{deviceName} · {connection}",
+  "@volcanoDeviceLine": {
+    "placeholders": {
+      "deviceName": {
+        "type": "String"
+      },
+      "connection": {
+        "type": "String"
+      }
+    }
+  },
+  "volcanoGaugeLabel": "Temperature gauge",
+  "volcanoPhaseOff": "Heater off",
+  "volcanoPhaseHeating": "Heating",
+  "volcanoPhaseReady": "Ready",
+  "volcanoNoTemperature": "–",
+  "volcanoCurrentTemperatureLabel": "Current temperature {temperature}",
+  "@volcanoCurrentTemperatureLabel": {
+    "placeholders": {
+      "temperature": {
+        "type": "String"
+      }
+    }
+  },
+  "volcanoTargetLine": "target {temperature}",
+  "@volcanoTargetLine": {
+    "placeholders": {
+      "temperature": {
+        "type": "String"
+      }
+    }
+  },
+  "volcanoSetTemperature": "set temperature",
+  "volcanoLowerTarget": "Lower target temperature",
+  "volcanoRaiseTarget": "Raise target temperature",
+  "volcanoPresetLabel": "Set target to {temperature}",
+  "@volcanoPresetLabel": {
+    "placeholders": {
+      "temperature": {
+        "type": "String"
+      }
+    }
+  },
+  "volcanoHeaterOn": "Heater on",
+  "volcanoHeaterOff": "Heater off",
+  "volcanoAirOn": "Air on",
+  "volcanoAirOff": "Air off",
+  "welcomeLanguageLabel": "Language",
+  "welcomeTitle": "Let's find your vaporizer",
+  "welcomeBody": "kiln talks to your device over Bluetooth. Your phone will ask for permission next.",
+  "welcomePointPrivacy": "No account. Nothing leaves your phone.",
+  "welcomePointReconnect": "Reconnects by itself next time.",
+  "welcomePointDevices": "Volcano Hybrid, Venty, Veazy and Crafty+.",
+  "welcomeContinue": "Continue",
+  "welcomeScanLooking": "Looking around…",
+  "welcomeScanFound": "{count, plural, =1{Found one} other{Found {count}}}",
+  "@welcomeScanFound": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "welcomeScanNothing": "Nothing found yet",
+  "welcomeScanHint": "Switch it on and keep it close.",
+  "welcomeScanAgain": "Search again",
+  "welcomeSkip": "Skip for now",
+  "welcomeScanSemantics": "Searching for devices",
+  "devicesTitle": "Devices",
+  "devicesBack": "Back to control",
+  "devicesYours": "Your devices",
+  "devicesEmpty": "No devices yet. Switch yours on and it shows up below.",
+  "devicesActive": "Active",
+  "devicesStatusConnected": "Connected",
+  "devicesStatusConnecting": "Connecting…",
+  "devicesStatusReconnecting": "Reconnecting…",
+  "devicesStatusDisconnected": "Not connected",
+  "devicesStatusUnavailable": "Couldn't reach it",
+  "devicesStatusInlineConnected": "connected",
+  "devicesStatusInlineConnecting": "connecting…",
+  "devicesStatusInlineReconnecting": "reconnecting…",
+  "devicesStatusInlineDisconnected": "not connected",
+  "devicesStatusInlineUnavailable": "unavailable",
+  "devicesLastUsed": "{days, plural, =0{Last used today} =1{Last used yesterday} other{Last used {days} days ago}}",
+  "@devicesLastUsed": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "devicesNeverUsed": "Not used yet",
+  "devicesScanning": "Scanning nearby",
+  "devicesNearby": "Nearby",
+  "devicesScan": "Scan",
+  "devicesNoneNearby": "Nothing new nearby.",
+  "devicesSignalStrong": "Signal strong",
+  "devicesSignalFair": "Signal fair",
+  "devicesSignalWeak": "Signal weak",
+  "devicesNearbySubtitle": "{signal} · not paired",
+  "@devicesNearbySubtitle": {
+    "placeholders": {
+      "signal": {
+        "type": "String"
+      }
+    }
+  },
+  "devicesPair": "Pair",
+  "devicesConnect": "Connect",
+  "devicesConnectSemantics": "Connect to {deviceName}",
+  "@devicesConnectSemantics": {
+    "placeholders": {
+      "deviceName": {
+        "type": "String"
+      }
+    }
+  },
+  "devicesOpenSemantics": "Open {deviceName}",
+  "@devicesOpenSemantics": {
+    "placeholders": {
+      "deviceName": {
+        "type": "String"
+      }
+    }
+  },
+  "devicesDisconnect": "Disconnect",
+  "devicesForget": "Forget",
+  "devicesForgetSemantics": "Forget {deviceName}",
+  "@devicesForgetSemantics": {
+    "placeholders": {
+      "deviceName": {
+        "type": "String"
+      }
+    }
+  },
+  "devicesForgetConfirm": "Forget this device?",
+  "devicesForgotten": "{deviceName} forgotten",
+  "@devicesForgotten": {
+    "placeholders": {
+      "deviceName": {
+        "type": "String"
+      }
+    }
+  },
+  "devicesNotSupportedYet": "{deviceName} isn't supported yet.",
+  "@devicesNotSupportedYet": {
+    "placeholders": {
+      "deviceName": {
+        "type": "String"
+      }
+    }
+  },
+  "devicesUnofficialNotice": "Unofficial app. Not affiliated with or endorsed by Storz & Bickel. Device names are used only to identify compatibility.",
+  "devicesFinishMatch": "Match my device",
+  "devicesFinishEmber": "Ember",
+  "devicesFinishLava": "Lava",
+  "devicesFinishBlue": "Blue",
+  "devicesFinishPink": "Pink",
+  "devicesFinishMono": "Mono"
+}

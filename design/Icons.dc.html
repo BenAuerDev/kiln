@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Kiln – app icon concepts</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Space+Grotesk:wght@500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+</style>
+</helmet>
+<div style="width: 1180px; height: 1220px; box-sizing: border-box; background: #F3F4F6; padding: 56px 64px; font-family: Inter, system-ui, sans-serif; color: #1A1A1A; display: flex; flex-direction: column; gap: 40px">
+
+  <div style="display: flex; flex-direction: column; gap: 8px">
+    <span style="font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 40px; letter-spacing: -0.02em">kiln app icon</span>
+    <span style="font-size: 16px; color: #5A5A5A">Three directions. Each switches to the device theme as an alternate icon.</span>
+  </div>
+
+  <div style="display: flex; align-items: center; gap: 40px">
+    <div style="width: 200px; display: flex; flex-direction: column; gap: 6px">
+      <span style="font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 22px">A · Gauge</span>
+      <span style="font-size: 14px; line-height: 1.5; color: #5A5A5A">The app's own dial. Reads as "heat to a set point".</span>
+    </div>
+    <div style="display: flex; align-items: flex-end; gap: 24px">
+      <sc-for list="{{themes}}" as="t" hint-placeholder-count="5">
+        <div style="display: flex; flex-direction: column; align-items: center; gap: 10px">
+          <svg role="img" aria-label="Gauge icon, {{t.name}}" width="{{t.size}}" height="{{t.size}}" viewBox="0 0 96 96">
+            <defs>
+              <linearGradient id="ga-{{t.id}}" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="{{t.g1}}"></stop><stop offset="1" stop-color="{{t.g2}}"></stop></linearGradient>
+              <radialGradient id="gb-{{t.id}}" cx="0.5" cy="0.45" r="0.6"><stop offset="0" stop-color="{{t.halo}}"></stop><stop offset="1" stop-color="#0A0A0F" stop-opacity="0"></stop></radialGradient>
+            </defs>
+            <rect width="96" height="96" rx="22" fill="#0A0A0F"></rect>
+            <rect width="96" height="96" rx="22" fill="url(#gb-{{t.id}})"></rect>
+            <circle cx="48" cy="50" r="28" fill="none" stroke="#1F2937" stroke-width="9" stroke-linecap="round" stroke-dasharray="131.9 175.9" transform="rotate(135 48 50)"></circle>
+            <circle cx="48" cy="50" r="28" fill="none" stroke="url(#ga-{{t.id}})" stroke-width="9" stroke-linecap="round" stroke-dasharray="102.9 175.9" transform="rotate(135 48 50)"></circle>
+            <circle cx="75.1" cy="43" r="6.5" fill="#0A0A0F" stroke="{{t.g2}}" stroke-width="3.5"></circle>
+          </svg>
+          <span style="font-size: 13px; color: #5A5A5A">{{t.name}}</span>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+
+  <div style="display: flex; align-items: center; gap: 40px">
+    <div style="width: 200px; display: flex; flex-direction: column; gap: 6px">
+      <span style="font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 22px">B · Kiln mouth</span>
+      <span style="font-size: 14px; line-height: 1.5; color: #5A5A5A">An arched oven opening with a glow inside. Says the name.</span>
+    </div>
+    <div style="display: flex; align-items: flex-end; gap: 24px">
+      <sc-for list="{{themes}}" as="t" hint-placeholder-count="5">
+        <div style="display: flex; flex-direction: column; align-items: center; gap: 10px">
+          <svg role="img" aria-label="Kiln mouth icon, {{t.name}}" width="{{t.size}}" height="{{t.size}}" viewBox="0 0 96 96">
+            <defs>
+              <linearGradient id="ka-{{t.id}}" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="{{t.g2}}"></stop><stop offset="1" stop-color="{{t.g1}}"></stop></linearGradient>
+              <radialGradient id="kb-{{t.id}}" cx="0.5" cy="0.95" r="0.75"><stop offset="0" stop-color="{{t.g2}}" stop-opacity=".95"></stop><stop offset="0.6" stop-color="{{t.g1}}" stop-opacity=".35"></stop><stop offset="1" stop-color="{{t.g1}}" stop-opacity="0"></stop></radialGradient>
+            </defs>
+            <rect width="96" height="96" rx="22" fill="#0A0A0F"></rect>
+            <path d="M30 72V48a18 18 0 0 1 36 0v24z" fill="url(#kb-{{t.id}})"></path>
+            <path d="M30 72V48a18 18 0 0 1 36 0v24" fill="none" stroke="url(#ka-{{t.id}})" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"></path>
+            <path d="M22 74h52" stroke="{{t.base}}" stroke-width="5" stroke-linecap="round"></path>
+          </svg>
+          <span style="font-size: 13px; color: #5A5A5A">{{t.name}}</span>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+
+  <div style="display: flex; align-items: center; gap: 40px">
+    <div style="width: 200px; display: flex; flex-direction: column; gap: 6px">
+      <span style="font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 22px">C · k monogram</span>
+      <span style="font-size: 14px; line-height: 1.5; color: #5A5A5A">A lowercase k with the heat in its arms. Most minimal.</span>
+    </div>
+    <div style="display: flex; align-items: flex-end; gap: 24px">
+      <sc-for list="{{themes}}" as="t" hint-placeholder-count="5">
+        <div style="display: flex; flex-direction: column; align-items: center; gap: 10px">
+          <svg role="img" aria-label="Monogram icon, {{t.name}}" width="{{t.size}}" height="{{t.size}}" viewBox="0 0 96 96">
+            <defs>
+              <linearGradient id="ma-{{t.id}}" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="{{t.g1}}"></stop><stop offset="1" stop-color="{{t.g2}}"></stop></linearGradient>
+            </defs>
+            <rect width="96" height="96" rx="22" fill="#0A0A0F"></rect>
+            <path d="M36 22v52" stroke="#F9FAFB" stroke-width="9" stroke-linecap="round"></path>
+            <path d="M62 38L38 56M46 51l16 23" fill="none" stroke="url(#ma-{{t.id}})" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"></path>
+          </svg>
+          <span style="font-size: 13px; color: #5A5A5A">{{t.name}}</span>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+
+  <div style="display: flex; align-items: center; gap: 40px; padding-top: 8px; border-top: 1px solid #E5E7EB">
+    <div style="width: 200px; display: flex; flex-direction: column; gap: 6px; padding-top: 24px">
+      <span style="font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 22px">Android themed</span>
+      <span style="font-size: 14px; line-height: 1.5; color: #5A5A5A">One-colour glyph the phone tints to match its wallpaper.</span>
+    </div>
+    <div style="display: flex; flex-direction: column; gap: 20px; padding-top: 24px">
+      <div style="display: flex; align-items: center; gap: 24px">
+        <span style="width: 72px; font-size: 14px; font-weight: 600">1 · Dial</span>
+        <sc-for list="{{tints}}" as="m" hint-placeholder-count="4">
+          <svg role="img" aria-label="Dial themed icon on {{m.name}}" width="88" height="88" viewBox="0 0 96 96">
+            <circle cx="48" cy="48" r="48" fill="{{m.bg}}"></circle>
+            <circle cx="48" cy="48" r="22" fill="none" stroke="{{m.fg}}" stroke-opacity=".3" stroke-width="8" stroke-linecap="round" stroke-dasharray="103.7 138.2" transform="rotate(135 48 48)"></circle>
+            <circle cx="48" cy="48" r="22" fill="none" stroke="{{m.fg}}" stroke-width="8" stroke-linecap="round" stroke-dasharray="80.9 138.2" transform="rotate(135 48 48)"></circle>
+            <circle cx="69.3" cy="42.5" r="7.5" fill="{{m.fg}}"></circle>
+          </svg>
+        </sc-for>
+      </div>
+      <div style="display: flex; align-items: center; gap: 24px">
+        <span style="width: 72px; font-size: 14px; font-weight: 600">2 · Needle</span>
+        <sc-for list="{{tints}}" as="m" hint-placeholder-count="4">
+          <svg role="img" aria-label="Needle themed icon on {{m.name}}" width="88" height="88" viewBox="0 0 96 96">
+            <circle cx="48" cy="48" r="48" fill="{{m.bg}}"></circle>
+            <circle cx="48" cy="50" r="23" fill="none" stroke="{{m.fg}}" stroke-width="6" stroke-linecap="round" stroke-dasharray="108.4 144.5" transform="rotate(135 48 50)"></circle>
+            <path d="M48 50L63.5 45.8" stroke="{{m.fg}}" stroke-width="6" stroke-linecap="round"></path>
+            <circle cx="48" cy="50" r="6" fill="{{m.fg}}"></circle>
+          </svg>
+        </sc-for>
+      </div>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1180,"height":1220}}'>
+class Component extends DCLogic {
+  renderVals() {
+    var list = [
+      { id: 'ember', name: 'Ember', g1: '#FFC285', g2: '#FF6A00', halo: 'rgba(255,122,26,.28)' },
+      { id: 'lava', name: 'Lava', g1: '#FFB199', g2: '#E5361B', halo: 'rgba(255,77,46,.28)' },
+      { id: 'blue', name: 'Blue', g1: '#9CC4FF', g2: '#2F6BFF', halo: 'rgba(61,139,255,.28)' },
+      { id: 'pink', name: 'Pink', g1: '#FFB3D3', g2: '#FF3D8B', halo: 'rgba(255,95,162,.26)' },
+      { id: 'mono', name: 'Mono', g1: '#6B7280', g2: '#FFFFFF', halo: 'rgba(255,255,255,.14)' }
+    ];
+    var themes = list.map(function (t, i) {
+      return { id: t.id, name: t.name, g1: t.g1, g2: t.g2, halo: t.halo, base: '#374151', size: i === 0 ? 160 : 96 };
+    });
+    var tints = [
+      { name: 'sage', bg: '#DDE7D6', fg: '#3C5232' },
+      { name: 'lilac', bg: '#E6DEF5', fg: '#4B3A73' },
+      { name: 'sand', bg: '#F2E3CF', fg: '#6B4A22' },
+      { name: 'night', bg: '#2B3340', fg: '#C9D6EA' }
+    ];
+    return { themes: themes, tints: tints };
+  }
+}
+</script>
+</body>
+</html>

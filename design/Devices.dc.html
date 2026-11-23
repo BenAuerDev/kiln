@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Kiln – devices</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Space+Grotesk:wght@500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#FF8A33}a:hover{color:#FFB36B}
+@keyframes kilnScan{0%{transform:scale(.4);opacity:.9}100%{transform:scale(1.6);opacity:0}}
+.kiln-scan{position:absolute;left:0;top:0;width:28px;height:28px;border-radius:50%;border:2px solid #FF8A33;animation:kilnScan 1.8s ease-out infinite}
+</style>
+</helmet>
+<div style="width: 390px; height: 844px; box-sizing: border-box; background: #0E0E0F; color: #F5F5F4; font-family: Inter, system-ui, sans-serif; display: flex; flex-direction: column; overflow: hidden">
+
+  <div style="display: flex; align-items: center; justify-content: space-between; padding: 20px 20px 8px">
+    <a href="Main.dc.html" aria-label="Back to control" style="width: 44px; height: 44px; border-radius: 22px; border: 1px solid #2A2A2E; background: #18181B; color: #F5F5F4; display: flex; align-items: center; justify-content: center">
+      <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"></path></svg>
+    </a>
+    <span style="font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 18px">Devices</span>
+    <span style="width: 44px"></span>
+  </div>
+
+  <div style="padding: 16px 20px 0; display: flex; flex-direction: column; gap: 12px">
+    <span style="font-size: 13px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: #A1A1A6">Your devices</span>
+
+    <div style="display: flex; align-items: center; gap: 14px; padding: 14px; border-radius: 20px; background: #18181B; border: 1px solid #FF7A1A">
+      <div style="width: 64px; height: 64px; border-radius: 16px; background: #26262A; display: flex; align-items: center; justify-content: center; color: #FF8A33">
+        <svg aria-hidden="true" width="40" height="40" viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="22" width="28" height="12" rx="4"></rect><circle cx="20" cy="16" r="6"></circle><path d="M15 6c1 1.5 1 2.5 0 4M20 4c1 1.5 1 2.5 0 4M25 6c1 1.5 1 2.5 0 4"></path></svg>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 4px; flex-grow: 1">
+        <span style="font-size: 16px; font-weight: 600">Volcano Hybrid</span>
+        <span style="display: flex; align-items: center; gap: 6px; font-size: 13px; color: #A1A1A6"><span aria-hidden="true" style="width: 8px; height: 8px; border-radius: 50%; background: #FF7A1A"></span>Connected · 185 °C</span>
+      </div>
+      <span style="font-size: 12px; font-weight: 600; padding: 6px 10px; border-radius: 12px; background: #FF7A1A; color: #111111">Active</span>
+    </div>
+
+    <a href="#" style="display: flex; align-items: center; gap: 14px; padding: 14px; border-radius: 20px; background: #18181B; border: 1px solid #2A2A2E; text-decoration: none; color: #F5F5F4">
+      <div style="width: 64px; height: 64px; border-radius: 16px; background: #26262A; display: flex; align-items: center; justify-content: center; color: #F5F5F4">
+        <svg aria-hidden="true" width="40" height="40" viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="13" y="5" width="14" height="30" rx="7"></rect><circle cx="20" cy="13" r="3"></circle><path d="M17 26h6"></path></svg>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 4px; flex-grow: 1">
+        <span style="font-size: 16px; font-weight: 600">Venty</span>
+        <span style="font-size: 13px; color: #A1A1A6">Battery 72% · last used yesterday</span>
+      </div>
+      <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#A1A1A6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"></path></svg>
+    </a>
+
+    <a href="#" style="display: flex; align-items: center; gap: 14px; padding: 14px; border-radius: 20px; background: #18181B; border: 1px solid #2A2A2E; text-decoration: none; color: #F5F5F4">
+      <div style="width: 64px; height: 64px; border-radius: 16px; background: #26262A; display: flex; align-items: center; justify-content: center; color: #F5F5F4">
+        <svg aria-hidden="true" width="40" height="40" viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="10" y="8" width="20" height="26" rx="5"></rect><path d="M16 8V5h8v3"></path><circle cx="20" cy="21" r="4"></circle></svg>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 4px; flex-grow: 1">
+        <span style="font-size: 16px; font-weight: 600">Crafty+</span>
+        <span style="font-size: 13px; color: #A1A1A6">Battery 40% · last used 3 days ago</span>
+      </div>
+      <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#A1A1A6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"></path></svg>
+    </a>
+  </div>
+
+  <div style="padding: 28px 20px 0; display: flex; flex-direction: column; gap: 12px">
+    <div style="display: flex; align-items: center; gap: 12px">
+      <span aria-hidden="true" style="position: relative; width: 28px; height: 28px; display: inline-block">
+        <span class="kiln-scan"></span>
+        <span class="kiln-scan" style="animation-delay: .9s"></span>
+        <span style="position: absolute; left: 10px; top: 10px; width: 8px; height: 8px; border-radius: 50%; background: #FF8A33"></span>
+      </span>
+      <span style="font-size: 13px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: #A1A1A6">Scanning nearby</span>
+    </div>
+
+    <div style="display: flex; align-items: center; gap: 14px; padding: 14px; border-radius: 20px; border: 1px dashed #3A3A3F">
+      <div style="width: 64px; height: 64px; border-radius: 16px; background: #18181B; display: flex; align-items: center; justify-content: center; color: #A1A1A6">
+        <svg aria-hidden="true" width="40" height="40" viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="13" y="5" width="14" height="30" rx="7"></rect><circle cx="20" cy="13" r="3"></circle><path d="M17 26h6"></path></svg>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 4px; flex-grow: 1">
+        <span style="font-size: 16px; font-weight: 600">Veazy</span>
+        <span style="font-size: 13px; color: #A1A1A6">Signal strong · not paired</span>
+      </div>
+      <button style="height: 44px; padding: 0 18px; border-radius: 22px; border: none; background: #FF7A1A; color: #111111; font-family: Inter, sans-serif; font-size: 15px; font-weight: 600; cursor: pointer">Pair</button>
+    </div>
+  </div>
+
+  <div style="flex-grow: 1"></div>
+
+  <p style="margin: 0; padding: 0 24px 28px; font-size: 12px; line-height: 1.5; color: #A1A1A6; text-align: center">Unofficial app. Not affiliated with or endorsed by Storz &amp; Bickel. Device names are used only to identify compatibility.</p>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

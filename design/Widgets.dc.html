@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Kiln – home screen widgets</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Space+Grotesk:wght@500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+</style>
+</helmet>
+<div style="width: 390px; height: 560px; box-sizing: border-box; background: #2A2C33; padding: 24px 17px; font-family: Inter, system-ui, sans-serif; color: #F9FAFB; display: flex; flex-direction: column; gap: 16px">
+
+  <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px">
+    <div style="height: 170px; box-sizing: border-box; border-radius: 26px; background: #0A0A0F; padding: 16px; display: flex; flex-direction: column; justify-content: space-between">
+      <div style="display: flex; align-items: center; justify-content: space-between">
+        <span style="font-size: 13px; font-weight: 600">Volcano</span>
+        <span aria-hidden="true" style="width: 8px; height: 8px; border-radius: 4px; background: #FF7A1A; box-shadow: 0 0 8px rgba(255,122,26,.7)"></span>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 2px">
+        <span style="font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 40px; line-height: 1; font-variant-numeric: tabular-nums">142°</span>
+        <span style="font-size: 12px; color: #FF8A33">Heating to 185°</span>
+      </div>
+      <div aria-hidden="true" style="height: 6px; border-radius: 3px; background: #1F2937; display: flex">
+        <span style="width: 70%; height: 6px; border-radius: 3px; background: linear-gradient(90deg, #FFC285, #FF6A00)"></span>
+      </div>
+    </div>
+
+    <div style="height: 170px; box-sizing: border-box; border-radius: 26px; background: #0A0A0F; padding: 16px; display: flex; flex-direction: column; justify-content: space-between">
+      <div style="display: flex; align-items: center; justify-content: space-between">
+        <span style="font-size: 13px; font-weight: 600">Veazy</span>
+        <span style="font-size: 12px; color: #9CA3AF">72%</span>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 6px">
+        <div style="display: flex; justify-content: space-between; align-items: baseline"><span style="font-size: 12px; color: #9CA3AF">Base</span><span style="font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 18px; font-variant-numeric: tabular-nums">180°</span></div>
+        <div style="display: flex; justify-content: space-between; align-items: baseline"><span style="font-size: 12px; color: #9CA3AF">Boost</span><span style="font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 18px; color: #6AA6FF; font-variant-numeric: tabular-nums">195°</span></div>
+        <div style="display: flex; justify-content: space-between; align-items: baseline"><span style="font-size: 12px; color: #9CA3AF">Super</span><span style="font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 18px; color: #6AA6FF; font-variant-numeric: tabular-nums">210°</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div style="height: 170px; box-sizing: border-box; border-radius: 26px; background: #0A0A0F; padding: 16px 18px; display: flex; align-items: center; gap: 18px">
+    <svg role="img" aria-label="Volcano at 142 of 185 degrees" width="120" height="120" viewBox="0 0 120 120">
+      <defs>
+        <linearGradient id="kilnW" x1="0" y1="1" x2="1" y2="0">
+          <stop offset="0" stop-color="#FFC285"></stop>
+          <stop offset="1" stop-color="#FF6A00"></stop>
+        </linearGradient>
+      </defs>
+      <circle cx="60" cy="60" r="50" fill="none" stroke="#1F2937" stroke-width="10" stroke-linecap="round" stroke-dasharray="235.6 314.2" transform="rotate(135 60 60)"></circle>
+      <circle cx="60" cy="60" r="50" fill="none" stroke="url(#kilnW)" stroke-width="10" stroke-linecap="round" stroke-dasharray="126 314.2" transform="rotate(135 60 60)"></circle>
+      <text x="60" y="68" text-anchor="middle" fill="#F9FAFB" style="font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 28px">142°</text>
+    </svg>
+    <div style="display: flex; flex-direction: column; gap: 10px; flex-grow: 1">
+      <div style="display: flex; flex-direction: column; gap: 2px">
+        <span style="font-size: 14px; font-weight: 600">Volcano Hybrid</span>
+        <span style="font-size: 12px; color: #9CA3AF">Ready in about 30 s</span>
+      </div>
+      <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px">
+        <button style="height: 44px; border-radius: 14px; border: none; background: #FF7A1A; color: #111111; font-family: Inter, sans-serif; font-size: 13px; font-weight: 600">Heat off</button>
+        <button style="height: 44px; border-radius: 14px; border: 1px solid #1F2937; background: #1C1C26; color: #F9FAFB; font-family: Inter, sans-serif; font-size: 13px; font-weight: 600">Air</button>
+      </div>
+    </div>
+  </div>
+
+  <div style="height: 64px; box-sizing: border-box; border-radius: 20px; background: rgba(10,10,15,.85); padding: 0 16px; display: flex; align-items: center; gap: 12px">
+    <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#9CA3AF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21l6-6M14 4l6 6-8 8-6-6z"></path></svg>
+    <span style="font-size: 13px; color: #D1D5DB">Volcano: clean after 1.5 more heating hours</span>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":560}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

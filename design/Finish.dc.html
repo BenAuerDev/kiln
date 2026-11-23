@@ -1,0 +1,215 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Kiln – Veazy settings</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Space+Grotesk:wght@500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#9CA3AF}a:hover{color:#F9FAFB}
+.kiln-fade{transition:background .3s,color .3s,border-color .3s,box-shadow .3s}
+.kiln-swatch{transition:transform .15s,box-shadow .25s}
+.kiln-swatch:active{transform:scale(.94)}
+.kiln-knob{transition:transform .25s cubic-bezier(.2,.9,.3,1.2),background .25s}
+.kiln-press{transition:transform .1s}
+.kiln-press:active{transform:scale(.98)}
+@keyframes kilnPing{0%{transform:scale(.6);opacity:.9}100%{transform:scale(2.2);opacity:0}}
+.kiln-ping{position:absolute;left:0;top:0;width:40px;height:40px;border-radius:20px;animation:kilnPing 1.2s ease-out infinite}
+</style>
+</helmet>
+<div style="width: 390px; min-height: 1240px; box-sizing: border-box; background: #0A0A0F; color: #F9FAFB; font-family: Inter, system-ui, sans-serif; display: flex; flex-direction: column; padding-bottom: 32px">
+
+  <div style="display: flex; align-items: center; justify-content: space-between; padding: 20px 20px 8px">
+    <a href="Veazy.dc.html" aria-label="Back to Veazy" style="width: 44px; height: 44px; border-radius: 22px; border: 1px solid #1F2937; background: #111118; color: #F9FAFB; display: flex; align-items: center; justify-content: center">
+      <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"></path></svg>
+    </a>
+    <span style="font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 18px">Veazy settings</span>
+    <span style="width: 44px"></span>
+  </div>
+
+  <div style="margin: 12px 20px 0; padding: 18px; border-radius: 24px; background: #111118; border: 1px solid #1F2937; display: flex; align-items: center; gap: 16px">
+    <div class="kiln-fade" style="width: 72px; height: 72px; border-radius: 20px; background: #1C1C26; display: flex; align-items: center; justify-content: center; color: {{sel.text}}; box-shadow: 0 0 24px {{sel.glow}}">
+      <svg aria-hidden="true" width="42" height="42" viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="13" y="5" width="14" height="30" rx="7"></rect><circle cx="20" cy="13" r="3"></circle><path d="M17 26h6"></path></svg>
+    </div>
+    <div style="display: flex; flex-direction: column; gap: 4px; flex-grow: 1">
+      <span style="font-size: 17px; font-weight: 600">Veazy</span>
+      <span style="font-size: 13px; color: #9CA3AF">72% · charging</span>
+      <span style="font-size: 13px; color: #9CA3AF">Firmware 1.2.4</span>
+    </div>
+  </div>
+
+  <button onClick="{{find}}" class="kiln-press" style="margin: 12px 20px 0; height: 60px; border-radius: 18px; border: 1px solid #1F2937; background: #111118; color: #F9FAFB; display: flex; align-items: center; gap: 14px; padding: 0 16px; font-family: Inter, sans-serif; cursor: pointer; text-align: left">
+    <span style="position: relative; width: 40px; height: 40px; flex-shrink: 0">
+      <sc-if value="{{finding}}" hint-placeholder-val="{{ false }}">
+        <span class="kiln-ping" style="background: {{sel.glow}}"></span>
+      </sc-if>
+      <span style="position: absolute; left: 0; top: 0; width: 40px; height: 40px; border-radius: 12px; background: #1C1C26; display: flex; align-items: center; justify-content: center; color: {{sel.text}}">
+        <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M12 2v3M12 19v3M2 12h3M19 12h3"></path><circle cx="12" cy="12" r="8"></circle></svg>
+      </span>
+    </span>
+    <span style="display: flex; flex-direction: column; gap: 2px; flex-grow: 1">
+      <span style="font-size: 15px; font-weight: 600">{{findTitle}}</span>
+      <span style="font-size: 13px; color: #9CA3AF">{{findSub}}</span>
+    </span>
+  </button>
+
+  <div style="padding: 24px 20px 0; display: flex; flex-direction: column; gap: 12px">
+    <span style="font-size: 12px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: #9CA3AF">Battery</span>
+    <div style="border-radius: 20px; background: #111118; border: 1px solid #1F2937; display: flex; flex-direction: column">
+      <sc-for list="{{battery}}" as="o" hint-placeholder-count="2">
+        <button role="switch" aria-checked="{{o.checked}}" onClick="{{o.toggle}}" style="display: flex; align-items: center; gap: 14px; padding: 14px 16px; border: none; border-top: 1px solid {{o.divider}}; background: transparent; color: #F9FAFB; font-family: Inter, sans-serif; text-align: left; cursor: pointer">
+          <span style="display: flex; flex-direction: column; gap: 3px; flex-grow: 1">
+            <span style="font-size: 15px; font-weight: 500">{{o.title}}</span>
+            <span style="font-size: 13px; line-height: 1.4; color: #9CA3AF">{{o.sub}}</span>
+          </span>
+          <span class="kiln-fade" style="width: 48px; height: 28px; border-radius: 14px; background: {{o.track}}; display: flex; align-items: center; padding: 0 3px; box-sizing: border-box; flex-shrink: 0">
+            <span class="kiln-knob" style="width: 22px; height: 22px; border-radius: 11px; background: {{o.knob}}; transform: translateX({{o.x}}px)"></span>
+          </span>
+        </button>
+      </sc-for>
+    </div>
+  </div>
+
+  <div style="padding: 24px 20px 0; display: flex; flex-direction: column; gap: 12px">
+    <span style="font-size: 12px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: #9CA3AF">Device</span>
+    <div style="border-radius: 20px; background: #111118; border: 1px solid #1F2937; display: flex; flex-direction: column">
+      <sc-for list="{{device}}" as="o" hint-placeholder-count="2">
+        <button role="switch" aria-checked="{{o.checked}}" onClick="{{o.toggle}}" style="display: flex; align-items: center; gap: 14px; padding: 14px 16px; border: none; border-top: 1px solid {{o.divider}}; background: transparent; color: #F9FAFB; font-family: Inter, sans-serif; text-align: left; cursor: pointer">
+          <span style="display: flex; flex-direction: column; gap: 3px; flex-grow: 1">
+            <span style="font-size: 15px; font-weight: 500">{{o.title}}</span>
+            <span style="font-size: 13px; line-height: 1.4; color: #9CA3AF">{{o.sub}}</span>
+          </span>
+          <span class="kiln-fade" style="width: 48px; height: 28px; border-radius: 14px; background: {{o.track}}; display: flex; align-items: center; padding: 0 3px; box-sizing: border-box; flex-shrink: 0">
+            <span class="kiln-knob" style="width: 22px; height: 22px; border-radius: 11px; background: {{o.knob}}; transform: translateX({{o.x}}px)"></span>
+          </span>
+        </button>
+      </sc-for>
+      <div style="display: flex; align-items: center; justify-content: space-between; padding: 0 16px; height: 56px; border-top: 1px solid #1F2937">
+        <span style="font-size: 15px; font-weight: 500">Temperature unit</span>
+        <div role="radiogroup" aria-label="Temperature unit" style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); padding: 3px; border-radius: 12px; background: #1C1C26">
+          <button role="radio" aria-checked="{{cChecked}}" onClick="{{setC}}" class="kiln-fade" style="width: 52px; height: 32px; border-radius: 9px; border: none; background: {{cBg}}; color: {{cFg}}; font-family: Inter, sans-serif; font-size: 14px; font-weight: 600; cursor: pointer">°C</button>
+          <button role="radio" aria-checked="{{fChecked}}" onClick="{{setF}}" class="kiln-fade" style="width: 52px; height: 32px; border-radius: 9px; border: none; background: {{fBg}}; color: {{fFg}}; font-family: Inter, sans-serif; font-size: 14px; font-weight: 600; cursor: pointer">°F</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div style="padding: 24px 20px 0; display: flex; flex-direction: column; gap: 12px">
+    <span style="font-size: 12px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: #9CA3AF">App theme</span>
+
+    <button onClick="{{pickAuto}}" aria-pressed="{{autoPressed}}" class="kiln-fade" style="display: flex; align-items: center; gap: 14px; padding: 14px 16px; border-radius: 18px; border: 2px solid {{autoRing}}; background: #111118; color: #F9FAFB; font-family: Inter, sans-serif; text-align: left; cursor: pointer">
+      <span aria-hidden="true" style="width: 28px; height: 28px; border-radius: 14px; background: conic-gradient(#3D8BFF 0 25%, #FF5FA2 0 50%, #FF7A1A 0 75%, #F9FAFB 0)"></span>
+      <span style="display: flex; flex-direction: column; gap: 2px; flex-grow: 1">
+        <span style="font-size: 15px; font-weight: 600">Match my device</span>
+        <span style="font-size: 13px; color: #9CA3AF">Blue, read from your Veazy</span>
+      </span>
+      <sc-if value="{{autoOn}}" hint-placeholder-val="{{ true }}">
+        <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#6AA6FF" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L20 7"></path></svg>
+      </sc-if>
+    </button>
+
+    <div style="display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 8px; padding-top: 4px">
+      <sc-for list="{{themes}}" as="th" hint-placeholder-count="5">
+        <button onClick="{{th.pick}}" aria-pressed="{{th.pressed}}" aria-label="{{th.name}} theme" style="display: flex; flex-direction: column; align-items: center; gap: 8px; padding: 0; border: none; background: none; color: #F9FAFB; font-family: Inter, sans-serif; cursor: pointer">
+          <span class="kiln-swatch" style="width: 52px; height: 52px; border-radius: 26px; background: linear-gradient(135deg, {{th.g1}}, {{th.g2}}); box-shadow: 0 0 0 3px #0A0A0F, 0 0 0 5px {{th.ring}}"></span>
+          <span style="font-size: 12px; font-weight: {{th.weight}}; color: {{th.label}}">{{th.name}}</span>
+        </button>
+      </sc-for>
+    </div>
+    <span style="font-size: 13px; line-height: 1.5; color: #9CA3AF">Only for this Veazy. Each device keeps its own theme.</span>
+  </div>
+
+  <div style="padding: 28px 20px 0; display: flex; flex-direction: column; gap: 10px">
+    <button class="kiln-press" style="width: 100%; height: 52px; border-radius: 16px; border: 1px solid #1F2937; background: #111118; color: #F9FAFB; font-family: Inter, sans-serif; font-size: 15px; font-weight: 600; cursor: pointer">Run device check</button>
+    <button class="kiln-press" style="width: 100%; height: 52px; border-radius: 16px; border: 1px solid #1F2937; background: transparent; color: #F87171; font-family: Inter, sans-serif; font-size: 15px; font-weight: 600; cursor: pointer">Forget this device</button>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":1240}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { picked: 'auto', ecoCharge: true, ecoVoltage: false, vibrate: true, boostLed: true, unit: 'C', finding: false };
+  }
+  componentWillUnmount() { clearTimeout(this.findTimer); }
+  renderVals() {
+    var self = this;
+    var s = this.state;
+    var list = [
+      { id: 'orange', name: 'Ember', accent: '#FF7A1A', text: '#FF8A33', on: '#111111', g1: '#FFC285', g2: '#FF6A00', glow: 'rgba(255,122,26,.4)' },
+      { id: 'onyx', name: 'Lava', accent: '#FF4D2E', text: '#FF6B4D', on: '#111111', g1: '#FFB199', g2: '#E5361B', glow: 'rgba(255,77,46,.4)' },
+      { id: 'blue', name: 'Blue', accent: '#3D8BFF', text: '#6AA6FF', on: '#0B0B0C', g1: '#9CC4FF', g2: '#2F6BFF', glow: 'rgba(61,139,255,.4)' },
+      { id: 'pink', name: 'Pink', accent: '#FF5FA2', text: '#FF7EB6', on: '#111111', g1: '#FFB3D3', g2: '#FF3D8B', glow: 'rgba(255,95,162,.4)' },
+      { id: 'black', name: 'Mono', accent: '#F9FAFB', text: '#F9FAFB', on: '#111111', g1: '#4B5563', g2: '#FFFFFF', glow: 'rgba(255,255,255,.2)' }
+    ];
+    var auto = s.picked === 'auto';
+    var effective = auto ? 'blue' : s.picked;
+    var sel = list[2];
+    var themes = list.map(function (th) {
+      if (th.id === effective) sel = th;
+      var on = !auto && th.id === s.picked;
+      return {
+        name: th.name, g1: th.g1, g2: th.g2,
+        ring: on ? th.accent : 'transparent',
+        label: on ? '#F9FAFB' : '#9CA3AF',
+        weight: on ? '600' : '500',
+        pressed: on ? 'true' : 'false',
+        pick: function () { self.setState({ picked: th.id }); }
+      };
+    });
+    var toggle = function (key, title, sub, first) {
+      var on = !!s[key];
+      var patch = {};
+      patch[key] = !on;
+      return {
+        title: title, sub: sub,
+        checked: on ? 'true' : 'false',
+        track: on ? sel.accent : '#1F2937',
+        knob: on ? sel.on : '#9CA3AF',
+        x: on ? 20 : 0,
+        divider: first ? 'transparent' : '#1F2937',
+        toggle: function () { self.setState(patch); }
+      };
+    };
+    var seg = function (on) { return { bg: on ? sel.accent : 'transparent', fg: on ? sel.on : '#9CA3AF', checked: on ? 'true' : 'false' }; };
+    var c = seg(s.unit === 'C');
+    var f = seg(s.unit === 'F');
+    return {
+      sel: sel,
+      themes: themes,
+      autoOn: auto,
+      autoPressed: auto ? 'true' : 'false',
+      autoRing: auto ? sel.accent : '#1F2937',
+      pickAuto: function () { self.setState({ picked: 'auto' }); },
+      battery: [
+        toggle('ecoCharge', 'Charge limit', 'Stops charging around 90% so the battery lasts more years.', true),
+        toggle('ecoVoltage', 'Battery saver', 'Heats a little gentler for more sessions per charge.', false)
+      ],
+      device: [
+        toggle('vibrate', 'Vibrate when ready', 'Buzzes once it reaches temperature.', true),
+        toggle('boostLed', 'Show boost on LEDs', 'The light tells you which level you are on.', false)
+      ],
+      cChecked: c.checked, cBg: c.bg, cFg: c.fg,
+      fChecked: f.checked, fBg: f.bg, fFg: f.fg,
+      setC: function () { self.setState({ unit: 'C' }); },
+      setF: function () { self.setState({ unit: 'F' }); },
+      finding: s.finding,
+      findTitle: s.finding ? 'Buzzing your Veazy…' : 'Find my Veazy',
+      findSub: s.finding ? 'Listen for the vibration' : 'Makes it vibrate and blink',
+      find: function () {
+        clearTimeout(self.findTimer);
+        self.setState({ finding: true });
+        self.findTimer = setTimeout(function () { self.setState({ finding: false }); }, 3000);
+      }
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,240 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Kiln – control</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Space+Grotesk:wght@500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#FF8A33}a:hover{color:#FFB36B}
+@keyframes kilnPulse{0%,100%{opacity:.55}50%{opacity:1}}
+@keyframes kilnRise{0%{transform:translateY(0) scale(.6);opacity:0}20%{opacity:.8}100%{transform:translateY(-90px) scale(1.4);opacity:0}}
+@keyframes kilnBreath{0%,100%{transform:scale(1)}50%{transform:scale(1.03)}}
+.kiln-glow-heating{animation:kilnPulse 1.6s ease-in-out infinite}
+.kiln-wisp{position:absolute;width:22px;height:22px;border-radius:50%;filter:blur(2px);animation:kilnRise 2.4s ease-out infinite}
+.kiln-ready{animation:kilnBreath 3s ease-in-out infinite}
+.kiln-btn{transition:background .25s,color .25s,transform .1s}
+.kiln-btn:active{transform:scale(.97)}
+@media (prefers-reduced-motion: reduce){.kiln-btn{transition:none}.kiln-wisp,.kiln-glow-heating,.kiln-ready{animation:none}}
+</style>
+</helmet>
+<div style="width: 390px; height: 844px; box-sizing: border-box; background: {{t.bg}}; color: {{t.text}}; font-family: Inter, system-ui, sans-serif; display: flex; flex-direction: column; overflow: hidden">
+
+  <div style="display: flex; align-items: center; justify-content: space-between; padding: 20px 20px 8px">
+    <div style="display: flex; flex-direction: column; gap: 4px">
+      <span style="font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 22px; letter-spacing: -0.02em">kiln</span>
+      <span style="display: flex; align-items: center; gap: 6px; font-size: 13px; color: {{t.muted}}">
+        <span aria-hidden="true" style="width: 8px; height: 8px; border-radius: 50%; background: {{t.accent}}"></span>
+        {{deviceLine}}
+      </span>
+    </div>
+    <a href="Devices.dc.html" aria-label="Devices" class="kiln-btn" style="width: 44px; height: 44px; border-radius: 22px; border: 1px solid {{t.border}}; background: {{t.surface}}; color: {{t.text}}; display: flex; align-items: center; justify-content: center">
+      <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M12 2v3M12 19v3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M2 12h3M19 12h3M4.9 19.1L7 17M17 7l2.1-2.1"></path></svg>
+    </a>
+  </div>
+
+  <div style="position: relative; width: 300px; height: 300px; margin: 12px auto 0">
+    <sc-if value="{{heating}}" hint-placeholder-val="{{ true }}">
+      <div aria-hidden="true" style="position: absolute; left: 0; top: 0; width: 300px; height: 300px; pointer-events: none">
+        <span class="kiln-wisp" style="left: 120px; top: 110px; animation-delay: 0s; background: radial-gradient(circle, {{t.glow}}, transparent 70%)"></span>
+        <span class="kiln-wisp" style="left: 150px; top: 118px; animation-delay: .8s; background: radial-gradient(circle, {{t.glow}}, transparent 70%)"></span>
+        <span class="kiln-wisp" style="left: 136px; top: 104px; animation-delay: 1.6s; background: radial-gradient(circle, {{t.glow}}, transparent 70%)"></span>
+      </div>
+    </sc-if>
+    <svg role="img" aria-label="Temperature gauge" width="300" height="300" viewBox="0 0 300 300" class="{{gaugeClass}}">
+      <defs>
+        <linearGradient id="kilnHeat" x1="0" y1="1" x2="1" y2="0">
+          <stop offset="0" stop-color="{{t.g1}}"></stop>
+          <stop offset="1" stop-color="{{t.g2}}"></stop>
+        </linearGradient>
+      </defs>
+      <circle cx="150" cy="150" r="130" fill="none" stroke="{{t.track}}" stroke-width="16" stroke-linecap="round" stroke-dasharray="612.6 816.8" transform="rotate(135 150 150)"></circle>
+      <circle class="{{glowClass}}" cx="150" cy="150" r="130" fill="none" stroke="url(#kilnHeat)" stroke-width="16" stroke-linecap="round" stroke-dasharray="{{progLen}} 816.8" transform="rotate(135 150 150)" style="filter: drop-shadow(0 0 10px {{t.glow}})"></circle>
+      <circle cx="{{dotX}}" cy="{{dotY}}" r="11" fill="{{t.bg}}" stroke="{{t.accent}}" stroke-width="4"></circle>
+    </svg>
+    <div style="position: absolute; left: 0; top: 0; width: 300px; height: 300px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px">
+      <span style="font-size: 13px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: {{t.accentText}}">{{statusText}}</span>
+      <span style="font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 84px; line-height: 1; letter-spacing: -0.04em; font-variant-numeric: tabular-nums">{{curText}}°</span>
+      <span style="font-size: 15px; color: {{t.muted}}">target {{effTarget}} °C · {{etaText}}</span>
+    </div>
+  </div>
+
+  <div style="display: flex; align-items: center; justify-content: center; gap: 28px; margin-top: 4px">
+    <button aria-label="Lower target temperature" onClick="{{down}}" class="kiln-btn" style="width: 56px; height: 56px; border-radius: 28px; border: 1px solid {{t.border}}; background: {{t.surface}}; color: {{t.text}}; display: flex; align-items: center; justify-content: center; cursor: pointer">
+      <svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14"></path></svg>
+    </button>
+    <div style="display: flex; flex-direction: column; align-items: center; min-width: 96px">
+      <span style="font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 32px; font-variant-numeric: tabular-nums">{{target}}°</span>
+      <span style="font-size: 12px; color: {{t.muted}}">set temperature</span>
+    </div>
+    <button aria-label="Raise target temperature" onClick="{{up}}" class="kiln-btn" style="width: 56px; height: 56px; border-radius: 28px; border: 1px solid {{t.border}}; background: {{t.surface}}; color: {{t.text}}; display: flex; align-items: center; justify-content: center; cursor: pointer">
+      <svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"></path></svg>
+    </button>
+  </div>
+
+  <div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; padding: 20px 20px 0">
+    <sc-for list="{{presets}}" as="p" hint-placeholder-count="4">
+      <button onClick="{{p.pick}}" class="kiln-btn" style="height: 44px; border-radius: 22px; border: 1px solid {{p.border}}; background: {{p.bg}}; color: {{p.fg}}; font-family: Inter, sans-serif; font-size: 15px; font-weight: 600; cursor: pointer">{{p.label}}</button>
+    </sc-for>
+  </div>
+
+  <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; padding: 16px 20px 0">
+    <button onClick="{{toggleHeat}}" class="kiln-btn" style="height: 72px; border-radius: 20px; border: none; background: {{heatBg}}; color: {{heatFg}}; display: flex; align-items: center; justify-content: center; gap: 10px; font-family: Inter, sans-serif; font-size: 16px; font-weight: 600; cursor: pointer">
+      <svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3c1 3 5 5 5 10a5 5 0 0 1-10 0c0-2.5 1.2-4 2-5.5.5 1.5 1.5 2.5 2.5 3C11.5 8 11 5.5 12 3z"></path></svg>
+      {{heatLabel}}
+    </button>
+    <button onClick="{{toggleAux}}" class="kiln-btn" style="height: 72px; border-radius: 20px; border: 1px solid {{auxBorder}}; background: {{auxBg}}; color: {{auxFg}}; display: flex; align-items: center; justify-content: center; gap: 10px; font-family: Inter, sans-serif; font-size: 16px; font-weight: 600; cursor: pointer">
+      <sc-if value="{{isVolcano}}" hint-placeholder-val="{{ true }}">
+        <svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h11a3 3 0 1 0-3-3"></path><path d="M3 12h16a3 3 0 1 1-3 3"></path><path d="M3 16h7"></path></svg>
+      </sc-if>
+      <sc-if value="{{isPortable}}" hint-placeholder-val="{{ false }}">
+        <svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L4 14h7l-1 8 9-12h-7z"></path></svg>
+      </sc-if>
+      {{auxLabel}}
+    </button>
+  </div>
+
+  <div style="flex-grow: 1"></div>
+
+  <nav style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); border-top: 1px solid {{t.border}}; background: {{t.surface}}; padding: 8px 8px 24px">
+    <a href="#" style="display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 6px 0; text-decoration: none; font-size: 12px; font-weight: 600; color: {{t.accentText}}">
+      <svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4.5 16.5a8.5 8.5 0 1 1 15 0"></path><path d="M12 12l3.5-3.5"></path></svg>
+      Control
+    </a>
+    <a href="Workflow.dc.html" style="display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 6px 0; text-decoration: none; font-size: 12px; font-weight: 500; color: {{t.muted}}">
+      <svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 6h14M5 12h10M5 18h6"></path></svg>
+      Workflows
+    </a>
+    <a href="Devices.dc.html" style="display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 6px 0; text-decoration: none; font-size: 12px; font-weight: 500; color: {{t.muted}}">
+      <svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="4" y="9" width="16" height="11" rx="3"></rect><circle cx="12" cy="5" r="2"></circle></svg>
+      Devices
+    </a>
+    <a href="Insights.dc.html" style="display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 6px 0; text-decoration: none; font-size: 12px; font-weight: 500; color: {{t.muted}}">
+      <svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"></path></svg>
+      Insights
+    </a>
+  </nav>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["dark","light"],"default":"dark"},"device":{"editor":"enum","options":["volcano","veazy"],"default":"volcano"},"finish":{"editor":"enum","options":["classic","onyx","orange","blue","pink","black"],"default":"classic"},"startTemp":{"editor":"int","min":20,"max":230,"default":96},"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    var start = props.startTemp != null ? props.startTemp : 96;
+    this.state = { cur: start, target: 185, heater: true, aux: false };
+  }
+  componentDidMount() {
+    var self = this;
+    this.timer = setInterval(function () { self.tick(); }, 120);
+  }
+  componentWillUnmount() { clearInterval(this.timer); }
+  spec() {
+    var volcano = (this.props.device || 'volcano') === 'volcano';
+    return volcano
+      ? { volcano: true, max: 230, presets: [170, 185, 200, 215], name: 'Volcano Hybrid' }
+      : { volcano: false, max: 210, presets: [175, 185, 195, 205], name: 'Veazy' };
+  }
+  goal() {
+    var sp = this.spec();
+    var s = this.state;
+    return sp.volcano ? s.target : Math.min(sp.max, s.target + (s.aux ? 15 : 0));
+  }
+  tick() {
+    var s = this.state;
+    var goal = this.goal();
+    var cur = s.cur;
+    if (s.heater && cur < goal) {
+      cur = Math.min(goal, cur + Math.max(0.35, (goal - cur) * 0.035));
+    } else if (cur > goal || (!s.heater && cur > 20)) {
+      cur = Math.max(s.heater ? goal : 20, cur - 0.4);
+    }
+    if (cur !== s.cur) this.setState({ cur: cur });
+  }
+  palette() {
+    var dark = (this.props.theme || 'dark') === 'dark';
+    var base = dark
+      ? { bg: '#0A0A0F', surface: '#111118', surface2: '#1C1C26', text: '#F9FAFB', muted: '#9CA3AF', track: '#1F2937', border: '#1F2937' }
+      : { bg: '#F9FAFB', surface: '#FFFFFF', surface2: '#F3F4F6', text: '#1A1A1A', muted: '#5A5A5A', track: '#E5E7EB', border: '#E5E7EB' };
+    var finishes = {
+      classic: { accent: '#FF7A1A', dText: '#FF8A33', lText: '#C2410C', on: '#111111', g1: '#FFC285', g2: '#FF6A00', glow: 'rgba(255,122,26,.55)' },
+      orange: { accent: '#FF7A1A', dText: '#FF8A33', lText: '#C2410C', on: '#111111', g1: '#FFC285', g2: '#FF6A00', glow: 'rgba(255,122,26,.55)' },
+      onyx: { accent: '#FF4D2E', dText: '#FF6B4D', lText: '#B42318', on: '#111111', g1: '#FFB199', g2: '#E5361B', glow: 'rgba(255,77,46,.55)' },
+      blue: { accent: '#3D8BFF', dText: '#6AA6FF', lText: '#1D4ED8', on: '#0B0B0C', g1: '#9CC4FF', g2: '#2F6BFF', glow: 'rgba(61,139,255,.55)' },
+      pink: { accent: '#FF5FA2', dText: '#FF7EB6', lText: '#BE185D', on: '#111111', g1: '#FFB3D3', g2: '#FF3D8B', glow: 'rgba(255,95,162,.5)' },
+      black: dark
+        ? { accent: '#F5F5F4', dText: '#F5F5F4', lText: '#F5F5F4', on: '#111111', g1: '#5A5A60', g2: '#FFFFFF', glow: 'rgba(255,255,255,.35)' }
+        : { accent: '#121212', dText: '#121212', lText: '#121212', on: '#F7F7F5', g1: '#C4C4BF', g2: '#121212', glow: 'rgba(0,0,0,.18)' }
+    };
+    var f = finishes[this.props.finish || 'classic'] || finishes.classic;
+    base.accent = f.accent;
+    base.accentText = dark ? f.dText : f.lText;
+    base.onAccent = f.on;
+    base.g1 = f.g1;
+    base.g2 = f.g2;
+    base.glow = f.glow;
+    return base;
+  }
+  renderVals() {
+    var self = this;
+    var t = this.palette();
+    var sp = this.spec();
+    var s = this.state;
+    var goal = this.goal();
+    var frac = function (v) { return Math.max(0, Math.min(1, (v - 40) / (sp.max - 40))); };
+    var ang = (135 + frac(goal) * 270) * Math.PI / 180;
+    var heating = s.heater && s.cur < goal - 0.5;
+    var ready = s.heater && !heating;
+    var secs = Math.round(Math.max(0, goal - s.cur) * 0.6);
+    var eta = !s.heater ? 'off' : (heating ? (secs > 60 ? 'about ' + Math.round(secs / 60) + ' min' : 'about ' + secs + ' s') : 'ready');
+    var setTarget = function (v) { self.setState({ target: Math.max(40, Math.min(sp.max, v)) }); };
+    var presets = sp.presets.map(function (v) {
+      var on = s.target === v;
+      return {
+        label: v + '°',
+        bg: on ? t.accent : t.surface,
+        fg: on ? t.onAccent : t.text,
+        border: on ? t.accent : t.border,
+        pick: function () { setTarget(v); }
+      };
+    });
+    var auxOn = s.aux;
+    return {
+      t: t,
+      deviceLine: sp.volcano ? sp.name + ' · connected' : sp.name + ' · 72% battery',
+      curText: Math.round(s.cur),
+      target: s.target,
+      effTarget: goal,
+      progLen: (frac(s.cur) * 612.6).toFixed(1),
+      dotX: (150 + 130 * Math.cos(ang)).toFixed(1),
+      dotY: (150 + 130 * Math.sin(ang)).toFixed(1),
+      heating: heating,
+      statusText: !s.heater ? 'Heater off' : (heating ? 'Heating' : 'Ready'),
+      etaText: eta,
+      glowClass: heating ? 'kiln-glow-heating' : '',
+      gaugeClass: ready ? 'kiln-ready' : '',
+      presets: presets,
+      up: function () { setTarget(s.target + 1); },
+      down: function () { setTarget(s.target - 1); },
+      heatLabel: s.heater ? 'Heater on' : 'Heater off',
+      heatBg: s.heater ? t.accent : t.surface2,
+      heatFg: s.heater ? t.onAccent : t.text,
+      toggleHeat: function () { self.setState({ heater: !s.heater }); },
+      isVolcano: sp.volcano,
+      isPortable: !sp.volcano,
+      auxLabel: sp.volcano ? (auxOn ? 'Air on' : 'Air off') : (auxOn ? 'Boost +15°' : 'Boost'),
+      auxBg: auxOn ? t.text : t.surface,
+      auxFg: auxOn ? t.bg : t.text,
+      auxBorder: auxOn ? t.text : t.border,
+      toggleAux: function () { self.setState({ aux: !s.aux }); }
+    };
+  }
+}
+</script>
+</body>
+</html>

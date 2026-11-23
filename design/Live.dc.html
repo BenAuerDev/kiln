@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Kiln – outside the app</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Space+Grotesk:wght@500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+</style>
+</helmet>
+<div style="width: 390px; height: 844px; box-sizing: border-box; background: #2A2C33; padding: 24px 16px; font-family: Inter, system-ui, sans-serif; color: #F9FAFB; display: flex; flex-direction: column; gap: 14px">
+
+  <span style="font-size: 12px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: #D1D5DB">iPhone · Dynamic Island</span>
+  <div style="align-self: center; width: 250px; height: 40px; border-radius: 20px; background: #000000; display: flex; align-items: center; justify-content: space-between; padding: 0 14px; box-sizing: border-box">
+    <svg aria-hidden="true" width="22" height="22" viewBox="0 0 36 36"><circle cx="18" cy="18" r="14" fill="none" stroke="#2A2A2E" stroke-width="5" stroke-linecap="round" stroke-dasharray="66 88" transform="rotate(135 18 18)"></circle><circle cx="18" cy="18" r="14" fill="none" stroke="#FF7A1A" stroke-width="5" stroke-linecap="round" stroke-dasharray="48 88" transform="rotate(135 18 18)"></circle></svg>
+    <span style="font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 16px; color: #FF8A33; font-variant-numeric: tabular-nums">152°</span>
+  </div>
+
+  <span style="font-size: 12px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: #D1D5DB; margin-top: 6px">iPhone · lock screen</span>
+  <div style="border-radius: 24px; background: rgba(10,10,15,.88); padding: 16px; display: flex; flex-direction: column; gap: 12px">
+    <div style="display: flex; align-items: center; justify-content: space-between">
+      <span style="display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 600"><span aria-hidden="true" style="width: 22px; height: 22px; border-radius: 6px; background: #FF7A1A"></span>Volcano Hybrid</span>
+      <span style="font-size: 13px; color: #9CA3AF">Ready in ~25 s</span>
+    </div>
+    <div style="display: flex; align-items: baseline; gap: 8px">
+      <span style="font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 40px; line-height: 1; font-variant-numeric: tabular-nums">152°</span>
+      <span style="font-size: 15px; color: #9CA3AF">→ 185°</span>
+    </div>
+    <div aria-hidden="true" style="height: 6px; border-radius: 3px; background: #1F2937; display: flex"><span style="width: 74%; height: 6px; border-radius: 3px; background: linear-gradient(90deg, #FFC285, #FF6A00)"></span></div>
+    <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px">
+      <button style="height: 44px; border-radius: 14px; border: none; background: #1C1C26; color: #F9FAFB; font-family: Inter, sans-serif; font-size: 14px; font-weight: 600">Heat off</button>
+      <button style="height: 44px; border-radius: 14px; border: none; background: #FF7A1A; color: #111111; font-family: Inter, sans-serif; font-size: 14px; font-weight: 600">Air</button>
+    </div>
+  </div>
+
+  <span style="font-size: 12px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: #D1D5DB; margin-top: 6px">Android · notification</span>
+  <div style="border-radius: 22px; background: #1C1C22; padding: 14px 16px; display: flex; flex-direction: column; gap: 10px">
+    <div style="display: flex; align-items: center; gap: 8px; font-size: 12px; color: #9CA3AF">
+      <span aria-hidden="true" style="width: 16px; height: 16px; border-radius: 8px; background: #3D8BFF"></span>
+      kiln · now
+    </div>
+    <div style="display: flex; justify-content: space-between; align-items: center">
+      <div style="display: flex; flex-direction: column; gap: 2px">
+        <span style="font-size: 15px; font-weight: 600">Veazy is ready · 180°</span>
+        <span style="font-size: 13px; color: #9CA3AF">Double-click for boost 195°</span>
+      </div>
+      <svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#6AA6FF" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L20 7"></path></svg>
+    </div>
+  </div>
+
+  <span style="font-size: 12px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: #D1D5DB; margin-top: 6px">In the app</span>
+  <div style="border-radius: 20px; background: #0A0A0F; border: 1px solid #1F2937; padding: 14px 16px; display: flex; align-items: center; gap: 12px">
+    <svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#FF8A33" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12M7 10l5 5 5-5"></path><path d="M5 21h14"></path></svg>
+    <div style="display: flex; flex-direction: column; gap: 2px; flex-grow: 1">
+      <span style="font-size: 14px; font-weight: 600">kiln 0.4 is ready</span>
+      <span style="font-size: 12px; color: #9CA3AF">Smoother reconnects, Crafty+ support</span>
+    </div>
+    <button style="height: 40px; padding: 0 14px; border-radius: 20px; border: none; background: #FF7A1A; color: #111111; font-family: Inter, sans-serif; font-size: 13px; font-weight: 600">Update</button>
+  </div>
+  <div style="border-radius: 20px; background: #0A0A0F; border: 1px solid #1F2937; padding: 14px 16px; display: flex; align-items: center; gap: 12px">
+    <svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#9CA3AF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+    <span style="font-size: 14px; color: #D1D5DB; flex-grow: 1">Something off? Shake your phone to send feedback.</span>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

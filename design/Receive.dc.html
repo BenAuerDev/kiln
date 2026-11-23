@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Kiln – receive a setup</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Space+Grotesk:wght@500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#BE185D}a:hover{color:#9D174D}
+@keyframes kilnPop{0%{transform:scale(.4);opacity:0}60%{transform:scale(1.08);opacity:1}100%{transform:scale(1)}}
+@keyframes kilnDraw{from{stroke-dashoffset:30}to{stroke-dashoffset:0}}
+@keyframes kilnIn{0%{opacity:0;transform:translateY(12px)}100%{opacity:1;transform:translateY(0)}}
+.kiln-pop{animation:kilnPop .5s cubic-bezier(.2,.9,.3,1.2) both}
+.kiln-draw{stroke-dasharray:30;animation:kilnDraw .4s .25s ease-out both}
+.kiln-in{animation:kilnIn .4s ease-out both}
+.kiln-press{transition:transform .1s,background .2s}
+.kiln-press:active{transform:scale(.98)}
+</style>
+</helmet>
+<div style="width: 390px; height: 844px; box-sizing: border-box; background: #F9FAFB; color: #1A1A1A; font-family: Inter, system-ui, sans-serif; display: flex; flex-direction: column; overflow: hidden">
+
+  <div style="display: flex; align-items: center; justify-content: space-between; padding: 20px 20px 0">
+    <span style="font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 22px; letter-spacing: -0.02em">kiln</span>
+    <button aria-label="Close" style="width: 44px; height: 44px; border-radius: 22px; border: 1px solid #E5E7EB; background: #FFFFFF; color: #1A1A1A; display: flex; align-items: center; justify-content: center; cursor: pointer">
+      <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"></path></svg>
+    </button>
+  </div>
+
+  <sc-if value="{{pending}}" hint-placeholder-val="{{ true }}">
+    <div style="padding: 32px 20px 0; display: flex; flex-direction: column; gap: 20px">
+      <div style="display: flex; flex-direction: column; gap: 8px">
+        <span style="font-size: 13px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: #BE185D">Shared with you</span>
+        <h1 style="margin: 0; font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 32px; line-height: 1.1; letter-spacing: -0.02em">Lena sent you “Balanced”</h1>
+        <p style="margin: 0; font-size: 15px; line-height: 1.55; color: #5A5A5A">A setup for Veazy. Here is what changes on yours.</p>
+      </div>
+
+      <div style="border-radius: 22px; background: #FFFFFF; border: 1px solid #E5E7EB; display: flex; flex-direction: column">
+        <sc-for list="{{diff}}" as="d" hint-placeholder-count="3">
+          <div style="display: flex; align-items: center; padding: 16px; border-top: 1px solid {{d.divider}}">
+            <span style="font-size: 15px; font-weight: 500; flex-grow: 1">{{d.name}}</span>
+            <span style="font-size: 15px; color: #5A5A5A; text-decoration: line-through; font-variant-numeric: tabular-nums">{{d.from}}</span>
+            <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#5A5A5A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin: 0 10px"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>
+            <span style="font-family: 'Space Grotesk', sans-serif; font-size: 20px; font-weight: 600; color: #BE185D; font-variant-numeric: tabular-nums; min-width: 52px; text-align: right">{{d.to}}</span>
+          </div>
+        </sc-for>
+      </div>
+
+      <div style="display: flex; align-items: center; gap: 10px; font-size: 13px; color: #5A5A5A">
+        <span aria-hidden="true" style="width: 8px; height: 8px; border-radius: 4px; background: #FF5FA2"></span>
+        Your pink Veazy is connected
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{done}}" hint-placeholder-val="{{ false }}">
+    <div style="padding: 96px 24px 0; display: flex; flex-direction: column; align-items: center; gap: 20px; text-align: center">
+      <div class="kiln-pop" style="width: 112px; height: 112px; border-radius: 56px; background: #FF5FA2; display: flex; align-items: center; justify-content: center; box-shadow: 0 16px 40px rgba(255,95,162,.35)">
+        <svg aria-hidden="true" width="52" height="52" viewBox="0 0 24 24" fill="none" stroke="#111111" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path class="kiln-draw" d="M5 12l5 5L20 7"></path></svg>
+      </div>
+      <div class="kiln-in" style="display: flex; flex-direction: column; gap: 8px; animation-delay: .2s">
+        <h1 style="margin: 0; font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 30px; letter-spacing: -0.02em">Saved to your Veazy</h1>
+        <p style="margin: 0; font-size: 15px; line-height: 1.55; color: #5A5A5A">180° to start, double-click for 195°, again for 210°.</p>
+      </div>
+    </div>
+  </sc-if>
+
+  <div style="flex-grow: 1"></div>
+
+  <div style="padding: 0 20px 32px; display: flex; flex-direction: column; gap: 10px">
+    <sc-if value="{{pending}}" hint-placeholder-val="{{ true }}">
+      <button onClick="{{apply}}" class="kiln-press" style="width: 100%; height: 60px; border-radius: 18px; border: none; background: #FF5FA2; color: #111111; font-family: Inter, sans-serif; font-size: 16px; font-weight: 600; cursor: pointer">Apply to my Veazy</button>
+      <button class="kiln-press" style="width: 100%; height: 52px; border-radius: 16px; border: 1px solid #E5E7EB; background: #FFFFFF; color: #1A1A1A; font-family: Inter, sans-serif; font-size: 15px; font-weight: 600; cursor: pointer">Save for later</button>
+    </sc-if>
+    <sc-if value="{{done}}" hint-placeholder-val="{{ false }}">
+      <button onClick="{{reset}}" class="kiln-press" style="width: 100%; height: 60px; border-radius: 18px; border: none; background: #1A1A1A; color: #F9FAFB; font-family: Inter, sans-serif; font-size: 16px; font-weight: 600; cursor: pointer">Done</button>
+    </sc-if>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { done: false };
+  }
+  renderVals() {
+    var self = this;
+    var rows = [
+      { name: 'Base', from: '175°', to: '180°' },
+      { name: 'Boost', from: '185°', to: '195°' },
+      { name: 'Superboost', from: '195°', to: '210°' }
+    ];
+    return {
+      pending: !this.state.done,
+      done: this.state.done,
+      diff: rows.map(function (r, i) { return { name: r.name, from: r.from, to: r.to, divider: i === 0 ? 'transparent' : '#E5E7EB' }; }),
+      apply: function () { self.setState({ done: true }); },
+      reset: function () { self.setState({ done: false }); }
+    };
+  }
+}
+</script>
+</body>
+</html>
