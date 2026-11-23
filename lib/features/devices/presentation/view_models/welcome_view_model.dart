@@ -119,6 +119,11 @@ class WelcomeViewModel {
     }
   }
 
+  void openDemo() {
+    unawaited(_haptics.tick());
+    _navigator.openDemo();
+  }
+
   Future<void> skip() async {
     unawaited(_stopScan());
     final completed = await _completeWelcome();

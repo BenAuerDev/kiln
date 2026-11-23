@@ -3,6 +3,7 @@ import 'package:obers_ui/obers_ui.dart';
 
 import '../../../../../core/l10n/get_app_localizations.dart';
 import '../../../../../core/theme/build_context_x.dart';
+import '../../../domain/extensions/known_device_x.dart';
 import '../../../domain/extensions/device_model_x.dart';
 import '../../../domain/models/connection_status.dart';
 import '../../../domain/models/known_device_entry.dart';
@@ -87,7 +88,23 @@ class KnownDeviceCard extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           gap: const OiResponsive(4),
                           children: [
-                            OiLabel.bodyStrong(name),
+                            Row(
+                              spacing: 8,
+                              children: [
+                                Flexible(
+                                  child: OiLabel.bodyStrong(
+                                    name,
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ),
+                                if (entry.device.isDemo)
+                                  OiBadge.soft(
+                                    label: l10n.devicesDemoBadge,
+                                    size: OiBadgeSize.small,
+                                  ),
+                              ],
+                            ),
                             OiRow(
                               breakpoint: OiBreakpoint.compact,
                               gap: const OiResponsive(6),

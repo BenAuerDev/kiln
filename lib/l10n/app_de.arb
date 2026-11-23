@@ -168,5 +168,15 @@
   "devicesFinishLava": "Lava",
   "devicesFinishBlue": "Blau",
   "devicesFinishPink": "Pink",
-  "devicesFinishMono": "Mono"
+  "devicesFinishMono": "Mono",
+  "devicesDemoTry": "Demo ausprobieren",
+  "devicesDemoTitle": "kiln ohne Gerät ausprobieren",
+  "devicesDemoIntro": "Wähle ein Gerät, das simuliert wird. Es heizt auf, meldet seinen Akku und reagiert auf jede Einstellung. Nichts wird per Bluetooth verbunden und nichts gespeichert.",
+  "devicesDemoBack": "Zurück",
+  "devicesDemoVolcanoDescription": "Live-Temperatur, Heizung und Luft",
+  "devicesDemoPortableDescription": "Heizung, Boost und Akku",
+  "devicesDemoStartSemantics": "Demo von {deviceName} starten",
+  "devicesDemoBadge": "Demo",
+  "devicesDemoLeaveSemantics": "Demo beenden und zurückgehen",
+  "devicesDemoStart": "Starten"
 }

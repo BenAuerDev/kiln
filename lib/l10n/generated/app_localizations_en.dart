@@ -616,4 +616,38 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get devicesFinishMono => 'Mono';
+
+  @override
+  String get devicesDemoTry => 'Try the demo';
+
+  @override
+  String get devicesDemoTitle => 'Try kiln without a device';
+
+  @override
+  String get devicesDemoIntro =>
+      'Pick a device to simulate. It heats up, reports its battery and reacts to every control. Nothing connects over Bluetooth and nothing is saved.';
+
+  @override
+  String get devicesDemoBack => 'Back';
+
+  @override
+  String get devicesDemoVolcanoDescription =>
+      'Live temperature, heater and air';
+
+  @override
+  String get devicesDemoPortableDescription => 'Heater, boost and battery';
+
+  @override
+  String devicesDemoStartSemantics(String deviceName) {
+    return 'Start the $deviceName demo';
+  }
+
+  @override
+  String get devicesDemoBadge => 'Demo';
+
+  @override
+  String get devicesDemoLeaveSemantics => 'Leave the demo and go back';
+
+  @override
+  String get devicesDemoStart => 'Start';
 }

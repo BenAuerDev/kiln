@@ -1111,6 +1111,66 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Mono'**
   String get devicesFinishMono;
+
+  /// No description provided for @devicesDemoTry.
+  ///
+  /// In en, this message translates to:
+  /// **'Try the demo'**
+  String get devicesDemoTry;
+
+  /// No description provided for @devicesDemoTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Try kiln without a device'**
+  String get devicesDemoTitle;
+
+  /// No description provided for @devicesDemoIntro.
+  ///
+  /// In en, this message translates to:
+  /// **'Pick a device to simulate. It heats up, reports its battery and reacts to every control. Nothing connects over Bluetooth and nothing is saved.'**
+  String get devicesDemoIntro;
+
+  /// No description provided for @devicesDemoBack.
+  ///
+  /// In en, this message translates to:
+  /// **'Back'**
+  String get devicesDemoBack;
+
+  /// No description provided for @devicesDemoVolcanoDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Live temperature, heater and air'**
+  String get devicesDemoVolcanoDescription;
+
+  /// No description provided for @devicesDemoPortableDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Heater, boost and battery'**
+  String get devicesDemoPortableDescription;
+
+  /// No description provided for @devicesDemoStartSemantics.
+  ///
+  /// In en, this message translates to:
+  /// **'Start the {deviceName} demo'**
+  String devicesDemoStartSemantics(String deviceName);
+
+  /// No description provided for @devicesDemoBadge.
+  ///
+  /// In en, this message translates to:
+  /// **'Demo'**
+  String get devicesDemoBadge;
+
+  /// No description provided for @devicesDemoLeaveSemantics.
+  ///
+  /// In en, this message translates to:
+  /// **'Leave the demo and go back'**
+  String get devicesDemoLeaveSemantics;
+
+  /// No description provided for @devicesDemoStart.
+  ///
+  /// In en, this message translates to:
+  /// **'Start'**
+  String get devicesDemoStart;
 }
 
 class _AppLocalizationsDelegate

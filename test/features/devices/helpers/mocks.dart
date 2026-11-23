@@ -13,6 +13,8 @@ import 'package:kiln/features/devices/domain/repositories/scan_repository.dart';
 import 'package:kiln/features/devices/domain/use_cases/connect_device_use_case.dart';
 import 'package:kiln/features/devices/domain/use_cases/disconnect_device_use_case.dart';
 import 'package:kiln/features/devices/domain/use_cases/forget_device_use_case.dart';
+import 'package:kiln/features/devices/domain/use_cases/leave_demo_use_case.dart';
+import 'package:kiln/features/devices/domain/use_cases/start_demo_use_case.dart';
 import 'package:kiln/features/devices/domain/use_cases/start_device_scan_use_case.dart';
 import 'package:kiln/features/devices/domain/use_cases/stop_device_scan_use_case.dart';
 import 'package:kiln/features/devices/presentation/navigation/devices_navigator.dart';
@@ -59,3 +61,7 @@ class MockToastService extends Mock implements ToastService {}
 class MockDevicesNavigator extends Mock implements DevicesNavigator {}
 
 class FakeL10nService extends L10nService {}
+
+class MockStartDemoUseCase extends Mock implements StartDemoUseCase {}
+
+class MockLeaveDemoUseCase extends Mock implements LeaveDemoUseCase {}

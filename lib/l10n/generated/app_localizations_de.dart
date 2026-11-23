@@ -620,4 +620,38 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get devicesFinishMono => 'Mono';
+
+  @override
+  String get devicesDemoTry => 'Demo ausprobieren';
+
+  @override
+  String get devicesDemoTitle => 'kiln ohne Gerät ausprobieren';
+
+  @override
+  String get devicesDemoIntro =>
+      'Wähle ein Gerät, das simuliert wird. Es heizt auf, meldet seinen Akku und reagiert auf jede Einstellung. Nichts wird per Bluetooth verbunden und nichts gespeichert.';
+
+  @override
+  String get devicesDemoBack => 'Zurück';
+
+  @override
+  String get devicesDemoVolcanoDescription =>
+      'Live-Temperatur, Heizung und Luft';
+
+  @override
+  String get devicesDemoPortableDescription => 'Heizung, Boost und Akku';
+
+  @override
+  String devicesDemoStartSemantics(String deviceName) {
+    return 'Demo von $deviceName starten';
+  }
+
+  @override
+  String get devicesDemoBadge => 'Demo';
+
+  @override
+  String get devicesDemoLeaveSemantics => 'Demo beenden und zurückgehen';
+
+  @override
+  String get devicesDemoStart => 'Starten';
 }

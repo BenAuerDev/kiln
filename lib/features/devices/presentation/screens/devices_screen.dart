@@ -6,6 +6,7 @@ import 'package:obers_ui/obers_ui.dart';
 
 import '../../../../core/service_locator.dart';
 import '../view_models/devices_view_model.dart';
+import '../widgets/devices/devices_demo_entry.dart';
 import '../widgets/devices/devices_header.dart';
 import '../widgets/devices/devices_notice.dart';
 import '../widgets/devices/known_devices_section.dart';
@@ -41,6 +42,7 @@ class DevicesScreen extends HookWidget {
                   children: [
                     KnownDevicesSection(vm: vm),
                     NearbySection(vm: vm),
+                    DevicesDemoEntry(onTap: vm.openDemo),
                   ],
                 ),
               ),

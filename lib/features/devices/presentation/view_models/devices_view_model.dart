@@ -123,6 +123,11 @@ class DevicesViewModel {
 
   Future<void> pair(DiscoveredDevice device) => _connect(device.id);
 
+  void openDemo() {
+    unawaited(_haptics.tick());
+    _navigator.openDemo();
+  }
+
   void goBack() {
     final active = _knownDevices.activeDevice.value;
     if (active != null) _goHome(active);

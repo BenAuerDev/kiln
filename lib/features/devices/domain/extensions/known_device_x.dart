@@ -1,8 +1,12 @@
+import '../../../../core/ble/demo/demo_device_ids.dart';
 import '../models/device_finish.dart';
 import '../models/finish_preference.dart';
 import '../models/known_device.dart';
 
 extension KnownDeviceX on KnownDevice {
+  /// A simulated demo device (`docs/plan.md`, Demo mode).
+  bool get isDemo => DemoDeviceIds.isDemo(id);
+
   DeviceFinish get effectiveFinish => switch (finishPreference) {
     FixedFinish(:final finish) => finish,
     MatchDevice() => detectedFinish ?? DeviceFinish.ember,

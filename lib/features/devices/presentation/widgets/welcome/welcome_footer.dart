@@ -35,6 +35,12 @@ class WelcomeFooter extends SignalWidget {
               onTap: vm.skip,
             ),
           },
+          OiButton.ghost(
+            label: l10n.devicesDemoTry,
+            fullWidth: true,
+            enabled: vm.connectingId.value == null,
+            onTap: vm.openDemo,
+          ),
           OiLabel.tiny(
             l10n.commonUnofficialNotice,
             textAlign: TextAlign.center,

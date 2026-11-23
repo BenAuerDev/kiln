@@ -232,4 +232,9 @@ void main() {
 
     verify(() => stopScan()).called(1);
   });
+
+  test('openDemo opens the demo picker', () {
+    vm.openDemo();
+    verify(() => navigator.openDemo()).called(1);
+  });
 }

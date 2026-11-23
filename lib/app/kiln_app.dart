@@ -19,9 +19,11 @@ class KilnApp extends HookWidget {
   Widget build(BuildContext context) {
     final vm = useMemoized(() => sl<AppViewModel>());
     useEffect(() => vm.dispose, [vm]);
-    final refresh = useMemoized(() => SignalListenable(vm.welcomeCompleted));
+    final refresh = useMemoized(() => SignalListenable(vm.pastWelcome));
     useEffect(() => refresh.dispose, [refresh]);
-    final router = useMemoized(() => buildAppRouter(refresh: refresh));
+    final router = useMemoized(
+      () => buildAppRouter(refresh: refresh, pastWelcome: vm.pastWelcome),
+    );
     useEffect(() => router.dispose, [router]);
 
     return SignalBuilder(

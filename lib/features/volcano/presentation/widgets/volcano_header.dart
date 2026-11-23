@@ -2,6 +2,7 @@ import 'package:flutter/widgets.dart';
 import 'package:obers_ui/obers_ui.dart';
 import 'package:signals_flutter/signals_flutter.dart';
 
+import '../../../devices/presentation/widgets/demo/demo_badge.dart';
 import '../../../../core/l10n/get_app_localizations.dart';
 import '../../../../core/theme/build_context_x.dart';
 import '../../../devices/domain/models/connection_status.dart';
@@ -57,6 +58,7 @@ class VolcanoHeader extends SignalWidget {
             ],
           ),
         ),
+        const DemoBadge(),
       ],
     );
   }

@@ -103,6 +103,16 @@ void main() {
       verify(() => dataSource.disconnect('a')).called(1);
     });
 
+    test('byUser: false keeps auto-reconnect on', () async {
+      await repository.connect('a');
+
+      final result = await repository.disconnect(byUser: false);
+
+      expect(result.isRight(), isTrue);
+      expect(repository.status.value, ConnectionStatus.disconnected);
+      expect(repository.disconnectedByUser.value, isFalse);
+    });
+
     test('returns the BLE error but still clears the state', () async {
       await repository.connect('a');
       when(

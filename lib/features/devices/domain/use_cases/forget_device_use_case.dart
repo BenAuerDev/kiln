@@ -1,5 +1,6 @@
 import 'package:fpdart/fpdart.dart';
 
+import '../../../../core/ble/demo/demo_device_ids.dart';
 import '../../../../core/errors/app_error.dart';
 import '../../../../core/service_locator.dart';
 import '../repositories/connection_repository.dart';
@@ -22,8 +23,9 @@ class ForgetDeviceUseCase {
     }
     if (_connection.activeDeviceId.value == deviceId) {
       // A failed BLE disconnect still resets the connection state, so the
-      // device is forgotten either way.
-      await _connection.disconnect();
+      // device is forgotten either way. Forgetting the demo is leaving it,
+      // which keeps auto-reconnect to the last real device on.
+      await _connection.disconnect(byUser: !DemoDeviceIds.isDemo(deviceId));
     }
     return _knownDevices.remove(deviceId);
   }

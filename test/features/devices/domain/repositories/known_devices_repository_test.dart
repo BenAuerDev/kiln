@@ -4,6 +4,7 @@ import 'package:kiln/features/devices/data/models/known_device_dto.dart';
 import 'package:kiln/features/devices/domain/models/device_finish.dart';
 import 'package:kiln/features/devices/domain/models/device_model.dart';
 import 'package:kiln/features/devices/domain/models/finish_preference.dart';
+import 'package:kiln/features/devices/domain/models/known_device.dart';
 import 'package:kiln/features/devices/domain/repositories/known_devices_repository.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:signals_flutter/signals_flutter.dart';
@@ -178,5 +179,57 @@ void main() {
 
     activeId.value = null;
     expect(repository.activeDevice.value, isNull);
+  });
+
+  group('demo device', () {
+    const demo = KnownDevice(
+      id: 'demo:veazy',
+      name: 'kiln demo',
+      model: DeviceModel.veazy,
+    );
+
+    test('save keeps it in memory, next to the saved devices', () async {
+      await repository.save(veazy);
+      clearInteractions(dataSource);
+
+      final result = await repository.save(demo);
+
+      expect(result.isRight(), isTrue);
+      expect(repository.demoDevice.value, demo);
+      expect(repository.devices.value, [veazy, demo]);
+      expect(repository.byId('demo:veazy'), demo);
+      verifyNever(() => dataSource.writeAll(any()));
+    });
+
+    test('is the active device while connected', () async {
+      await repository.save(demo);
+      activeId.value = 'demo:veazy';
+      expect(repository.activeDevice.value, demo);
+    });
+
+    test('saving a real device does not persist the demo', () async {
+      await repository.save(demo);
+      await repository.save(volcano);
+      final written =
+          verify(() => dataSource.writeAll(captureAny())).captured.last
+              as List<KnownDeviceDto>;
+      expect(written.map((d) => d.id), ['volcano-id']);
+    });
+
+    test('remove forgets it without touching storage', () async {
+      await repository.save(demo);
+      final result = await repository.remove('demo:veazy');
+      expect(result.isRight(), isTrue);
+      expect(repository.demoDevice.value, isNull);
+      expect(repository.devices.value, isEmpty);
+      verifyNever(() => dataSource.writeAll(any()));
+    });
+
+    test('never becomes the last device', () async {
+      final result = await repository.setLastDeviceId('demo:veazy');
+      expect(result.isRight(), isTrue);
+      expect(repository.lastDeviceId.value, isNull);
+      verifyNever(() => dataSource.writeLastDeviceId(any()));
+    });
   });
 }

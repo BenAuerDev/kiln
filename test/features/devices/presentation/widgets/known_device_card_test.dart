@@ -1,6 +1,8 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:kiln/features/devices/domain/models/connection_status.dart';
+import 'package:kiln/features/devices/domain/models/device_model.dart';
+import 'package:kiln/features/devices/domain/models/known_device.dart';
 import 'package:kiln/features/devices/domain/models/known_device_entry.dart';
 import 'package:kiln/features/devices/presentation/widgets/devices/known_device_card.dart';
 
@@ -76,5 +78,27 @@ void main() {
     await tester.tap(find.text('Cancel'));
     await tester.tap(find.text('Forget'));
     expect(actions, ['cancel', 'confirm']);
+  });
+
+  testWidgets('a demo device is labelled as demo', (tester) async {
+    await pumpKiln(
+      tester,
+      card(
+        const KnownDeviceEntry(
+          device: KnownDevice(
+            id: 'demo:veazy',
+            name: 'kiln demo',
+            model: DeviceModel.veazy,
+          ),
+          status: ConnectionStatus.connected,
+        ),
+      ),
+    );
+    expect(find.text('Demo'), findsOneWidget);
+  });
+
+  testWidgets('a real device has no demo label', (tester) async {
+    await pumpKiln(tester, card(const KnownDeviceEntry(device: veazy)));
+    expect(find.text('Demo'), findsNothing);
   });
 }

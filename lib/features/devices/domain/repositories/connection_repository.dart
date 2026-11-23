@@ -113,13 +113,16 @@ class ConnectionRepository {
     return _startReconnect(deviceId, afterDrop: false);
   }
 
-  Future<Either<AppError, Unit>> disconnect() async {
+  /// [byUser]: an explicit disconnect that keeps auto-reconnect off until
+  /// the next connect. Leaving the demo passes `false`, so the last real
+  /// device comes back on the next resume.
+  Future<Either<AppError, Unit>> disconnect({bool byUser = true}) async {
     final id = _activeDeviceId.value;
     _generation++;
     _reconnectJob = null;
     _activeDeviceId.value = null;
     _status.value = ConnectionStatus.disconnected;
-    _disconnectedByUser.value = true;
+    _disconnectedByUser.value = byUser;
     await _cancelStateSubscription();
     if (id == null) return right(unit);
     try {

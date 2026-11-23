@@ -1,6 +1,7 @@
 import 'package:go_router/go_router.dart';
 
 import '../../../core/router/route_paths.dart';
+import 'screens/demo_screen.dart';
 import 'screens/devices_screen.dart';
 import 'screens/welcome_screen.dart';
 
@@ -14,4 +15,13 @@ class DevicesRoute extends GoRoute {
     : super(path: RoutePaths.devices, builder: (_, _) => const DevicesScreen());
 }
 
-List<RouteBase> devicesRoutes() => [WelcomeRoute(), DevicesRoute()];
+class DemoRoute extends GoRoute {
+  DemoRoute()
+    : super(path: RoutePaths.demo, builder: (_, _) => const DemoScreen());
+}
+
+List<RouteBase> devicesRoutes() => [
+  WelcomeRoute(),
+  DevicesRoute(),
+  DemoRoute(),
+];

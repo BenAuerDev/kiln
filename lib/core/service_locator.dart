@@ -8,6 +8,7 @@ import '../features/devices/setup_dependencies.dart';
 import '../features/portable/setup_dependencies.dart';
 import '../features/volcano/setup_dependencies.dart';
 import 'ble/ble_client.dart';
+import 'ble/demo/ble_simulator.dart';
 import 'l10n/l10n_service.dart';
 import 'services/app_lifecycle_service.dart';
 import 'services/haptics_service.dart';
@@ -19,7 +20,8 @@ final sl = GetIt.instance;
 void setupServiceLocator() {
   sl
     ..registerLazySingleton(SharedPreferencesAsync.new)
-    ..registerLazySingleton(BleClient.new)
+    ..registerLazySingleton(BleSimulator.new)
+    ..registerLazySingleton(() => BleClient(sl()))
     ..registerLazySingleton(HapticsService.new)
     ..registerLazySingleton(ToastService.new)
     ..registerLazySingleton(L10nService.new)

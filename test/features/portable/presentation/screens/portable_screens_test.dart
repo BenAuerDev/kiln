@@ -19,6 +19,7 @@ import 'package:kiln/features/portable/presentation/view_models/portable_tab.dar
 import 'package:kiln/features/portable/presentation/widgets/control/portable_heat_wisps.dart';
 import 'package:mocktail/mocktail.dart';
 
+import '../../../devices/helpers/demo_badge_stub.dart';
 import '../../helpers/portable_fixtures.dart';
 import '../presentation_mocks.dart';
 import '../pump_app.dart';
@@ -41,6 +42,7 @@ void main() {
     navigator = MockPortableNavigator();
     h.activeDeviceId.value = deviceId;
     h.connectionStatus.value = ConnectionStatus.connected;
+    registerDemoBadge();
   });
 
   tearDown(sl.reset);

@@ -55,6 +55,8 @@ void main() {
   late MockSetPortablePollingUseCase setPolling;
   late MockSyncPortableReconnectUseCase syncReconnect;
   late Signal<PortableStatus?> portableStatus;
+  late Signal<bool> welcomeCompleted;
+  late Signal<List<KnownDevice>> devices;
   late AppViewModel vm;
 
   setUpAll(() => registerFallbackValue(const [Locale('en')]));
@@ -77,6 +79,10 @@ void main() {
     final portable = MockPortableRepository();
     when(() => portable.status).thenReturn(portableStatus);
     when(() => settings.localeCode).thenReturn(localeCode);
+    welcomeCompleted = signal(false);
+    devices = signal(const []);
+    when(() => settings.welcomeCompleted).thenReturn(welcomeCompleted);
+    when(() => knownDevices.devices).thenReturn(devices);
     when(() => knownDevices.activeDevice).thenReturn(activeDevice);
     when(() => lifecycleService.state).thenReturn(lifecycle);
     when(() => reconnect()).thenAnswer((_) async => right(none()));
@@ -94,6 +100,37 @@ void main() {
   });
 
   tearDown(() => vm.dispose());
+
+  group('pastWelcome', () {
+    test('is false before the welcome is completed', () {
+      expect(vm.pastWelcome.value, isFalse);
+    });
+
+    test('is true once the welcome is completed', () {
+      welcomeCompleted.value = true;
+      expect(vm.pastWelcome.value, isTrue);
+    });
+
+    test('is true while a demo runs, and false again after it', () {
+      devices.value = const [
+        KnownDevice(
+          id: 'demo:veazy',
+          name: 'kiln demo',
+          model: DeviceModel.veazy,
+        ),
+      ];
+      expect(vm.pastWelcome.value, isTrue);
+      devices.value = const [];
+      expect(vm.pastWelcome.value, isFalse);
+    });
+
+    test('stays true for a device paired during a demo', () {
+      devices.value = const [
+        KnownDevice(id: 'real', name: 'S&B VZ1', model: DeviceModel.veazy),
+      ];
+      expect(vm.pastWelcome.value, isTrue);
+    });
+  });
 
   group('finish', () {
     test('is ember without an active device', () {

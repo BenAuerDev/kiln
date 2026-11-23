@@ -1,6 +1,7 @@
 import 'package:fpdart/fpdart.dart';
 import 'package:signals_flutter/signals_flutter.dart';
 
+import '../../../../core/ble/demo/demo_device_ids.dart';
 import '../../../../core/errors/app_error.dart';
 import '../../../../core/service_locator.dart';
 import '../../data/data_sources/known_devices_data_source.dart';
@@ -24,8 +25,16 @@ class KnownDevicesRepository {
   late final ConnectionRepository _connection =
       _connectionOverride ?? sl<ConnectionRepository>();
 
-  final _devices = signal<List<KnownDevice>>(const []);
+  final _saved = signal<List<KnownDevice>>(const []);
+  final _demo = signal<KnownDevice?>(null);
   final _lastDeviceId = signal<String?>(null);
+
+  late final Computed<List<KnownDevice>> _devices = computed(() {
+    final demo = _demo.value;
+    return demo == null
+        ? _saved.value
+        : List.unmodifiable([..._saved.value, demo]);
+  });
 
   late final Computed<KnownDevice?> _activeDevice = computed(() {
     final id = _connection.activeDeviceId.value;
@@ -33,7 +42,11 @@ class KnownDevicesRepository {
     return _devices.value.where((d) => d.id == id).firstOrNull;
   });
 
+  /// Saved devices, plus the demo device while a demo runs.
   ReadonlySignal<List<KnownDevice>> get devices => _devices;
+
+  /// The demo device while a demo runs. It lives in memory only.
+  ReadonlySignal<KnownDevice?> get demoDevice => _demo;
 
   /// The device kiln reconnects to on start and resume.
   ReadonlySignal<String?> get lastDeviceId => _lastDeviceId;
@@ -50,7 +63,7 @@ class KnownDevicesRepository {
   Future<Either<AppError, Unit>> load() async {
     try {
       final stored = await _dataSource.readAll();
-      _devices.value = List.unmodifiable(stored.map(_toDomainOrNull).nonNulls);
+      _saved.value = List.unmodifiable(stored.map(_toDomainOrNull).nonNulls);
       _lastDeviceId.value = await _dataSource.readLastDeviceId();
       return right(unit);
     } catch (_) {
@@ -58,9 +71,14 @@ class KnownDevicesRepository {
     }
   }
 
-  /// Inserts [device] or replaces the entry with the same id in place.
+  /// Inserts [device] or replaces the entry with the same id in place. A
+  /// demo device is kept in memory and never written to storage.
   Future<Either<AppError, Unit>> save(KnownDevice device) {
-    final current = _devices.value;
+    if (DemoDeviceIds.isDemo(device.id)) {
+      _demo.value = device;
+      return Future.value(right(unit));
+    }
+    final current = _saved.value;
     final exists = current.any((d) => d.id == device.id);
     return _persist(
       exists
@@ -70,14 +88,21 @@ class KnownDevicesRepository {
   }
 
   Future<Either<AppError, Unit>> remove(String id) async {
+    if (DemoDeviceIds.isDemo(id)) {
+      if (_demo.value?.id == id) _demo.value = null;
+      return right(unit);
+    }
     final result = await _persist(
-      _devices.value.where((d) => d.id != id).toList(),
+      _saved.value.where((d) => d.id != id).toList(),
     );
     if (result.isLeft() || _lastDeviceId.value != id) return result;
     return setLastDeviceId(null);
   }
 
+  /// A demo device never becomes the device kiln reconnects to; asking for
+  /// it changes nothing.
   Future<Either<AppError, Unit>> setLastDeviceId(String? id) async {
+    if (id != null && DemoDeviceIds.isDemo(id)) return right(unit);
     try {
       await _dataSource.writeLastDeviceId(id);
       _lastDeviceId.value = id;
@@ -90,7 +115,7 @@ class KnownDevicesRepository {
   Future<Either<AppError, Unit>> _persist(List<KnownDevice> devices) async {
     try {
       await _dataSource.writeAll(devices.map(_toDto).toList());
-      _devices.value = List.unmodifiable(devices);
+      _saved.value = List.unmodifiable(devices);
       return right(unit);
     } catch (_) {
       return left(const AppError.storage());

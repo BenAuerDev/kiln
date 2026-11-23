@@ -15,9 +15,27 @@ class DevicesNavigator {
 
   void goToDevices() => _go(RoutePaths.devices);
 
-  void _go(String path) {
+  void goToWelcome() => _go(RoutePaths.welcome);
+
+  /// On top of the current screen, so back returns to it.
+  void openDemo() => _router?.push(RoutePaths.demo);
+
+  /// Pops the current screen, or goes to [fallback] when there is nothing to
+  /// pop.
+  void back({required String fallback}) {
+    final router = _router;
+    if (router == null) return;
+    if (router.canPop()) {
+      router.pop();
+    } else {
+      router.go(fallback);
+    }
+  }
+
+  void _go(String path) => _router?.go(path);
+
+  GoRouter? get _router {
     final context = rootNavigatorKey.currentContext;
-    if (context == null) return;
-    GoRouter.of(context).go(path);
+    return context == null ? null : GoRouter.of(context);
   }
 }

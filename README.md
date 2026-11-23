@@ -31,6 +31,13 @@ An unofficial, open-source app for Storz & Bickel vaporizers: **Volcano Hybrid**
 - Target temperature with − / + and presets
 - Heater and air on and off
 
+### Demo mode
+
+No device at hand? "Try the demo" on the welcome or devices screen opens a
+simulated Volcano Hybrid, Venty or Veazy. They heat up, report their battery
+and react to every control. Nothing connects over Bluetooth and nothing is
+saved; the device screens show a "Demo" badge that leaves the demo.
+
 ### All devices
 
 - Remembers your devices and reconnects to the last one on its own
@@ -177,8 +184,9 @@ upgrading Flutter locally.
 - [`docs/conventions.md`](docs/conventions.md): coding conventions.
 - [`docs/brief.md`](docs/brief.md): the original brief.
 - [`design/`](design/): the design mockups ([`design/DESIGN.md`](design/DESIGN.md) is the index).
-- `lib/core/`: Bluetooth client, router, theme (all colours in
-  `kiln_palette.dart`), localisation and shared widgets.
+- `lib/core/`: Bluetooth client (with the demo devices in `ble/demo/`),
+  router, theme (all colours in `kiln_palette.dart`), localisation and shared
+  widgets.
 - `lib/features/`: `devices`, `portable` (Venty/Veazy), `volcano` and
   `app_settings`.
 
@@ -203,6 +211,10 @@ these open-source projects:
 UI built with [Obers UI](https://github.com/SimonErich/obers_ui). Fonts:
 [Inter](https://rsms.me/inter/) and [Space Grotesk](https://github.com/floriankarsten/space-grotesk),
 both under the SIL Open Font License (`assets/fonts/OFL-*.txt`).
+
+The demo mode idea comes from
+[venty-android](https://github.com/orth4x0r/venty-android) (MIT); kiln's
+simulator is its own code.
 
 Bluetooth via [flutter_blue_plus](https://github.com/chipweinberger/flutter_blue_plus),
 used under its non-profit licence: kiln is a non-commercial project.

@@ -465,5 +465,22 @@
   "devicesFinishLava": "Lava",
   "devicesFinishBlue": "Blue",
   "devicesFinishPink": "Pink",
-  "devicesFinishMono": "Mono"
+  "devicesFinishMono": "Mono",
+  "devicesDemoTry": "Try the demo",
+  "devicesDemoTitle": "Try kiln without a device",
+  "devicesDemoIntro": "Pick a device to simulate. It heats up, reports its battery and reacts to every control. Nothing connects over Bluetooth and nothing is saved.",
+  "devicesDemoBack": "Back",
+  "devicesDemoVolcanoDescription": "Live temperature, heater and air",
+  "devicesDemoPortableDescription": "Heater, boost and battery",
+  "devicesDemoStartSemantics": "Start the {deviceName} demo",
+  "@devicesDemoStartSemantics": {
+    "placeholders": {
+      "deviceName": {
+        "type": "String"
+      }
+    }
+  },
+  "devicesDemoBadge": "Demo",
+  "devicesDemoLeaveSemantics": "Leave the demo and go back",
+  "devicesDemoStart": "Start"
 }

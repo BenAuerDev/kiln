@@ -11,13 +11,17 @@ import 'domain/services/scan_filter_service.dart';
 import 'domain/use_cases/connect_device_use_case.dart';
 import 'domain/use_cases/disconnect_device_use_case.dart';
 import 'domain/use_cases/forget_device_use_case.dart';
+import 'domain/use_cases/leave_demo_use_case.dart';
 import 'domain/use_cases/load_known_devices_use_case.dart';
 import 'domain/use_cases/reconnect_last_device_use_case.dart';
 import 'domain/use_cases/set_detected_finish_use_case.dart';
 import 'domain/use_cases/set_device_finish_use_case.dart';
+import 'domain/use_cases/start_demo_use_case.dart';
 import 'domain/use_cases/start_device_scan_use_case.dart';
 import 'domain/use_cases/stop_device_scan_use_case.dart';
 import 'presentation/navigation/devices_navigator.dart';
+import 'presentation/view_models/demo_badge_view_model.dart';
+import 'presentation/view_models/demo_view_model.dart';
 import 'presentation/view_models/devices_view_model.dart';
 import 'presentation/view_models/welcome_view_model.dart';
 
@@ -42,6 +46,10 @@ void setupDevicesDependencies() {
     ..registerFactory(SetDetectedFinishUseCase.new)
     ..registerFactory(ReconnectLastDeviceUseCase.new)
     ..registerFactory(LoadKnownDevicesUseCase.new)
+    ..registerFactory(StartDemoUseCase.new)
+    ..registerFactory(LeaveDemoUseCase.new)
+    ..registerFactory(DemoViewModel.new)
+    ..registerFactory(DemoBadgeViewModel.new)
     ..registerFactory(WelcomeViewModel.new)
     ..registerFactory(DevicesViewModel.new);
 }

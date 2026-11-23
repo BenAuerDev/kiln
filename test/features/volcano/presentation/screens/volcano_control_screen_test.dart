@@ -15,6 +15,7 @@ import 'package:mocktail/mocktail.dart';
 import 'package:obers_ui/obers_ui.dart';
 import 'package:signals_flutter/signals_flutter.dart';
 
+import '../../../devices/helpers/demo_badge_stub.dart';
 import '../../mocks.dart';
 
 void main() {
@@ -60,6 +61,7 @@ void main() {
     when(() => setTarget(any())).thenAnswer((_) async => right(some(200)));
     when(() => togglePump()).thenAnswer((_) async => right(true));
 
+    registerDemoBadge();
     sl.registerFactory(
       () => VolcanoControlViewModel(
         repository: repository,

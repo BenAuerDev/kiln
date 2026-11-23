@@ -12,6 +12,7 @@ import '../core/theme/kiln_tokens.dart';
 import '../features/app_settings/domain/repositories/app_settings_repository.dart';
 import '../features/devices/domain/extensions/known_device_x.dart';
 import '../features/devices/domain/repositories/known_devices_repository.dart';
+import '../features/devices/domain/services/welcome_gate.dart';
 import '../features/devices/domain/use_cases/reconnect_last_device_use_case.dart';
 import '../features/devices/presentation/extensions/device_finish_x.dart';
 import '../features/portable/domain/repositories/portable_repository.dart';
@@ -87,8 +88,16 @@ class AppViewModel {
   final SyncPortableReconnectUseCase _syncPortableReconnect;
   final List<void Function()> _effects = [];
 
-  /// Drives the router redirect away from the welcome flow.
-  ReadonlySignal<bool> get welcomeCompleted => _settings.welcomeCompleted;
+  /// Drives the router redirect: until the welcome is completed or a device
+  /// is known (saved, or the demo device), only the welcome and the demo
+  /// picker are reachable. A device paired from the devices screen during a
+  /// demo therefore keeps the app past the welcome.
+  late final Computed<bool> pastWelcome = computed(
+    () => WelcomeGate.isPast(
+      welcomeCompleted: _settings.welcomeCompleted.value,
+      devices: _knownDevices.devices.value,
+    ),
+  );
 
   late final Computed<Locale?> locale = computed(() {
     final code = _settings.localeCode.value;
@@ -108,6 +117,7 @@ class AppViewModel {
     for (final dispose in _effects) {
       dispose();
     }
+    pastWelcome.dispose();
     locale.dispose();
     finish.dispose();
     title.dispose();
