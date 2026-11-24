@@ -16,12 +16,13 @@ extension VolcanoStatusX on VolcanoStatus {
   }
 
   /// Position of the current temperature on the 40–230 °C gauge, 0–1.
-  double get currentFraction => _fraction(currentTemperature ?? 0);
+  double get currentFraction => gaugeFraction(currentTemperature ?? 0);
 
   /// Position of the target on the 40–230 °C gauge, 0–1.
-  double get targetFraction => _fraction(targetTemperature.toDouble());
+  double get targetFraction => gaugeFraction(targetTemperature.toDouble());
 
-  static double _fraction(double celsius) =>
+  /// Position of [celsius] on the 40–230 °C gauge, 0–1.
+  static double gaugeFraction(double celsius) =>
       ((celsius - VolcanoTargetRules.minimum) /
               (VolcanoTargetRules.maximum - VolcanoTargetRules.minimum))
           .clamp(0.0, 1.0);

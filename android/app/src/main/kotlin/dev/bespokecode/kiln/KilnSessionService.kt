@@ -20,15 +20,27 @@ import android.os.IBinder
  * Swiping kiln away from recents ends it (stopWithTask in the manifest).
  */
 class KilnSessionService : Service() {
+    /** Dart asked for the stop (or there was nothing to keep alive). */
+    private var stopExpected = false
+
     override fun onBind(intent: Intent?): IBinder? = null
+
+    override fun onDestroy() {
+        // Otherwise the task was swiped away (stopWithTask) or kiln is
+        // finishing: its Dart side is about to go with the process.
+        if (!stopExpected) KilnWidgets.goOffline(this)
+        super.onDestroy()
+    }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         if (intent?.action == ACTION_STOP) {
+            stopExpected = true
             // Only if no newer start is queued: that one still owes
             // startForeground(), and stopping now would crash it.
             stopSelf(startId)
             return START_NOT_STICKY
         }
+        stopExpected = false
         val notification = sessionNotification(
             this,
             intent?.getStringExtra(EXTRA_TITLE) ?: "",
@@ -47,6 +59,7 @@ class KilnSessionService : Service() {
         } catch (e: SecurityException) {
             // Android 14+: a connectedDevice service needs the Bluetooth
             // permission. Without it there is nothing to keep alive anyway.
+            stopExpected = true
             stopSelf()
         }
         return START_NOT_STICKY

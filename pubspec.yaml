@@ -23,6 +23,7 @@ dependencies:
     sdk: flutter
   obers_ui:
     git: https://github.com/SimonErich/obers_ui.git
+  home_widget: ^0.10.0
 
 dev_dependencies:
   flutter_test:

@@ -329,6 +329,56 @@ starts the service when kiln is opened. **owner**: test on the phone.
   Air buttons send an intent that the service forwards to Dart. Without a
   running service they open kiln.
 
+**Status:** built (feature `home_widgets`). Storage and refresh go through
+the `home_widget` package (BSD-3-Clause): Dart saves one JSON string per
+widget into its `HomeWidgetPreferences` (texts from the `.arb` files, colours
+as ARGB from the finish's dark tokens) plus a live flag each, then calls
+`updateWidget`; `PortableWidgetProvider` and `VolcanoWidgetProvider` extend
+`HomeWidgetProvider` and draw RemoteViews. `HomeWidgetsViewModel` (app-level,
+like `BackgroundViewModel`) pushes changes only, never for demo devices.
+
+- Venty/Veazy widget, built like the Volcano one: a battery
+  ring holding the device's line drawing (device_glyph_painter.dart, drawn
+  in Kotlin), live status, the Setup tab's ladder bar with base / boost /
+  superboost, and Heat / Boost (Boost steps boost → superboost → off like
+  the app button). After a disconnect it keeps the last values, the ring
+  turns grey and a tap opens kiln. No timestamp yet.
+- Volcano widget (the wide card of `Widgets.dc.html`): gauge (a bitmap drawn
+  in Kotlin), temperature, status, Heat and Air.
+- Both are 4×1 by default: one row with gauge or ring, name, status (and
+  the three temperatures on the Venty/Veazy) and the two buttons. Resized
+  to two rows they show the full card. Android 12+ picks the layout as the
+  widget is resized; below that the provider picks it from the size.
+- Each widget is live while its kind of device (real, not demo) is
+  connected *and* kiln's Flutter engine runs (`KilnWidgets.dispatcher`,
+  set by `MainActivity`). Android can kill kiln without Dart noticing, so
+  Kotlin takes both widgets offline itself (`KilnWidgets.goOffline`) when
+  the engine starts or goes, and when the service ends without Dart asking (a
+  swipe from recents). A low-memory kill while nothing heats leaves the
+  last drawing until the next tap, which then redraws it offline.
+- Change from the plan above: the buttons (both widgets) do not go
+  through the service. They send a broadcast to their provider, which
+  hands them to Dart (`KilnWidgets.onButton`)
+  over the `dev.bespokecode.kiln/widgets` channel and the
+  `HandleHomeWidgetActionUseCase` (same toggles as the control screens). So
+  they also work while kiln runs in the background with the heater off; the
+  receiver holds the broadcast (`goAsync`) until Dart has sent the write, so
+  a cached, frozen kiln wakes up for it. While kiln is cached and nothing
+  heats, Android may freeze it again, and the widget then lags behind the
+  device until the next tap or until kiln is opened.
+  home_widget's own interactivity callback was not used: it runs in a
+  separate isolate without the Bluetooth link. Offline, a tap anywhere opens
+  kiln.
+- **owner**: test on the phone. Heat from the widget while kiln is in the
+  background and nothing heats starts the foreground service from the
+  background; Android allows that after a widget tap, but this needs a real
+  check. Also check the widget sizes on your launcher (labels shrink to fit
+  from Android 8).
+- home_widget 0.10.0 brings Glance and WorkManager along, which add the
+  `RECEIVE_BOOT_COMPLETED`, `WAKE_LOCK` and `ACCESS_NETWORK_STATE`
+  permissions and a boot receiver to the merged manifest. kiln uses none of
+  them.
+
 ## 7. Sessions and insights
 
 - A session = heater on → heater off (or link lost), per device: start, end,

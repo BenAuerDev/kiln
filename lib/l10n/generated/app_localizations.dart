@@ -1741,6 +1741,126 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Ready to go.'**
   String get backgroundReadyPlain;
+
+  /// No description provided for @homeWidgetBattery.
+  ///
+  /// In en, this message translates to:
+  /// **'{percent}%'**
+  String homeWidgetBattery(int percent);
+
+  /// No description provided for @homeWidgetBase.
+  ///
+  /// In en, this message translates to:
+  /// **'Base'**
+  String get homeWidgetBase;
+
+  /// No description provided for @homeWidgetBoost.
+  ///
+  /// In en, this message translates to:
+  /// **'Boost'**
+  String get homeWidgetBoost;
+
+  /// No description provided for @homeWidgetSuper.
+  ///
+  /// In en, this message translates to:
+  /// **'Super'**
+  String get homeWidgetSuper;
+
+  /// No description provided for @homeWidgetTemperature.
+  ///
+  /// In en, this message translates to:
+  /// **'{temperature}°'**
+  String homeWidgetTemperature(int temperature);
+
+  /// No description provided for @homeWidgetNoTemperature.
+  ///
+  /// In en, this message translates to:
+  /// **'–'**
+  String get homeWidgetNoTemperature;
+
+  /// No description provided for @homeWidgetHeating.
+  ///
+  /// In en, this message translates to:
+  /// **'Heating to {target}°'**
+  String homeWidgetHeating(int target);
+
+  /// No description provided for @homeWidgetReady.
+  ///
+  /// In en, this message translates to:
+  /// **'Ready at {target}°'**
+  String homeWidgetReady(int target);
+
+  /// No description provided for @homeWidgetHeaterOff.
+  ///
+  /// In en, this message translates to:
+  /// **'Heater off · {target}°'**
+  String homeWidgetHeaterOff(int target);
+
+  /// No description provided for @homeWidgetOffline.
+  ///
+  /// In en, this message translates to:
+  /// **'Not connected'**
+  String get homeWidgetOffline;
+
+  /// No description provided for @homeWidgetHeat.
+  ///
+  /// In en, this message translates to:
+  /// **'Heat'**
+  String get homeWidgetHeat;
+
+  /// No description provided for @homeWidgetHeatOff.
+  ///
+  /// In en, this message translates to:
+  /// **'Heat off'**
+  String get homeWidgetHeatOff;
+
+  /// No description provided for @homeWidgetAir.
+  ///
+  /// In en, this message translates to:
+  /// **'Air'**
+  String get homeWidgetAir;
+
+  /// No description provided for @homeWidgetAirOff.
+  ///
+  /// In en, this message translates to:
+  /// **'Air off'**
+  String get homeWidgetAirOff;
+
+  /// No description provided for @homeWidgetVolcanoGauge.
+  ///
+  /// In en, this message translates to:
+  /// **'{device} at {temperature} of {target} degrees'**
+  String homeWidgetVolcanoGauge(String device, int temperature, int target);
+
+  /// No description provided for @homeWidgetVolcanoGaugeNoReading.
+  ///
+  /// In en, this message translates to:
+  /// **'{device}, no temperature yet'**
+  String homeWidgetVolcanoGaugeNoReading(String device);
+
+  /// No description provided for @homeWidgetSuperBoost.
+  ///
+  /// In en, this message translates to:
+  /// **'Superboost'**
+  String get homeWidgetSuperBoost;
+
+  /// No description provided for @homeWidgetBoostOff.
+  ///
+  /// In en, this message translates to:
+  /// **'Boost off'**
+  String get homeWidgetBoostOff;
+
+  /// No description provided for @homeWidgetPortableRing.
+  ///
+  /// In en, this message translates to:
+  /// **'{device}, battery {percent}%'**
+  String homeWidgetPortableRing(String device, int percent);
+
+  /// No description provided for @homeWidgetPortableLadder.
+  ///
+  /// In en, this message translates to:
+  /// **'Base {base}°, boost {boost}°, superboost {superBoost}°'**
+  String homeWidgetPortableLadder(int base, int boost, int superBoost);
 }
 
 class _AppLocalizationsDelegate

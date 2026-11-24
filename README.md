@@ -37,6 +37,13 @@ An unofficial, open-source app for Storz & Bickel vaporizers: **Volcano Hybrid**
   185 °C, fill the next one, heater off. Presets plus your own, with a live
   step timeline; Skip and Stop at any time (Stop turns heater and air off)
 
+### Home-screen widgets (Android)
+
+- Venty / Veazy: battery ring, live status, base / boost / superboost and
+  Heat and Boost buttons; the last values stay after a session
+- Volcano: live temperature with Heat and Air buttons
+- While kiln is not connected, a tap opens kiln
+
 ### Demo mode
 
 No device at hand? "Try the demo" on the welcome or devices screen opens a
@@ -199,14 +206,16 @@ upgrading Flutter locally.
   router, theme (all colours in `kiln_palette.dart`), localisation and shared
   widgets.
 - `lib/features/`: `devices`, `portable` (Venty/Veazy), `volcano`,
-  `workflows` (Volcano workflows), `ramps` (Venty/Veazy ramps) and
+  `workflows` (Volcano workflows), `ramps` (Venty/Veazy ramps),
+  `background` (foreground service and notifications), `home_widgets` and
   `app_settings`.
 
 ## Not done yet
 
 - °F in the app (it always shows °C)
 - Crafty+ support
-- Insights, sharing setups, home-screen widgets
+- Insights, sharing setups
+- Home-screen widgets on iOS
 - iOS build and alternate iOS icons per finish
 
 ## Credits
@@ -229,6 +238,8 @@ simulator is its own code.
 
 Bluetooth via [flutter_blue_plus](https://github.com/chipweinberger/flutter_blue_plus),
 used under its non-profit licence: kiln is a non-commercial project.
+Home-screen widgets via [home_widget](https://github.com/ABausG/home_widget)
+(BSD-3-Clause).
 
 ## Licence
 

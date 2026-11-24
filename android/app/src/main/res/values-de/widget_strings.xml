@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="widget_portable_label">Venty / Veazy</string>
+    <string name="widget_portable_description">Akku, Temperaturen, Heizen und Boost</string>
+    <string name="widget_portable_empty">Öffne kiln einmal mit deinem Venty oder Veazy.</string>
+    <string name="widget_volcano_label">Volcano Hybrid</string>
+    <string name="widget_volcano_description">Live-Temperatur, Heizen und Luft</string>
+    <string name="widget_volcano_empty">Öffne kiln einmal mit deinem Volcano.</string>
+</resources>

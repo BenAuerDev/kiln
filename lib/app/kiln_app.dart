@@ -10,6 +10,7 @@ import '../core/service_locator.dart';
 import '../core/theme/kiln_theme.dart';
 import '../core/theme/kiln_theme_scope.dart';
 import '../features/background/presentation/view_models/background_view_model.dart';
+import '../features/home_widgets/presentation/view_models/home_widgets_view_model.dart';
 import '../l10n/generated/app_localizations.dart';
 import 'app_view_model.dart';
 
@@ -22,6 +23,8 @@ class KilnApp extends HookWidget {
     useEffect(() => vm.dispose, [vm]);
     final background = useMemoized(() => sl<BackgroundViewModel>());
     useEffect(() => background.dispose, [background]);
+    final homeWidgets = useMemoized(() => sl<HomeWidgetsViewModel>());
+    useEffect(() => homeWidgets.dispose, [homeWidgets]);
     final refresh = useMemoized(() => SignalListenable(vm.pastWelcome));
     useEffect(() => refresh.dispose, [refresh]);
     final router = useMemoized(

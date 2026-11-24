@@ -6,6 +6,7 @@ import '../app/app_view_model.dart';
 import '../features/app_settings/setup_dependencies.dart';
 import '../features/background/setup_dependencies.dart';
 import '../features/devices/setup_dependencies.dart';
+import '../features/home_widgets/setup_dependencies.dart';
 import '../features/portable/setup_dependencies.dart';
 import '../features/ramps/setup_dependencies.dart';
 import '../features/volcano/setup_dependencies.dart';
@@ -44,4 +45,5 @@ void setupServiceLocator() {
   setupVolcanoDependencies();
   setupWorkflowsDependencies();
   setupBackgroundDependencies();
+  setupHomeWidgetsDependencies();
 }

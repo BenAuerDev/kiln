@@ -857,5 +857,103 @@
     }
   },
   "backgroundReadyVolcano": "Time to fill a balloon.",
-  "backgroundReadyPlain": "Ready to go."
+  "backgroundReadyPlain": "Ready to go.",
+  "homeWidgetBattery": "{percent}%",
+  "@homeWidgetBattery": {
+    "placeholders": {
+      "percent": {
+        "type": "int"
+      }
+    }
+  },
+  "homeWidgetBase": "Base",
+  "homeWidgetBoost": "Boost",
+  "homeWidgetSuper": "Super",
+  "homeWidgetTemperature": "{temperature}°",
+  "@homeWidgetTemperature": {
+    "placeholders": {
+      "temperature": {
+        "type": "int"
+      }
+    }
+  },
+  "homeWidgetNoTemperature": "–",
+  "homeWidgetHeating": "Heating to {target}°",
+  "@homeWidgetHeating": {
+    "placeholders": {
+      "target": {
+        "type": "int"
+      }
+    }
+  },
+  "homeWidgetReady": "Ready at {target}°",
+  "@homeWidgetReady": {
+    "placeholders": {
+      "target": {
+        "type": "int"
+      }
+    }
+  },
+  "homeWidgetHeaterOff": "Heater off · {target}°",
+  "@homeWidgetHeaterOff": {
+    "placeholders": {
+      "target": {
+        "type": "int"
+      }
+    }
+  },
+  "homeWidgetOffline": "Not connected",
+  "homeWidgetHeat": "Heat",
+  "homeWidgetHeatOff": "Heat off",
+  "homeWidgetAir": "Air",
+  "homeWidgetAirOff": "Air off",
+  "homeWidgetVolcanoGauge": "{device} at {temperature} of {target} degrees",
+  "@homeWidgetVolcanoGauge": {
+    "placeholders": {
+      "device": {
+        "type": "String"
+      },
+      "temperature": {
+        "type": "int"
+      },
+      "target": {
+        "type": "int"
+      }
+    }
+  },
+  "homeWidgetVolcanoGaugeNoReading": "{device}, no temperature yet",
+  "@homeWidgetVolcanoGaugeNoReading": {
+    "placeholders": {
+      "device": {
+        "type": "String"
+      }
+    }
+  },
+  "homeWidgetSuperBoost": "Superboost",
+  "homeWidgetBoostOff": "Boost off",
+  "homeWidgetPortableRing": "{device}, battery {percent}%",
+  "@homeWidgetPortableRing": {
+    "placeholders": {
+      "device": {
+        "type": "String"
+      },
+      "percent": {
+        "type": "int"
+      }
+    }
+  },
+  "homeWidgetPortableLadder": "Base {base}°, boost {boost}°, superboost {superBoost}°",
+  "@homeWidgetPortableLadder": {
+    "placeholders": {
+      "base": {
+        "type": "int"
+      },
+      "boost": {
+        "type": "int"
+      },
+      "superBoost": {
+        "type": "int"
+      }
+    }
+  }
 }

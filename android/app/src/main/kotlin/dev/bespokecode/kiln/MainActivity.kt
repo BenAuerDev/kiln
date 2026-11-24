@@ -17,6 +17,28 @@ class MainActivity : FlutterActivity() {
         super.configureFlutterEngine(flutterEngine)
         MethodChannel(flutterEngine.dartExecutor.binaryMessenger, CHANNEL)
             .setMethodCallHandler(::onBackgroundCall)
+        // Widget buttons reach Dart only while this engine runs. A live flag
+        // left by an earlier (killed) run is cleared; Dart sets it again once
+        // it is connected.
+        KilnWidgets.goOffline(this)
+        val widgets = MethodChannel(flutterEngine.dartExecutor.binaryMessenger, WIDGETS_CHANNEL)
+        KilnWidgets.dispatcher = { action, done ->
+            widgets.invokeMethod(
+                "action",
+                action,
+                object : MethodChannel.Result {
+                    override fun success(result: Any?) = done()
+                    override fun error(code: String, message: String?, details: Any?) = done()
+                    override fun notImplemented() = done()
+                },
+            )
+        }
+        VolcanoWidgetProvider.refresh(this)
+    }
+
+    override fun cleanUpFlutterEngine(flutterEngine: FlutterEngine) {
+        KilnWidgets.goOffline(this)
+        super.cleanUpFlutterEngine(flutterEngine)
     }
 
     private fun onBackgroundCall(call: MethodCall, result: MethodChannel.Result) {
@@ -129,6 +151,7 @@ class MainActivity : FlutterActivity() {
 
     companion object {
         private const val CHANNEL = "dev.bespokecode.kiln/background"
+        private const val WIDGETS_CHANNEL = "dev.bespokecode.kiln/widgets"
         private const val NOTIFICATION_REQUEST = 1001
     }
 }

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Only what Android shows before kiln has sent anything; all other widget
+     texts come from lib/l10n/*.arb. -->
+<resources>
+    <string name="widget_portable_label">Venty / Veazy</string>
+    <string name="widget_portable_description">Battery, temperatures, Heat and Boost</string>
+    <string name="widget_portable_empty">Open kiln once with your Venty or Veazy.</string>
+    <string name="widget_volcano_label">Volcano Hybrid</string>
+    <string name="widget_volcano_description">Live temperature, Heat and Air</string>
+    <string name="widget_volcano_empty">Open kiln once with your Volcano.</string>
+</resources>

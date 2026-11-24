@@ -39,6 +39,28 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+        <receiver
+            android:name=".PortableWidgetProvider"
+            android:exported="false"
+            android:label="@string/widget_portable_label">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/widget_portable_info" />
+        </receiver>
+        <receiver
+            android:name=".VolcanoWidgetProvider"
+            android:exported="false"
+            android:label="@string/widget_volcano_label">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/widget_volcano_info" />
+        </receiver>
         <service
             android:name=".KilnSessionService"
             android:exported="false"

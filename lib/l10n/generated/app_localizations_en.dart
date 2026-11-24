@@ -1015,4 +1015,82 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get backgroundReadyPlain => 'Ready to go.';
+
+  @override
+  String homeWidgetBattery(int percent) {
+    return '$percent%';
+  }
+
+  @override
+  String get homeWidgetBase => 'Base';
+
+  @override
+  String get homeWidgetBoost => 'Boost';
+
+  @override
+  String get homeWidgetSuper => 'Super';
+
+  @override
+  String homeWidgetTemperature(int temperature) {
+    return '$temperature°';
+  }
+
+  @override
+  String get homeWidgetNoTemperature => '–';
+
+  @override
+  String homeWidgetHeating(int target) {
+    return 'Heating to $target°';
+  }
+
+  @override
+  String homeWidgetReady(int target) {
+    return 'Ready at $target°';
+  }
+
+  @override
+  String homeWidgetHeaterOff(int target) {
+    return 'Heater off · $target°';
+  }
+
+  @override
+  String get homeWidgetOffline => 'Not connected';
+
+  @override
+  String get homeWidgetHeat => 'Heat';
+
+  @override
+  String get homeWidgetHeatOff => 'Heat off';
+
+  @override
+  String get homeWidgetAir => 'Air';
+
+  @override
+  String get homeWidgetAirOff => 'Air off';
+
+  @override
+  String homeWidgetVolcanoGauge(String device, int temperature, int target) {
+    return '$device at $temperature of $target degrees';
+  }
+
+  @override
+  String homeWidgetVolcanoGaugeNoReading(String device) {
+    return '$device, no temperature yet';
+  }
+
+  @override
+  String get homeWidgetSuperBoost => 'Superboost';
+
+  @override
+  String get homeWidgetBoostOff => 'Boost off';
+
+  @override
+  String homeWidgetPortableRing(String device, int percent) {
+    return '$device, battery $percent%';
+  }
+
+  @override
+  String homeWidgetPortableLadder(int base, int boost, int superBoost) {
+    return 'Base $base°, boost $boost°, superboost $superBoost°';
+  }
 }
