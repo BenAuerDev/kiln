@@ -180,6 +180,10 @@ gh secret set KILN_KEY_PASSWORD
 
 1. Bump `version:` in `pubspec.yaml`, e.g. `0.2.0+2`. The part after `+` is
    Android's version code and must go up with every release.
+   In [`CHANGELOG.md`](CHANGELOG.md), move the `Unreleased` entries into a
+   `## [0.2.0] - <date>` section and update the links at the bottom. That
+   section becomes the text of the GitHub release; without it the release
+   stops.
 2. Commit, then tag with the same version and push the tag:
    ```sh
    git tag v0.2.0
@@ -188,7 +192,8 @@ gh secret set KILN_KEY_PASSWORD
 3. [`.github/workflows/release.yml`](.github/workflows/release.yml) checks that
    the tag matches `pubspec.yaml`, runs format, analyze and the tests, builds
    the APK, checks it is not signed with the debug key and publishes a GitHub
-   release with `kiln-v0.2.0.apk`, its SHA-256 and generated release notes.
+   release with `kiln-v0.2.0.apk`, its SHA-256 and the version's
+   `CHANGELOG.md` section as release notes.
 
 The workflow pins the Flutter version; update `flutter-version` there when
 upgrading Flutter locally.
@@ -199,6 +204,7 @@ upgrading Flutter locally.
 - [`docs/protocol.md`](docs/protocol.md): the Bluetooth protocol, its sources
   and what was tested on real devices.
 - [`docs/plan.md`](docs/plan.md): folder layout, use cases and design decisions.
+- [`CHANGELOG.md`](CHANGELOG.md): what changed in each release.
 - [`docs/conventions.md`](docs/conventions.md): coding conventions.
 - [`docs/brief.md`](docs/brief.md): the original brief.
 - [`design/`](design/): the design mockups ([`design/DESIGN.md`](design/DESIGN.md) is the index).
