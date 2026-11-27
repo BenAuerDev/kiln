@@ -7,6 +7,34 @@ versions follow [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+## [0.3.0] - 2026-11-27
+
+### Added
+
+- Your own ramps for Venty and Veazy. Next to Gentle, Classic and Quick,
+  tap "+ New" on the ramp card (Setup tab) and set the start and end
+  temperature, how much each step adds and how often. Choose one of your
+  ramps and tap "Edit" to change or delete it. kiln remembers which ramp
+  you chose, also after a restart.
+- Ramp widget (Android): start or stop your chosen ramp from the home
+  screen and follow it, with a ring that fills step by step and a countdown
+  to the next step. Add it like the other widgets (long-press → Widgets →
+  kiln).
+
+### Changed
+
+- The battery of a Venty or Veazy is now a small icon that fills up, in
+  the app and on the widget's ring. It turns red at 15% or less and shows
+  a bolt while charging.
+
+### Fixed
+
+- If kiln could not read your saved workflows, saving one could replace
+  all the others. It now shows an error and saves nothing.
+
+Install the APK over your current version; your devices, settings,
+workflows and ramps stay.
+
 ## [0.2.0] - 2026-11-24
 
 ### Added
@@ -45,6 +73,7 @@ The first release.
 - Reconnects to your last device, app colours follow your device's finish,
   English and German, light and dark mode.
 
-[Unreleased]: https://github.com/BenAuerDev/kiln/compare/v0.2.0...HEAD
+[Unreleased]: https://github.com/BenAuerDev/kiln/compare/v0.3.0...HEAD
+[0.3.0]: https://github.com/BenAuerDev/kiln/compare/v0.2.0...v0.3.0
 [0.2.0]: https://github.com/BenAuerDev/kiln/compare/v0.1.0...v0.2.0
 [0.1.0]: https://github.com/BenAuerDev/kiln/releases/tag/v0.1.0
