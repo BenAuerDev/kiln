@@ -9,8 +9,10 @@ import 'domain/use_cases/delete_ramp_use_case.dart';
 import 'domain/use_cases/find_ramp_use_case.dart';
 import 'domain/use_cases/load_ramps_use_case.dart';
 import 'domain/use_cases/save_ramp_use_case.dart';
+import 'domain/use_cases/select_ramp_use_case.dart';
 import 'domain/use_cases/start_ramp_use_case.dart';
 import 'domain/use_cases/stop_ramp_use_case.dart';
+import 'domain/use_cases/toggle_ramp_use_case.dart';
 import 'presentation/navigation/ramps_navigator.dart';
 import 'presentation/view_models/ramp_editor_view_model.dart';
 import 'presentation/view_models/ramp_view_model.dart';
@@ -30,9 +32,11 @@ void setupRampsDependencies() {
     ..registerFactory(FindRampUseCase.new)
     ..registerFactory(SaveRampUseCase.new)
     ..registerFactory(DeleteRampUseCase.new)
+    ..registerFactory(SelectRampUseCase.new)
     ..registerFactory(AdvanceRampUseCase.new)
     ..registerFactory(StartRampUseCase.new)
     ..registerFactory(StopRampUseCase.new)
+    ..registerFactory(ToggleRampUseCase.new)
     ..registerFactory(RampViewModel.new)
     ..registerFactoryParam<RampEditorViewModel, String?, String?>(
       (id, from) => RampEditorViewModel(rampId: id, fromId: from),

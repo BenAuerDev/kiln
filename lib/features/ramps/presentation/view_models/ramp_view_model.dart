@@ -18,6 +18,7 @@ import '../../domain/repositories/ramps_repository.dart';
 import '../../domain/services/ramp_service.dart';
 import '../../domain/use_cases/find_ramp_use_case.dart';
 import '../../domain/use_cases/load_ramps_use_case.dart';
+import '../../domain/use_cases/select_ramp_use_case.dart';
 import '../../domain/use_cases/start_ramp_use_case.dart';
 import '../../domain/use_cases/stop_ramp_use_case.dart';
 import '../extensions/ramp_profile_x.dart';
@@ -33,6 +34,7 @@ class RampViewModel {
     RampsRepository? userRamps,
     FindRampUseCase? findRamp,
     LoadRampsUseCase? loadRamps,
+    SelectRampUseCase? selectRamp,
     RampsNavigator? navigator,
     PortableRepository? portable,
     ConnectionRepository? connection,
@@ -48,6 +50,7 @@ class RampViewModel {
        _userRamps = userRamps ?? sl<RampsRepository>(),
        _findRamp = findRamp ?? sl<FindRampUseCase>(),
        _loadRamps = loadRamps ?? sl<LoadRampsUseCase>(),
+       _selectRamp = selectRamp ?? sl<SelectRampUseCase>(),
        _navigator = navigator ?? sl<RampsNavigator>(),
        _portable = portable ?? sl<PortableRepository>(),
        _connection = connection ?? sl<ConnectionRepository>(),
@@ -77,6 +80,7 @@ class RampViewModel {
   final RampsRepository _userRamps;
   final FindRampUseCase _findRamp;
   final LoadRampsUseCase _loadRamps;
+  final SelectRampUseCase _selectRamp;
   final RampsNavigator _navigator;
   final PortableRepository _portable;
   final ConnectionRepository _connection;
@@ -100,12 +104,12 @@ class RampViewModel {
   /// The running ramp as it started (even if edited or deleted since);
   /// otherwise the chosen ramp, or the default preset once the chosen one
   /// was deleted.
-  late final Computed<RampProfile> selected = computed(() {
-    final run = activeRun.value;
-    if (run != null) return run.profile;
-    return _findRamp(_runs.selectedId.value).toNullable() ??
-        RampService.defaultPreset;
-  });
+  late final Computed<RampProfile> selected = computed(
+    () => _ramps.shown(
+      run: activeRun.value,
+      chosen: _findRamp(_userRamps.selectedId.value).toNullable(),
+    ),
+  );
 
   /// The presets, then the user's ramps: the tiles of the ramp card.
   late final Computed<List<RampProfile>> options = computed(
@@ -170,10 +174,10 @@ class RampViewModel {
   }
 
   /// Chooses the preset or user ramp [id]; not while a ramp runs.
-  void selectRamp(String id) {
-    if (activeRun.value != null || id == _runs.selectedId.value) return;
+  Future<void> selectRamp(String id) async {
+    if (activeRun.value != null || id == _userRamps.selectedId.value) return;
     unawaited(_haptics.tick());
-    _runs.select(id);
+    (await _selectRamp(id)).match(_showError, (_) {});
   }
 
   /// A new ramp, starting with the chosen ramp's values.

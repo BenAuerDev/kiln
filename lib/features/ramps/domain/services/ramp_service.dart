@@ -5,6 +5,8 @@ import '../models/ramp_run.dart';
 /// Pure rules of a ramp: the presets, the temperatures it steps through and
 /// how long it takes. The user's own ramps live in `RampsRepository`.
 class RampService {
+  const RampService();
+
   static const presets = [
     RampProfile(
       id: 'preset.gentle',
@@ -66,6 +68,12 @@ class RampService {
     if (run.deviceId != deviceId || run.session != session) return false;
     return run.phase != RampRunPhase.finished || baseCelsius == run.target;
   }
+
+  /// The ramp the card and widget show: the running one as it started
+  /// (even if edited or deleted since), otherwise the [chosen] one, or the
+  /// default preset once the chosen one was deleted.
+  RampProfile shown({required RampRun? run, required RampProfile? chosen}) =>
+      run != null && run.isActive ? run.profile : chosen ?? defaultPreset;
 
   /// How often the base is raised after the start.
   int stepCount(RampProfile profile) => targets(profile).length - 1;

@@ -6,7 +6,13 @@ import 'package:kiln/features/devices/domain/models/known_device.dart';
 import 'package:kiln/features/home_widgets/domain/models/home_widget_action.dart';
 import 'package:kiln/features/home_widgets/domain/services/home_widget_snapshot_service.dart';
 import 'package:kiln/features/home_widgets/domain/use_cases/current_portable_widget_use_case.dart';
+import 'package:kiln/features/home_widgets/domain/use_cases/current_ramp_widget_use_case.dart';
 import 'package:kiln/features/home_widgets/domain/use_cases/current_volcano_widget_use_case.dart';
+import 'package:kiln/features/home_widgets/domain/use_cases/show_ramp_widget_use_case.dart';
+import 'package:kiln/features/home_widgets/presentation/extensions/ramp_widget_snapshot_x.dart';
+import 'package:kiln/features/ramps/domain/repositories/ramp_run_repository.dart';
+import 'package:kiln/features/ramps/domain/services/ramp_service.dart';
+import 'package:kiln/features/ramps/domain/use_cases/find_ramp_use_case.dart';
 import 'package:kiln/features/home_widgets/domain/use_cases/handle_home_widget_action_use_case.dart';
 import 'package:kiln/features/home_widgets/domain/use_cases/show_portable_widget_use_case.dart';
 import 'package:kiln/features/home_widgets/domain/use_cases/show_volcano_widget_use_case.dart';
@@ -22,6 +28,7 @@ import '../../portable/helpers/portable_fixtures.dart';
 import '../../portable/presentation/presentation_mocks.dart'
     show MockTogglePortableBoostUseCase, MockTogglePortableHeaterUseCase;
 import '../../volcano/mocks.dart';
+import '../../ramps/mocks.dart' show fakeRampsRepository;
 import '../mocks.dart';
 
 void main() {
@@ -83,12 +90,43 @@ void main() {
     });
   });
 
+  test('ramp: the chosen ramp of a connected Venty/Veazy', () async {
+    final connection = MockConnectionRepository();
+    when(
+      () => connection.status,
+    ).thenReturn(signal(ConnectionStatus.connected));
+    final knownDevices = MockKnownDevicesRepository();
+    final active = signal<KnownDevice?>(null);
+    when(() => knownDevices.activeDevice).thenReturn(active);
+    final portable = MockPortableRepository();
+    when(
+      () => portable.status,
+    ).thenReturn(signal<PortableStatus?>(testStatus(target: 180)));
+    when(() => portable.sessionNumber).thenReturn(signal(1));
+    final userRamps = fakeRampsRepository();
+    final current = CurrentRampWidgetUseCase(
+      connection: connection,
+      knownDevices: knownDevices,
+      portable: portable,
+      runs: RampRunRepository(),
+      userRamps: userRamps,
+      findRamp: FindRampUseCase(repository: userRamps),
+      service: service,
+    );
+    expect(current(), isNull);
+    active.value = veazy;
+    expect(current()!.profile, RampService.defaultPreset);
+    await userRamps.select('preset.quick');
+    expect(current()!.profile, RampService.presets[2]);
+  });
+
   group('widget writes go to the repository', () {
     late MockHomeWidgetsRepository repository;
 
     setUp(() {
       repository = MockHomeWidgetsRepository();
       registerFallbackValue(portableContent);
+      registerFallbackValue(rampSnapshot.content(en));
       registerFallbackValue(HomeWidgetAction.volcanoHeat);
       when(
         () => repository.showPortable(any(), live: any(named: 'live')),
@@ -96,6 +134,15 @@ void main() {
       when(
         () => repository.showVolcano(any(), live: any(named: 'live')),
       ).thenAnswer((_) async => right(unit));
+      when(
+        () => repository.showRamp(any(), live: any(named: 'live')),
+      ).thenAnswer((_) async => right(unit));
+    });
+
+    test('show the ramp', () async {
+      final content = rampSnapshot.content(en);
+      await ShowRampWidgetUseCase(repository: repository)(content, live: true);
+      verify(() => repository.showRamp(content, live: true)).called(1);
     });
 
     test('show portable, take the Volcano offline', () async {
@@ -143,6 +190,7 @@ void main() {
     late MockToggleVolcanoPumpUseCase pump;
     late MockTogglePortableHeaterUseCase portableHeater;
     late MockTogglePortableBoostUseCase boost;
+    late MockToggleRampUseCase ramp;
     late HandleHomeWidgetActionUseCase handle;
 
     setUp(() {
@@ -159,12 +207,15 @@ void main() {
         () => portableHeater(),
       ).thenAnswer((_) async => right(HeaterMode.normal));
       when(() => boost()).thenAnswer((_) async => right(HeaterMode.boost));
+      ramp = MockToggleRampUseCase();
+      when(() => ramp()).thenAnswer((_) async => right(unit));
       handle = HandleHomeWidgetActionUseCase(
         knownDevices: knownDevices,
         toggleVolcanoHeater: volcanoHeater,
         toggleVolcanoPump: pump,
         togglePortableHeater: portableHeater,
         togglePortableBoost: boost,
+        toggleRamp: ramp,
       );
     });
 
@@ -173,6 +224,7 @@ void main() {
       verifyNever(() => pump());
       verifyNever(() => portableHeater());
       verifyNever(() => boost());
+      verifyNever(() => ramp());
     }
 
     test('Volcano: Heat toggles the heater, Air the pump', () async {
@@ -192,6 +244,18 @@ void main() {
       verify(() => boost()).called(1);
       verifyNever(() => volcanoHeater());
       verifyNever(() => pump());
+    });
+
+    test('Venty/Veazy: the ramp button starts or stops the ramp', () async {
+      active.value = veazy;
+      expect(await handle(HomeWidgetAction.rampToggle), right(unit));
+      verify(() => ramp()).called(1);
+      active.value = volcanoDevice;
+      expect(
+        await handle(HomeWidgetAction.rampToggle),
+        left(const AppError.notConnected()),
+      );
+      verifyNever(() => ramp());
     });
 
     test('passes a failed write on', () async {

@@ -7,8 +7,10 @@ import '../../data/data_sources/ramps_data_source.dart';
 import '../../data/models/ramp_dto.dart';
 import '../models/ramp_profile.dart';
 import '../services/ramp_editing_service.dart';
+import '../services/ramp_service.dart';
 
-/// The user's own ramps (presets live in `RampService`).
+/// The user's own ramps (presets live in `RampService`) and which ramp is
+/// chosen, both kept across restarts.
 class RampsRepository {
   RampsRepository({RampsDataSource? dataSource, RampEditingService? editing})
     : _dataSource = dataSource ?? sl<RampsDataSource>(),
@@ -18,9 +20,15 @@ class RampsRepository {
   final RampEditingService _editing;
 
   final _ramps = signal<List<RampProfile>>(const []);
+  final _selectedId = signal<String>(RampService.defaultPreset.id);
   bool _loaded = false;
+  bool _selectedThisRun = false;
 
   ReadonlySignal<List<RampProfile>> get ramps => _ramps;
+
+  /// Id of the preset or user ramp the card and widget start; it may name a
+  /// ramp that was deleted since. Classic until one is chosen.
+  ReadonlySignal<String> get selectedId => _selectedId;
 
   RampProfile? byId(String id) =>
       _ramps.value.where((r) => r.id == id).firstOrNull;
@@ -31,11 +39,26 @@ class RampsRepository {
     if (_loaded) return right(unit);
     try {
       final stored = await _dataSource.readAll();
+      final selected = await _dataSource.readSelected();
+      // A choice made before loading finished wins over the stored one.
+      if (selected != null && !_selectedThisRun) _selectedId.value = selected;
       final ids = <String>{};
       _ramps.value = List.unmodifiable(
         stored.where((dto) => ids.add(dto.id)).map(_toDomain),
       );
       _loaded = true;
+      return right(unit);
+    } catch (_) {
+      return left(const AppError.storage());
+    }
+  }
+
+  /// Chooses the ramp [id] at once and stores the choice.
+  Future<Either<AppError, Unit>> select(String id) async {
+    _selectedThisRun = true;
+    _selectedId.value = id;
+    try {
+      await _dataSource.writeSelected(id);
       return right(unit);
     } catch (_) {
       return left(const AppError.storage());

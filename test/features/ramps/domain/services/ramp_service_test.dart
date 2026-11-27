@@ -4,7 +4,7 @@ import 'package:kiln/features/ramps/domain/models/ramp_run.dart';
 import 'package:kiln/features/ramps/domain/services/ramp_service.dart';
 
 void main() {
-  final service = RampService();
+  final service = const RampService();
   final classic = RampService.presets[1];
 
   RampProfile profile(int start, int step, int end) => RampProfile(

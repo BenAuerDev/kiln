@@ -4,6 +4,7 @@ import 'package:kiln/features/ramps/domain/repositories/ramp_run_repository.dart
 import 'package:kiln/features/ramps/domain/repositories/ramps_repository.dart';
 import 'package:kiln/features/ramps/domain/use_cases/find_ramp_use_case.dart';
 import 'package:kiln/features/ramps/domain/use_cases/load_ramps_use_case.dart';
+import 'package:kiln/features/ramps/domain/use_cases/select_ramp_use_case.dart';
 import 'package:kiln/features/ramps/presentation/navigation/ramps_navigator.dart';
 import 'package:kiln/features/ramps/domain/services/ramp_service.dart';
 import 'package:kiln/features/ramps/presentation/view_models/ramp_view_model.dart';
@@ -37,10 +38,11 @@ void registerRamp({
       userRamps: userRamps,
       findRamp: FindRampUseCase(repository: userRamps),
       loadRamps: LoadRampsUseCase(repository: userRamps),
+      selectRamp: SelectRampUseCase(repository: userRamps),
       navigator: navigator ?? MockRampsNavigator(),
       portable: portable,
       connection: connection,
-      ramps: RampService(),
+      ramps: const RampService(),
       startRamp: MockStartRampUseCase(),
       stopRamp: MockStopRampUseCase(),
       l10n: FakeL10nService(),

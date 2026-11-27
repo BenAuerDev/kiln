@@ -1198,6 +1198,45 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String homeWidgetRampStep(int step, int steps) {
+    return 'Step $step of $steps';
+  }
+
+  @override
+  String homeWidgetRampAfterBoost(int next) {
+    return '$next° after boost';
+  }
+
+  @override
+  String homeWidgetRampDone(int target) {
+    return 'Done · $target°';
+  }
+
+  @override
+  String homeWidgetRampNext(int next) {
+    return '$next° in %s';
+  }
+
+  @override
+  String get homeWidgetRampStart => 'Start ramp';
+
+  @override
+  String get homeWidgetRampStop => 'Stop ramp';
+
+  @override
+  String get homeWidgetRampNotWhileBoosting => 'Not while boosting';
+
+  @override
+  String homeWidgetRampGaugeIdle(String name, int start, int end) {
+    return '$name, $start to $end degrees';
+  }
+
+  @override
+  String homeWidgetRampGauge(String name, int step, int steps, int target) {
+    return '$name, step $step of $steps, now $target degrees';
+  }
+
+  @override
   String get homeWidgetSuperBoost => 'Superboost';
 
   @override

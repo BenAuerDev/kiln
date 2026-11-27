@@ -61,6 +61,17 @@
                 android:name="android.appwidget.provider"
                 android:resource="@xml/widget_volcano_info" />
         </receiver>
+        <receiver
+            android:name=".RampWidgetProvider"
+            android:exported="false"
+            android:label="@string/widget_ramp_label">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/widget_ramp_info" />
+        </receiver>
         <service
             android:name=".KilnSessionService"
             android:exported="false"

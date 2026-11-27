@@ -5,7 +5,10 @@ import 'package:fpdart/fpdart.dart';
 import 'package:kiln/core/l10n/l10n_service.dart';
 import 'package:kiln/features/home_widgets/domain/models/portable_widget_content.dart';
 import 'package:kiln/features/home_widgets/domain/models/portable_widget_snapshot.dart';
+import 'package:kiln/features/home_widgets/domain/models/ramp_widget_content.dart';
+import 'package:kiln/features/home_widgets/domain/models/ramp_widget_snapshot.dart';
 import 'package:kiln/features/home_widgets/domain/models/volcano_widget_content.dart';
+import 'package:kiln/features/home_widgets/presentation/extensions/ramp_widget_snapshot_x.dart';
 import 'package:kiln/features/home_widgets/domain/models/volcano_widget_snapshot.dart';
 import 'package:kiln/features/home_widgets/presentation/view_models/home_widgets_view_model.dart';
 import 'package:mocktail/mocktail.dart';
@@ -20,11 +23,17 @@ void main() {
   late MockShowPortableWidgetUseCase showPortable;
   late MockShowVolcanoWidgetUseCase showVolcano;
   late MockListenToHomeWidgetActionsUseCase listen;
+  late Signal<RampWidgetSnapshot?> ramp;
+  late MockShowRampWidgetUseCase showRamp;
+  late MockLoadRampsUseCase loadRamps;
   late L10nService l10n;
   late HomeWidgetsViewModel vm;
   var disposed = false;
 
-  setUpAll(() => registerFallbackValue(portableContent));
+  setUpAll(() {
+    registerFallbackValue(portableContent);
+    registerFallbackValue(rampSnapshot.content(en));
+  });
 
   setUp(() {
     disposed = false;
@@ -45,12 +54,24 @@ void main() {
       () => showVolcano(any(), live: any(named: 'live')),
     ).thenAnswer((_) async => right(unit));
     listen = MockListenToHomeWidgetActionsUseCase();
+    ramp = signal(null);
+    final currentRamp = MockCurrentRampWidgetUseCase();
+    when(() => currentRamp()).thenAnswer((_) => ramp.value);
+    showRamp = MockShowRampWidgetUseCase();
+    when(
+      () => showRamp(any(), live: any(named: 'live')),
+    ).thenAnswer((_) async => right(unit));
+    loadRamps = MockLoadRampsUseCase();
+    when(() => loadRamps()).thenAnswer((_) async => right(unit));
     l10n = L10nService()..updateLocale(const Locale('en'));
     vm = HomeWidgetsViewModel(
       currentPortable: currentPortable,
       currentVolcano: currentVolcano,
       showPortable: showPortable,
       showVolcano: showVolcano,
+      currentRamp: currentRamp,
+      showRamp: showRamp,
+      loadRamps: loadRamps,
       listenToActions: listen,
       l10n: l10n,
     );
@@ -60,9 +81,24 @@ void main() {
     if (!disposed) vm.dispose();
   });
 
-  test('takes both widgets offline at start', () {
+  test('takes every widget offline at start and loads the ramps', () {
     verify(() => showPortable(null, live: false)).called(1);
     verify(() => showVolcano(null, live: false)).called(1);
+    verify(() => showRamp(null, live: false)).called(1);
+    verify(() => loadRamps()).called(1);
+  });
+
+  test('ramp: live while connected, last values after', () {
+    clearInteractions(showRamp);
+    ramp.value = rampSnapshot;
+    final content =
+        verify(() => showRamp(captureAny(), live: true)).captured.single
+            as RampWidgetContent;
+    expect(content.name, 'Classic');
+    expect(content.buttonLabel, 'Stop ramp');
+
+    ramp.value = null;
+    verify(() => showRamp(content, live: false)).called(1);
   });
 
   test('portable: live while connected, last values after', () {

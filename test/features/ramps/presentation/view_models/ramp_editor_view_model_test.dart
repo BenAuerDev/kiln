@@ -11,6 +11,7 @@ import 'package:kiln/features/ramps/domain/use_cases/delete_ramp_use_case.dart';
 import 'package:kiln/features/ramps/domain/use_cases/find_ramp_use_case.dart';
 import 'package:kiln/features/ramps/domain/use_cases/load_ramps_use_case.dart';
 import 'package:kiln/features/ramps/domain/use_cases/save_ramp_use_case.dart';
+import 'package:kiln/features/ramps/domain/use_cases/select_ramp_use_case.dart';
 import 'package:kiln/features/ramps/presentation/view_models/ramp_editor_view_model.dart';
 import 'package:mocktail/mocktail.dart';
 
@@ -58,8 +59,9 @@ void main() {
         clock: () => DateTime.fromMicrosecondsSinceEpoch(9),
       ),
       deleteRamp: DeleteRampUseCase(repository: repository),
+      selectRamp: SelectRampUseCase(repository: repository),
       editing: editing,
-      ramps: RampService(),
+      ramps: const RampService(),
       runs: runs,
       l10n: FakeL10nService(),
       haptics: haptics,
@@ -94,7 +96,7 @@ void main() {
     final saved = repository.byId('user.9')!;
     expect(saved.name, 'Mine');
     expect([saved.startCelsius, saved.endCelsius], [180, 205]);
-    expect(runs.selectedId.value, 'user.9');
+    expect(repository.selectedId.value, 'user.9');
     verify(() => navigator.back()).called(1);
     verify(() => toast.show('Ramp saved', level: ToastLevel.success)).called(1);
   });
@@ -149,6 +151,6 @@ void main() {
     vm.setName('Mine');
     await vm.save();
     expect(repository.byId('user.9'), isNotNull);
-    expect(runs.selectedId.value, RampService.defaultPreset.id);
+    expect(repository.selectedId.value, RampService.defaultPreset.id);
   });
 }

@@ -18,6 +18,7 @@ import '../../domain/use_cases/delete_ramp_use_case.dart';
 import '../../domain/use_cases/find_ramp_use_case.dart';
 import '../../domain/use_cases/load_ramps_use_case.dart';
 import '../../domain/use_cases/save_ramp_use_case.dart';
+import '../../domain/use_cases/select_ramp_use_case.dart';
 import '../extensions/ramp_profile_x.dart';
 import '../navigation/ramps_navigator.dart';
 
@@ -33,6 +34,7 @@ class RampEditorViewModel {
     LoadRampsUseCase? loadRamps,
     SaveRampUseCase? saveRamp,
     DeleteRampUseCase? deleteRamp,
+    SelectRampUseCase? selectRamp,
     RampEditingService? editing,
     RampService? ramps,
     RampRunRepository? runs,
@@ -44,6 +46,7 @@ class RampEditorViewModel {
        _loadRamps = loadRamps ?? sl<LoadRampsUseCase>(),
        _saveRamp = saveRamp ?? sl<SaveRampUseCase>(),
        _deleteRamp = deleteRamp ?? sl<DeleteRampUseCase>(),
+       _selectRamp = selectRamp ?? sl<SelectRampUseCase>(),
        _editing = editing ?? sl<RampEditingService>(),
        _ramps = ramps ?? sl<RampService>(),
        _runs = runs ?? sl<RampRunRepository>(),
@@ -61,6 +64,7 @@ class RampEditorViewModel {
   final LoadRampsUseCase _loadRamps;
   final SaveRampUseCase _saveRamp;
   final DeleteRampUseCase _deleteRamp;
+  final SelectRampUseCase _selectRamp;
   final RampEditingService _editing;
   final RampService _ramps;
   final RampRunRepository _runs;
@@ -143,14 +147,18 @@ class RampEditorViewModel {
       _values.value.copyWith(id: _source.value?.id ?? '', name: _name.value),
     );
     _saving.value = false;
-    result.match(_showError, (saved) {
-      saved.match(() {}, (ramp) {
-        if (!(_runs.run.value?.isActive ?? false)) _runs.select(ramp.id);
-        unawaited(_haptics.success());
-        _toast.show(_l10n.strings.rampsSaved, level: ToastLevel.success);
-        _navigator.back();
-      });
-    });
+    final ramp = result.match((error) {
+      _showError(error);
+      return null;
+    }, (saved) => saved.toNullable());
+    if (ramp == null) return;
+    // While a ramp runs, the card keeps showing it; the choice stays.
+    if (!(_runs.run.value?.isActive ?? false)) {
+      (await _selectRamp(ramp.id)).match(_showError, (_) {});
+    }
+    unawaited(_haptics.success());
+    _toast.show(_l10n.strings.rampsSaved, level: ToastLevel.success);
+    _navigator.back();
   }
 
   /// First tap asks, second tap deletes.

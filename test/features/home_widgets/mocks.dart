@@ -7,6 +7,8 @@ import 'package:kiln/features/devices/domain/models/known_device.dart';
 import 'package:kiln/features/home_widgets/data/data_sources/home_widget_data_source.dart';
 import 'package:kiln/features/home_widgets/domain/models/portable_widget_content.dart';
 import 'package:kiln/features/home_widgets/domain/models/portable_widget_snapshot.dart';
+import 'package:kiln/features/home_widgets/domain/models/ramp_widget_snapshot.dart';
+import 'package:kiln/features/ramps/domain/services/ramp_service.dart';
 import 'package:kiln/features/home_widgets/domain/models/volcano_widget_content.dart';
 import 'package:kiln/features/home_widgets/domain/models/volcano_widget_snapshot.dart';
 import 'package:kiln/features/home_widgets/presentation/extensions/portable_widget_snapshot_x.dart';
@@ -19,7 +21,11 @@ import 'package:kiln/features/volcano/domain/models/volcano_heat_phase.dart';
 import 'package:kiln/l10n/generated/app_localizations.dart';
 import 'package:kiln/features/home_widgets/domain/repositories/home_widgets_repository.dart';
 import 'package:kiln/features/home_widgets/domain/use_cases/current_portable_widget_use_case.dart';
+import 'package:kiln/features/home_widgets/domain/use_cases/current_ramp_widget_use_case.dart';
 import 'package:kiln/features/home_widgets/domain/use_cases/current_volcano_widget_use_case.dart';
+import 'package:kiln/features/home_widgets/domain/use_cases/show_ramp_widget_use_case.dart';
+import 'package:kiln/features/ramps/domain/use_cases/load_ramps_use_case.dart';
+import 'package:kiln/features/ramps/domain/use_cases/toggle_ramp_use_case.dart';
 import 'package:kiln/features/home_widgets/domain/use_cases/handle_home_widget_action_use_case.dart';
 import 'package:kiln/features/home_widgets/domain/use_cases/show_portable_widget_use_case.dart';
 import 'package:kiln/features/home_widgets/domain/use_cases/show_volcano_widget_use_case.dart';
@@ -50,6 +56,15 @@ class MockListenToHomeWidgetActionsUseCase extends Mock
 
 class MockHandleHomeWidgetActionUseCase extends Mock
     implements HandleHomeWidgetActionUseCase {}
+
+class MockCurrentRampWidgetUseCase extends Mock
+    implements CurrentRampWidgetUseCase {}
+
+class MockShowRampWidgetUseCase extends Mock implements ShowRampWidgetUseCase {}
+
+class MockLoadRampsUseCase extends Mock implements LoadRampsUseCase {}
+
+class MockToggleRampUseCase extends Mock implements ToggleRampUseCase {}
 
 const veazy = KnownDevice(
   id: 'vz',
@@ -101,6 +116,20 @@ final veazySnapshot = PortableWidgetSnapshot(
   heaterMode: HeaterMode.normal,
   phase: PortableHeatPhase.heating,
   activeTemperature: 180,
+  finish: DeviceFinish.blue,
+);
+
+/// Classic (180→200°, +5° every 90 s) at step 1 of 4, 190° due at [rampDue].
+final rampDue = DateTime(2026, 11, 27, 21, 0, 42);
+final rampSnapshot = RampWidgetSnapshot(
+  profile: RampService.defaultPreset,
+  phase: RampWidgetPhase.running,
+  target: 185,
+  step: 1,
+  steps: 4,
+  duration: const Duration(minutes: 6),
+  nextTarget: 190,
+  nextStepAt: rampDue,
   finish: DeviceFinish.blue,
 );
 

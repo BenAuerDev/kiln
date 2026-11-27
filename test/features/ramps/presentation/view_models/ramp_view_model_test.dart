@@ -10,6 +10,7 @@ import 'package:kiln/features/ramps/domain/repositories/ramp_run_repository.dart
 import 'package:kiln/features/ramps/domain/repositories/ramps_repository.dart';
 import 'package:kiln/features/ramps/domain/use_cases/find_ramp_use_case.dart';
 import 'package:kiln/features/ramps/domain/use_cases/load_ramps_use_case.dart';
+import 'package:kiln/features/ramps/domain/use_cases/select_ramp_use_case.dart';
 import 'package:kiln/features/ramps/domain/services/ramp_service.dart';
 import 'package:kiln/features/ramps/presentation/view_models/ramp_view_model.dart';
 import 'package:mocktail/mocktail.dart';
@@ -74,10 +75,11 @@ void main() {
       userRamps: userRamps,
       findRamp: FindRampUseCase(repository: userRamps),
       loadRamps: LoadRampsUseCase(repository: userRamps),
+      selectRamp: SelectRampUseCase(repository: userRamps),
       navigator: navigator,
       portable: portable,
       connection: connection,
-      ramps: RampService(),
+      ramps: const RampService(),
       startRamp: start,
       stopRamp: stop,
       l10n: FakeL10nService(),
@@ -116,7 +118,7 @@ void main() {
 
   test('a deleted choice falls back to Classic', () async {
     await pumpEventQueue();
-    vm.selectRamp('user.1');
+    await vm.selectRamp('user.1');
     await userRamps.delete('user.1');
     expect(vm.selected.value, classic);
     expect(vm.selectedIndex.value, 1);

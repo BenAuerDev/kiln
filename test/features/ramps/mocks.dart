@@ -43,6 +43,7 @@ class FakeRampsDataSource implements RampsDataSource {
     : stored = [...initial];
 
   List<RampDto> stored;
+  String? selected;
   bool failReads = false;
   bool failWrites = false;
   int writes = 0;
@@ -51,6 +52,18 @@ class FakeRampsDataSource implements RampsDataSource {
   Future<List<RampDto>> readAll() async {
     if (failReads) throw const FormatException('not a list');
     return stored;
+  }
+
+  @override
+  Future<String?> readSelected() async {
+    if (failReads) throw const FormatException('not a list');
+    return selected;
+  }
+
+  @override
+  Future<void> writeSelected(String id) async {
+    if (failWrites) throw StateError('disk full');
+    selected = id;
   }
 
   @override

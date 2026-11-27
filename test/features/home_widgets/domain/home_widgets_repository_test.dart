@@ -4,7 +4,9 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:kiln/core/errors/app_error.dart';
 import 'package:kiln/features/home_widgets/data/models/portable_widget_dto.dart';
+import 'package:kiln/features/home_widgets/data/models/ramp_widget_dto.dart';
 import 'package:kiln/features/home_widgets/data/models/volcano_widget_dto.dart';
+import 'package:kiln/features/home_widgets/presentation/extensions/ramp_widget_snapshot_x.dart';
 import 'package:kiln/features/home_widgets/domain/models/home_widget_action.dart';
 import 'package:kiln/features/home_widgets/domain/repositories/home_widgets_repository.dart';
 import 'package:mocktail/mocktail.dart';
@@ -15,6 +17,8 @@ class _FakePortableDto extends Fake implements PortableWidgetDto {}
 
 class _FakeVolcanoDto extends Fake implements VolcanoWidgetDto {}
 
+class _FakeRampDto extends Fake implements RampWidgetDto {}
+
 void main() {
   late MockHomeWidgetDataSource dataSource;
   late HomeWidgetsRepository repository;
@@ -22,6 +26,7 @@ void main() {
   setUpAll(() {
     registerFallbackValue(_FakePortableDto());
     registerFallbackValue(_FakeVolcanoDto());
+    registerFallbackValue(_FakeRampDto());
   });
 
   setUp(() {
@@ -33,6 +38,9 @@ void main() {
     when(() => dataSource.saveVolcanoLive(any())).thenAnswer((_) async {});
     when(() => dataSource.updatePortable()).thenAnswer((_) async {});
     when(() => dataSource.updateVolcano()).thenAnswer((_) async {});
+    when(() => dataSource.saveRamp(any())).thenAnswer((_) async {});
+    when(() => dataSource.saveRampLive(any())).thenAnswer((_) async {});
+    when(() => dataSource.updateRamp()).thenAnswer((_) async {});
     repository = HomeWidgetsRepository(dataSource: dataSource);
   });
 
@@ -82,6 +90,29 @@ void main() {
       );
       verify(() => dataSource.updatePortable()).called(1);
     });
+  });
+
+  test('ramp: saves content and live flag, then skips the unchanged', () async {
+    final content = rampSnapshot.content(en);
+    expect(await repository.showRamp(content, live: true), right(unit));
+    final dto =
+        verify(() => dataSource.saveRamp(captureAny())).captured.single
+            as RampWidgetDto;
+    expect(dto.toJson()['countdownFormat'], '190° in %s');
+    expect(dto.toJson()['nextStepAtMillis'], rampDue.millisecondsSinceEpoch);
+    verify(() => dataSource.saveRampLive(true)).called(1);
+    verify(() => dataSource.updateRamp()).called(1);
+    expect(repository.ramp.value, content);
+
+    await repository.showRamp(content, live: true);
+    verifyNever(() => dataSource.saveRamp(any()));
+    verifyNever(() => dataSource.updateRamp());
+
+    // Offline: the content stays, only the flag is written.
+    await repository.showRamp(content, live: false);
+    verifyNever(() => dataSource.saveRamp(any()));
+    verify(() => dataSource.saveRampLive(false)).called(1);
+    verify(() => dataSource.updateRamp()).called(1);
   });
 
   group('volcano', () {

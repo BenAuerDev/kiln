@@ -14,7 +14,9 @@ import 'advance_ramp_use_case.dart';
 
 /// Starts [RampProfile] on the connected Venty/Veazy: sets the base to the
 /// first temperature (clamped to 40–210 °C) and turns the heater on if it is
-/// off. Not while boosting, when target writes are blocked. Composes
+/// off. Not while boosting, when target writes are blocked. Does nothing
+/// while a ramp runs, so a second tap (e.g. on the widget) never restarts
+/// it. Composes
 /// [AdvanceRampUseCase], which then runs on every tick.
 class StartRampUseCase {
   StartRampUseCase({
@@ -40,6 +42,7 @@ class StartRampUseCase {
 
   Future<Either<AppError, Unit>> call(RampProfile profile) =>
       _runs.serialized(() async {
+        if (_runs.run.value?.isActive ?? false) return right(unit);
         final status = _portable.status.value;
         final deviceId = _connection.activeDeviceId.value;
         if (status == null || deviceId == null) {

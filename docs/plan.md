@@ -292,7 +292,8 @@ A due step waits while boosting and is written when boost ends; a manual base
 change, heater off or another device stops the ramp. Custom ramps followed:
 your own start, end, step (1–25 °C) and interval (15 s–10 min), made from the
 chosen ramp with "New ramp" on the ramp card and edited or deleted in an
-editor like the workflow one; stored in shared preferences (`ramps.v1`).
+editor like the workflow one; stored in shared preferences (`ramps.v1`),
+like the chosen ramp (`ramps.selected.v1`), which the widget starts.
 
 ## 5. Background connection and notifications (Android)
 
@@ -348,18 +349,28 @@ like `BackgroundViewModel`) pushes changes only, never for demo devices.
   turns grey and a tap opens kiln. No timestamp yet.
 - Volcano widget (the wide card of `Widgets.dc.html`): gauge (a bitmap drawn
   in Kotlin), temperature, status, Heat and Air.
-- Both are 4×1 by default: one row with gauge or ring, name, status (and
-  the three temperatures on the Venty/Veazy) and the two buttons. Resized
-  to two rows they show the full card. Android 12+ picks the layout as the
+- Ramp widget (`RampWidgetProvider`, built like the Volcano one): the ramp
+  that runs or finished in this session, or else the chosen one; a ring that
+  fills step by step with the base inside, "Step 2 of 4" / "Done · 200°" /
+  the summary, and Start / Stop (`rampToggle` → `ToggleRampUseCase`). The
+  countdown to the next step is an Android `Chronometer` counting down to
+  the step's wall-clock time (plus 1.5 s, as it cannot stop at zero and the
+  step lands a moment late), so it ticks without redraws; Dart sends a new
+  one with every step and drops it while a step write keeps failing. One
+  row shows either the status or the countdown. While boosting, Start reads
+  "Not while boosting".
+- All three are 4×1 by default: one row with gauge or ring, name, status
+  (and the three temperatures on the Venty/Veazy) and their buttons (one on
+  the ramp widget). Resized to two rows they show the full card. Android 12+ picks the layout as the
   widget is resized; below that the provider picks it from the size.
 - Each widget is live while its kind of device (real, not demo) is
   connected *and* kiln's Flutter engine runs (`KilnWidgets.dispatcher`,
   set by `MainActivity`). Android can kill kiln without Dart noticing, so
-  Kotlin takes both widgets offline itself (`KilnWidgets.goOffline`) when
+  Kotlin takes every widget offline itself (`KilnWidgets.goOffline`) when
   the engine starts or goes, and when the service ends without Dart asking (a
   swipe from recents). A low-memory kill while nothing heats leaves the
   last drawing until the next tap, which then redraws it offline.
-- Change from the plan above: the buttons (both widgets) do not go
+- Change from the plan above: the buttons (all widgets) do not go
   through the service. They send a broadcast to their provider, which
   hands them to Dart (`KilnWidgets.onButton`)
   over the `dev.bespokecode.kiln/widgets` channel and the

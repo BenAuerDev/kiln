@@ -57,14 +57,14 @@ void main() {
       runs: runs,
       portable: portable,
       connection: connection,
-      ramps: RampService(),
+      ramps: const RampService(),
       clock: () => now,
     );
     start = StartRampUseCase(
       runs: runs,
       portable: portable,
       connection: connection,
-      ramps: RampService(),
+      ramps: const RampService(),
       advance: advance,
       clock: () => now,
     );
@@ -86,6 +86,15 @@ void main() {
       expect(run().deviceId, 'veazy-id');
       expect(run().session, 1);
       expect(run().nextStepAt, t0.add(const Duration(seconds: 90)));
+    });
+
+    test('a second start while one runs changes nothing', () async {
+      await start(classic);
+      final first = run();
+      now = t0.add(const Duration(seconds: 20));
+      expect(await start(RampService.presets[2]), right<AppError, Unit>(unit));
+      expect(run(), same(first));
+      verify(() => portable.setTargetTemperature(any())).called(1);
     });
 
     test('writes nothing the device already has', () async {

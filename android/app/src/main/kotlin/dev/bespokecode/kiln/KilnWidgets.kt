@@ -40,6 +40,8 @@ object KilnWidgets {
     const val PORTABLE_LIVE_KEY = "portable_live"
     const val VOLCANO_KEY = "volcano"
     const val VOLCANO_LIVE_KEY = "volcano_live"
+    const val RAMP_KEY = "ramp"
+    const val RAMP_LIVE_KEY = "ramp_live"
 
     private const val ACTION_BUTTON = "dev.bespokecode.kiln.WIDGET_BUTTON"
     private const val EXTRA_BUTTON = "button"
@@ -66,9 +68,15 @@ object KilnWidgets {
         HomeWidgetPlugin.getData(context).edit()
             .putBoolean(PORTABLE_LIVE_KEY, false)
             .putBoolean(VOLCANO_LIVE_KEY, false)
+            .putBoolean(RAMP_LIVE_KEY, false)
             .commit()
+        refreshAll(context)
+    }
+
+    private fun refreshAll(context: Context) {
         PortableWidgetProvider.refresh(context)
         VolcanoWidgetProvider.refresh(context)
+        RampWidgetProvider.refresh(context)
     }
 
     /**
@@ -140,9 +148,9 @@ object KilnWidgets {
     }
 
     /**
-     * A Heat / Air / Boost button: raised, or filled with the accent while
-     * [active]. Live, a tap is a broadcast to [provider] (see [onButton]);
-     * offline it opens kiln.
+     * A widget button (Heat, Air, Boost, Start / Stop ramp): raised, or
+     * filled with the accent while [active]. Live, a tap is a broadcast to
+     * [provider] (see [onButton]); offline it opens kiln.
      */
     fun bindButton(
         context: Context,
@@ -196,8 +204,7 @@ object KilnWidgets {
             dispatch(action, finish)
             return true
         }
-        PortableWidgetProvider.refresh(context)
-        VolcanoWidgetProvider.refresh(context)
+        refreshAll(context)
         context.startActivity(openIntent(context).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
         return true
     }

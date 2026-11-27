@@ -5,9 +5,11 @@ import '../../../../core/errors/app_error.dart';
 import '../../../../core/service_locator.dart';
 import '../../data/data_sources/home_widget_data_source.dart';
 import '../../data/models/portable_widget_dto.dart';
+import '../../data/models/ramp_widget_dto.dart';
 import '../../data/models/volcano_widget_dto.dart';
 import '../models/home_widget_action.dart';
 import '../models/portable_widget_content.dart';
+import '../models/ramp_widget_content.dart';
 import '../models/volcano_widget_content.dart';
 
 /// What the home-screen widgets show, and the buttons pressed on them.
@@ -27,19 +29,28 @@ class HomeWidgetsRepository {
       saveLive: _dataSource.saveVolcanoLive,
       update: _dataSource.updateVolcano,
     );
+    _rampSlot = _Slot(
+      _ramp,
+      save: (content) => _dataSource.saveRamp(_rampDto(content)),
+      saveLive: _dataSource.saveRampLive,
+      update: _dataSource.updateRamp,
+    );
   }
 
   final HomeWidgetDataSource _dataSource;
 
   final _portable = signal<PortableWidgetContent?>(null);
   final _volcano = signal<VolcanoWidgetContent?>(null);
+  final _ramp = signal<RampWidgetContent?>(null);
   late final _Slot<PortableWidgetContent> _portableSlot;
   late final _Slot<VolcanoWidgetContent> _volcanoSlot;
+  late final _Slot<RampWidgetContent> _rampSlot;
   Future<void> _queue = Future.value();
 
   /// The last content sent in this run of kiln.
   ReadonlySignal<PortableWidgetContent?> get portable => _portable;
   ReadonlySignal<VolcanoWidgetContent?> get volcano => _volcano;
+  ReadonlySignal<RampWidgetContent?> get ramp => _ramp;
 
   /// Runs [handler] for every button pressed on a widget (unknown ones are
   /// dropped); `null` stops.
@@ -69,6 +80,13 @@ class HomeWidgetsRepository {
     VolcanoWidgetContent? content, {
     required bool live,
   }) => _show(_volcanoSlot, content, live: live);
+
+  /// Shows [content] on the ramp widget, live or offline. See
+  /// [showVolcano].
+  Future<Either<AppError, Unit>> showRamp(
+    RampWidgetContent? content, {
+    required bool live,
+  }) => _show(_rampSlot, content, live: live);
 
   Future<Either<AppError, Unit>> _show<C>(
     _Slot<C> slot,
@@ -123,6 +141,26 @@ class HomeWidgetsRepository {
         gradientStart: content.gradientStart,
         gradientEnd: content.gradientEnd,
       );
+
+  static RampWidgetDto _rampDto(RampWidgetContent content) => RampWidgetDto(
+    name: content.name,
+    center: content.center,
+    status: content.status,
+    statusAccent: content.statusAccent,
+    countdownFormat: content.countdownFormat,
+    nextStepAtMillis: content.nextStepAtMillis,
+    progress: content.progress,
+    gaugeDescription: content.gaugeDescription,
+    buttonLabel: content.buttonLabel,
+    buttonActive: content.buttonActive,
+    offlineStatus: content.offlineStatus,
+    offlineButtonLabel: content.offlineButtonLabel,
+    accent: content.accent,
+    accentText: content.accentText,
+    onAccent: content.onAccent,
+    gradientStart: content.gradientStart,
+    gradientEnd: content.gradientEnd,
+  );
 
   static VolcanoWidgetDto _volcanoDto(VolcanoWidgetContent content) =>
       VolcanoWidgetDto(

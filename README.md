@@ -43,6 +43,8 @@ An unofficial, open-source app for Storz & Bickel vaporizers: **Volcano Hybrid**
 - Venty / Veazy: battery ring, live status, base / boost / superboost and
   Heat and Boost buttons; the last values stay after a session
 - Volcano: live temperature with Heat and Air buttons
+- Venty / Veazy ramp: the chosen or running ramp, a ring that fills step by
+  step, a countdown to the next step and Start / Stop
 - While kiln is not connected, a tap opens kiln
 
 ### Demo mode

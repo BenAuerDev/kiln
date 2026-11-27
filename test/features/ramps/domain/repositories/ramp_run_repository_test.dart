@@ -62,11 +62,4 @@ void main() {
     );
     expect(await repository.serialized(() async => 42), 42);
   });
-
-  test('select keeps the chosen ramp, Classic by default', () {
-    final repository = RampRunRepository();
-    expect(repository.selectedId.value, RampService.presets[1].id);
-    repository.select('user.1');
-    expect(repository.selectedId.value, 'user.1');
-  });
 }

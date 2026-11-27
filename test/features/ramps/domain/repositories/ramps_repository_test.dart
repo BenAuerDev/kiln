@@ -67,6 +67,35 @@ void main() {
     expect(dataSource.stored.map((r) => r.id), ['user.1', 'user.3']);
   });
 
+  test('the chosen ramp: Classic, then stored and read back', () async {
+    expect(repository.selectedId.value, 'preset.classic');
+    expect(await repository.select('user.1'), right(unit));
+    expect(dataSource.selected, 'user.1');
+
+    final again = RampsRepository(
+      dataSource: dataSource,
+      editing: RampEditingService(),
+    );
+    await again.load();
+    expect(again.selectedId.value, 'user.1');
+  });
+
+  test('a choice made before loading finished wins', () async {
+    dataSource.selected = 'user.2';
+    await repository.select('preset.quick');
+    await repository.load();
+    expect(repository.selectedId.value, 'preset.quick');
+  });
+
+  test('a failed choice write is a storage error, the choice stays', () async {
+    dataSource.failWrites = true;
+    expect(
+      await repository.select('user.1'),
+      left<AppError, Unit>(const AppError.storage()),
+    );
+    expect(repository.selectedId.value, 'user.1');
+  });
+
   test('drops entries whose id was seen before', () async {
     dataSource.stored = [...dataSource.stored, dataSource.stored.first];
     await repository.load();

@@ -2036,6 +2036,60 @@ abstract class AppLocalizations {
   /// **'{device}, no temperature yet'**
   String homeWidgetVolcanoGaugeNoReading(String device);
 
+  /// No description provided for @homeWidgetRampStep.
+  ///
+  /// In en, this message translates to:
+  /// **'Step {step} of {steps}'**
+  String homeWidgetRampStep(int step, int steps);
+
+  /// No description provided for @homeWidgetRampAfterBoost.
+  ///
+  /// In en, this message translates to:
+  /// **'{next}° after boost'**
+  String homeWidgetRampAfterBoost(int next);
+
+  /// No description provided for @homeWidgetRampDone.
+  ///
+  /// In en, this message translates to:
+  /// **'Done · {target}°'**
+  String homeWidgetRampDone(int target);
+
+  /// Countdown to the next ramp step on the home-screen widget. Android puts the ticking time where %s is: keep %s exactly once in every translation.
+  ///
+  /// In en, this message translates to:
+  /// **'{next}° in %s'**
+  String homeWidgetRampNext(int next);
+
+  /// No description provided for @homeWidgetRampStart.
+  ///
+  /// In en, this message translates to:
+  /// **'Start ramp'**
+  String get homeWidgetRampStart;
+
+  /// No description provided for @homeWidgetRampStop.
+  ///
+  /// In en, this message translates to:
+  /// **'Stop ramp'**
+  String get homeWidgetRampStop;
+
+  /// No description provided for @homeWidgetRampNotWhileBoosting.
+  ///
+  /// In en, this message translates to:
+  /// **'Not while boosting'**
+  String get homeWidgetRampNotWhileBoosting;
+
+  /// No description provided for @homeWidgetRampGaugeIdle.
+  ///
+  /// In en, this message translates to:
+  /// **'{name}, {start} to {end} degrees'**
+  String homeWidgetRampGaugeIdle(String name, int start, int end);
+
+  /// No description provided for @homeWidgetRampGauge.
+  ///
+  /// In en, this message translates to:
+  /// **'{name}, step {step} of {steps}, now {target} degrees'**
+  String homeWidgetRampGauge(String name, int step, int steps, int target);
+
   /// No description provided for @homeWidgetSuperBoost.
   ///
   /// In en, this message translates to:

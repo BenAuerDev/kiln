@@ -1011,6 +1011,76 @@
       }
     }
   },
+  "homeWidgetRampStep": "Step {step} of {steps}",
+  "@homeWidgetRampStep": {
+    "placeholders": {
+      "step": {
+        "type": "int"
+      },
+      "steps": {
+        "type": "int"
+      }
+    }
+  },
+  "homeWidgetRampAfterBoost": "{next}° after boost",
+  "@homeWidgetRampAfterBoost": {
+    "placeholders": {
+      "next": {
+        "type": "int"
+      }
+    }
+  },
+  "homeWidgetRampDone": "Done · {target}°",
+  "@homeWidgetRampDone": {
+    "placeholders": {
+      "target": {
+        "type": "int"
+      }
+    }
+  },
+  "homeWidgetRampNext": "{next}° in %s",
+  "@homeWidgetRampNext": {
+    "description": "Countdown to the next ramp step on the home-screen widget. Android puts the ticking time where %s is: keep %s exactly once in every translation.",
+    "placeholders": {
+      "next": {
+        "type": "int"
+      }
+    }
+  },
+  "homeWidgetRampStart": "Start ramp",
+  "homeWidgetRampStop": "Stop ramp",
+  "homeWidgetRampNotWhileBoosting": "Not while boosting",
+  "homeWidgetRampGaugeIdle": "{name}, {start} to {end} degrees",
+  "@homeWidgetRampGaugeIdle": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "start": {
+        "type": "int"
+      },
+      "end": {
+        "type": "int"
+      }
+    }
+  },
+  "homeWidgetRampGauge": "{name}, step {step} of {steps}, now {target} degrees",
+  "@homeWidgetRampGauge": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "step": {
+        "type": "int"
+      },
+      "steps": {
+        "type": "int"
+      },
+      "target": {
+        "type": "int"
+      }
+    }
+  },
   "homeWidgetSuperBoost": "Superboost",
   "homeWidgetBoostOff": "Boost off",
   "homeWidgetPortableRing": "{device}, battery {percent}%",

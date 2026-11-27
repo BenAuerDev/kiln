@@ -6,4 +6,7 @@
     <string name="widget_volcano_label">Volcano Hybrid</string>
     <string name="widget_volcano_description">Live-Temperatur, Heizen und Luft</string>
     <string name="widget_volcano_empty">Öffne kiln einmal mit deinem Volcano.</string>
+    <string name="widget_ramp_label">Venty / Veazy Rampe</string>
+    <string name="widget_ramp_description">Rampe starten und Schritt für Schritt verfolgen</string>
+    <string name="widget_ramp_empty">Öffne kiln einmal mit deinem Venty oder Veazy.</string>
 </resources>

@@ -1202,6 +1202,45 @@ class AppLocalizationsDe extends AppLocalizations {
   }
 
   @override
+  String homeWidgetRampStep(int step, int steps) {
+    return 'Schritt $step von $steps';
+  }
+
+  @override
+  String homeWidgetRampAfterBoost(int next) {
+    return '$next° nach dem Boost';
+  }
+
+  @override
+  String homeWidgetRampDone(int target) {
+    return 'Fertig · $target°';
+  }
+
+  @override
+  String homeWidgetRampNext(int next) {
+    return '$next° in %s';
+  }
+
+  @override
+  String get homeWidgetRampStart => 'Rampe starten';
+
+  @override
+  String get homeWidgetRampStop => 'Rampe stoppen';
+
+  @override
+  String get homeWidgetRampNotWhileBoosting => 'Nicht während Boost';
+
+  @override
+  String homeWidgetRampGaugeIdle(String name, int start, int end) {
+    return '$name, $start bis $end Grad';
+  }
+
+  @override
+  String homeWidgetRampGauge(String name, int step, int steps, int target) {
+    return '$name, Schritt $step von $steps, jetzt $target Grad';
+  }
+
+  @override
   String get homeWidgetSuperBoost => 'Superboost';
 
   @override
