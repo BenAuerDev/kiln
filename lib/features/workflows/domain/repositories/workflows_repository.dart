@@ -44,7 +44,7 @@ class WorkflowsRepository {
   }
 
   /// Inserts [workflow] or replaces the one with the same id in place.
-  Future<Either<AppError, Unit>> save(Workflow workflow) {
+  Future<Either<AppError, Unit>> save(Workflow workflow) => _afterLoad(() {
     final current = _workflows.value;
     final exists = current.any((w) => w.id == workflow.id);
     return _persist(
@@ -52,10 +52,20 @@ class WorkflowsRepository {
           ? [for (final w in current) w.id == workflow.id ? workflow : w]
           : [...current, workflow],
     );
-  }
+  });
 
-  Future<Either<AppError, Unit>> delete(String id) =>
-      _persist(_workflows.value.where((w) => w.id != id).toList());
+  Future<Either<AppError, Unit>> delete(String id) => _afterLoad(
+    () => _persist(_workflows.value.where((w) => w.id != id).toList()),
+  );
+
+  /// Writes only on top of what is stored: without a successful load, a
+  /// write would replace every stored workflow with the few in memory.
+  Future<Either<AppError, Unit>> _afterLoad(
+    Future<Either<AppError, Unit>> Function() write,
+  ) async {
+    final loaded = await load();
+    return loaded.isLeft() ? loaded : write();
+  }
 
   Future<Either<AppError, Unit>> _persist(List<Workflow> workflows) async {
     try {

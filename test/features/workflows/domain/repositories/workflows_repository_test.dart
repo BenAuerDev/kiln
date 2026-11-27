@@ -28,6 +28,7 @@ void main() {
   setUp(() {
     dataSource = MockWorkflowsDataSource();
     when(() => dataSource.writeAll(any())).thenAnswer((_) async {});
+    when(() => dataSource.readAll()).thenAnswer((_) async => const []);
     repository = WorkflowsRepository(
       dataSource: dataSource,
       editing: WorkflowEditingService(),
@@ -108,12 +109,44 @@ void main() {
     expect(repository.workflows.value.map((w) => w.id), ['user.2']);
   });
 
+  test('without a successful load nothing is written', () async {
+    when(() => dataSource.readAll()).thenThrow(Exception('not a list'));
+    expect(
+      (await repository.save(evening)).getLeft().toNullable(),
+      isA<StorageError>(),
+    );
+    expect(
+      (await repository.delete('user.1')).getLeft().toNullable(),
+      isA<StorageError>(),
+    );
+    verifyNever(() => dataSource.writeAll(any()));
+  });
+
+  test('a save loads first and keeps the stored workflows', () async {
+    when(() => dataSource.readAll()).thenAnswer(
+      (_) async => const [
+        WorkflowDto(
+          id: 'user.0',
+          name: 'Stored',
+          heaterOffAtEnd: true,
+          steps: [WorkflowStepDto(type: 'heat', value: 180)],
+        ),
+      ],
+    );
+    await repository.save(evening);
+    final written =
+        verify(() => dataSource.writeAll(captureAny())).captured.single
+            as List<WorkflowDto>;
+    expect(written.map((w) => w.id), ['user.0', 'user.1']);
+  });
+
   test('storage errors come back as AppError and keep the list', () async {
     when(() => dataSource.readAll()).thenThrow(Exception('disk'));
     expect(
       (await repository.load()).getLeft().toNullable(),
       isA<StorageError>(),
     );
+    when(() => dataSource.readAll()).thenAnswer((_) async => const []);
     when(() => dataSource.writeAll(any())).thenThrow(Exception('disk'));
     expect(
       (await repository.save(evening)).getLeft().toNullable(),
