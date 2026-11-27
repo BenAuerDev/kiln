@@ -32,6 +32,12 @@ a{color:#FF8A33}a:hover{color:#FFB36B}
       <span style="display: flex; align-items: center; gap: 6px; font-size: 13px; color: {{t.muted}}">
         <span aria-hidden="true" style="width: 8px; height: 8px; border-radius: 50%; background: {{t.accent}}"></span>
         {{deviceLine}}
+        <sc-if value="{{isPortable}}" hint-placeholder-val="{{ false }}">
+          <span aria-label="72% battery" role="img" style="display: inline-flex; align-items: center; gap: 5px; margin-left: 4px">
+            <svg aria-hidden="true" width="20" height="10" viewBox="0 0 24 12"><rect x="0.7" y="0.7" width="19.6" height="10.6" rx="3.2" fill="none" stroke="{{t.muted}}" stroke-width="1.4"></rect><rect x="21.6" y="4" width="2.4" height="4" rx="1.2" fill="{{t.muted}}"></rect><rect x="3" y="3" width="10.8" height="6" rx="1.6" fill="{{t.accent}}"></rect></svg>
+            <span aria-hidden="true">72%</span>
+          </span>
+        </sc-if>
       </span>
     </div>
     <a href="Devices.dc.html" aria-label="Devices" class="kiln-btn" style="width: 44px; height: 44px; border-radius: 22px; border: 1px solid {{t.border}}; background: {{t.surface}}; color: {{t.text}}; display: flex; align-items: center; justify-content: center">
@@ -206,7 +212,7 @@ class Component extends DCLogic {
     var auxOn = s.aux;
     return {
       t: t,
-      deviceLine: sp.volcano ? sp.name + ' · connected' : sp.name + ' · 72% battery',
+      deviceLine: sp.volcano ? sp.name + ' · connected' : sp.name,
       curText: Math.round(s.cur),
       target: s.target,
       effTarget: goal,

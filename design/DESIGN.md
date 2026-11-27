@@ -17,6 +17,8 @@ These files are the approved mockups, written as HTML for a design canvas. Treat
 | `Widgets.dc.html`, `Live.dc.html` | Outside the app | Home widgets, Live Activity, Android notification, update banner. Later feature. |
 | `Icons.dc.html` | App icon | Chosen direction: **A · Gauge**. Final assets are in `assets/icons/`. |
 
+Battery (portables): a small battery icon filled to the level in the accent, then the percentage (`Veazy.dc.html`, `Finish.dc.html`). Red at 15 % or below unless charging; a bolt cut into it while charging. Screen readers hear "72% battery" / "72% · charging".
+
 Decided against: an odometer-style rolling temperature. Show the number plainly with tabular figures.
 
 Motion: honour the system "reduce motion" setting by disabling wisps, pulse and spring animations.
