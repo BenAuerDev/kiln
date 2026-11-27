@@ -63,10 +63,10 @@ void main() {
     expect(await repository.serialized(() async => 42), 42);
   });
 
-  test('select keeps the chosen preset', () {
+  test('select keeps the chosen ramp, Classic by default', () {
     final repository = RampRunRepository();
-    expect(repository.selected.value, RampService.presets[1]);
-    repository.select(RampService.presets[2]);
-    expect(repository.selected.value, RampService.presets[2]);
+    expect(repository.selectedId.value, RampService.presets[1].id);
+    repository.select('user.1');
+    expect(repository.selectedId.value, 'user.1');
   });
 }

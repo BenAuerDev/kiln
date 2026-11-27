@@ -289,7 +289,10 @@ Venty/Veazy followed in the feature `ramps`: three presets (Gentle 170→190 °C
 minute) on the Setup tab, a banner on the Control tab while one runs. Only the
 verified target write is used (clamped 40–210 °C) plus heater on at the start.
 A due step waits while boosting and is written when boost ends; a manual base
-change, heater off or another device stops the ramp. A custom ramp can follow.
+change, heater off or another device stops the ramp. Custom ramps followed:
+your own start, end, step (1–25 °C) and interval (15 s–10 min), made from the
+chosen ramp with "New ramp" on the ramp card and edited or deleted in an
+editor like the workflow one; stored in shared preferences (`ramps.v1`).
 
 ## 5. Background connection and notifications (Android)
 

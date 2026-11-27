@@ -2,11 +2,10 @@ import 'dart:async';
 
 import 'package:signals_flutter/signals_flutter.dart';
 
-import '../models/ramp_profile.dart';
 import '../models/ramp_run.dart';
 import '../services/ramp_service.dart';
 
-/// Holds the ramp that runs or last ran, the chosen preset and the tick
+/// Holds the ramp that runs or last ran, the chosen ramp and the tick
 /// that drives a run (ARCHITECTURE.md, Addendum 1). The tick calls back into
 /// a use case; this repository makes no decisions and does no I/O.
 class RampRunRepository {
@@ -15,17 +14,18 @@ class RampRunRepository {
   final Duration _tick;
 
   final _run = signal<RampRun?>(null);
-  final _selected = signal<RampProfile>(RampService.presets[1]);
+  final _selectedId = signal<String>(RampService.defaultPreset.id);
   Timer? _ticker;
   bool _ticking = false;
   Future<void> _queue = Future.value();
 
   ReadonlySignal<RampRun?> get run => _run;
 
-  /// The preset the ramp card shows; survives leaving the screen.
-  ReadonlySignal<RampProfile> get selected => _selected;
+  /// Id of the preset or user ramp the ramp card shows; survives leaving
+  /// the screen. It may name a ramp that was deleted since.
+  ReadonlySignal<String> get selectedId => _selectedId;
 
-  void select(RampProfile profile) => _selected.value = profile;
+  void select(String id) => _selectedId.value = id;
 
   /// Runs [job] after every job queued before it, so ticks, Start and Stop
   /// never interleave their writes.

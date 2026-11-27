@@ -1646,6 +1646,192 @@ abstract class AppLocalizations {
   /// **'+{step}° every {interval} · {total}'**
   String rampsSummary(int step, String interval, String total);
 
+  /// No description provided for @rampsNewShort.
+  ///
+  /// In en, this message translates to:
+  /// **'New'**
+  String get rampsNewShort;
+
+  /// No description provided for @rampsEdit.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit'**
+  String get rampsEdit;
+
+  /// No description provided for @rampsNew.
+  ///
+  /// In en, this message translates to:
+  /// **'New ramp'**
+  String get rampsNew;
+
+  /// No description provided for @rampsEditSemantics.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit {name}'**
+  String rampsEditSemantics(String name);
+
+  /// No description provided for @rampsEditorNewTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'New ramp'**
+  String get rampsEditorNewTitle;
+
+  /// No description provided for @rampsEditorEditTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit ramp'**
+  String get rampsEditorEditTitle;
+
+  /// No description provided for @rampsEditorBack.
+  ///
+  /// In en, this message translates to:
+  /// **'Back'**
+  String get rampsEditorBack;
+
+  /// No description provided for @rampsEditorSave.
+  ///
+  /// In en, this message translates to:
+  /// **'Save'**
+  String get rampsEditorSave;
+
+  /// No description provided for @rampsEditorName.
+  ///
+  /// In en, this message translates to:
+  /// **'Name'**
+  String get rampsEditorName;
+
+  /// No description provided for @rampsEditorNameHint.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. Slow evening'**
+  String get rampsEditorNameHint;
+
+  /// No description provided for @rampsEditorStart.
+  ///
+  /// In en, this message translates to:
+  /// **'Start'**
+  String get rampsEditorStart;
+
+  /// No description provided for @rampsEditorStartHint.
+  ///
+  /// In en, this message translates to:
+  /// **'First base'**
+  String get rampsEditorStartHint;
+
+  /// No description provided for @rampsEditorEnd.
+  ///
+  /// In en, this message translates to:
+  /// **'End'**
+  String get rampsEditorEnd;
+
+  /// No description provided for @rampsEditorEndHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Last base, then it stays'**
+  String get rampsEditorEndHint;
+
+  /// No description provided for @rampsEditorStep.
+  ///
+  /// In en, this message translates to:
+  /// **'Step'**
+  String get rampsEditorStep;
+
+  /// No description provided for @rampsEditorStepHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Added per step'**
+  String get rampsEditorStepHint;
+
+  /// No description provided for @rampsEditorInterval.
+  ///
+  /// In en, this message translates to:
+  /// **'Every'**
+  String get rampsEditorInterval;
+
+  /// No description provided for @rampsEditorIntervalHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Between two steps'**
+  String get rampsEditorIntervalHint;
+
+  /// No description provided for @rampsEditorMinutes.
+  ///
+  /// In en, this message translates to:
+  /// **'min'**
+  String get rampsEditorMinutes;
+
+  /// No description provided for @rampsEditorStepValue.
+  ///
+  /// In en, this message translates to:
+  /// **'+{step}°'**
+  String rampsEditorStepValue(int step);
+
+  /// No description provided for @rampsEditorSteps.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 step} other{{count} steps}}'**
+  String rampsEditorSteps(int count);
+
+  /// No description provided for @rampsEditorStartField.
+  ///
+  /// In en, this message translates to:
+  /// **'start'**
+  String get rampsEditorStartField;
+
+  /// No description provided for @rampsEditorEndField.
+  ///
+  /// In en, this message translates to:
+  /// **'end'**
+  String get rampsEditorEndField;
+
+  /// No description provided for @rampsEditorStepField.
+  ///
+  /// In en, this message translates to:
+  /// **'step size'**
+  String get rampsEditorStepField;
+
+  /// No description provided for @rampsEditorIntervalField.
+  ///
+  /// In en, this message translates to:
+  /// **'interval'**
+  String get rampsEditorIntervalField;
+
+  /// No description provided for @rampsEditorLower.
+  ///
+  /// In en, this message translates to:
+  /// **'Lower {field}'**
+  String rampsEditorLower(String field);
+
+  /// No description provided for @rampsEditorRaise.
+  ///
+  /// In en, this message translates to:
+  /// **'Raise {field}'**
+  String rampsEditorRaise(String field);
+
+  /// No description provided for @rampsEditorDelete.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete ramp'**
+  String get rampsEditorDelete;
+
+  /// No description provided for @rampsEditorDeleteConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap again to delete'**
+  String get rampsEditorDeleteConfirm;
+
+  /// No description provided for @rampsSaved.
+  ///
+  /// In en, this message translates to:
+  /// **'Ramp saved'**
+  String get rampsSaved;
+
+  /// No description provided for @rampsDeleted.
+  ///
+  /// In en, this message translates to:
+  /// **'Ramp deleted'**
+  String get rampsDeleted;
+
   /// No description provided for @rampsStart.
   ///
   /// In en, this message translates to:

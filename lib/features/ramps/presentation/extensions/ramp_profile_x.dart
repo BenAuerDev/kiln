@@ -3,10 +3,12 @@ import '../../../../l10n/generated/app_localizations.dart';
 import '../../domain/models/ramp_profile.dart';
 
 extension RampProfileX on RampProfile {
-  String name(AppLocalizations l10n) => switch (preset) {
+  /// The preset's name in the app language, or the user's name.
+  String displayName(AppLocalizations l10n) => switch (preset) {
     RampPreset.gentle => l10n.rampsPresetGentle,
     RampPreset.classic => l10n.rampsPresetClassic,
     RampPreset.quick => l10n.rampsPresetQuick,
+    null => name,
   };
 
   /// `170–190°`.

@@ -3,10 +3,11 @@ import '../models/ramp_profile.dart';
 import '../models/ramp_run.dart';
 
 /// Pure rules of a ramp: the presets, the temperatures it steps through and
-/// how long it takes.
+/// how long it takes. The user's own ramps live in `RampsRepository`.
 class RampService {
   static const presets = [
     RampProfile(
+      id: 'preset.gentle',
       preset: RampPreset.gentle,
       startCelsius: 170,
       stepCelsius: 5,
@@ -14,6 +15,7 @@ class RampService {
       endCelsius: 190,
     ),
     RampProfile(
+      id: 'preset.classic',
       preset: RampPreset.classic,
       startCelsius: 180,
       stepCelsius: 5,
@@ -21,6 +23,7 @@ class RampService {
       endCelsius: 200,
     ),
     RampProfile(
+      id: 'preset.quick',
       preset: RampPreset.quick,
       startCelsius: 185,
       stepCelsius: 10,
@@ -28,6 +31,9 @@ class RampService {
       endCelsius: 205,
     ),
   ];
+
+  /// What the ramp card picks until the user chooses another ramp.
+  static final defaultPreset = presets[1];
 
   /// Every base temperature of [profile], start to end, within 40–210 °C.
   /// The last step lands exactly on the end even if the step size does not
@@ -60,6 +66,9 @@ class RampService {
     if (run.deviceId != deviceId || run.session != session) return false;
     return run.phase != RampRunPhase.finished || baseCelsius == run.target;
   }
+
+  /// How often the base is raised after the start.
+  int stepCount(RampProfile profile) => targets(profile).length - 1;
 
   /// From the start temperature until the last step is written.
   Duration duration(RampProfile profile) =>

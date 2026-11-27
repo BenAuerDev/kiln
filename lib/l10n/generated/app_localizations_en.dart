@@ -953,6 +953,115 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String get rampsNewShort => 'New';
+
+  @override
+  String get rampsEdit => 'Edit';
+
+  @override
+  String get rampsNew => 'New ramp';
+
+  @override
+  String rampsEditSemantics(String name) {
+    return 'Edit $name';
+  }
+
+  @override
+  String get rampsEditorNewTitle => 'New ramp';
+
+  @override
+  String get rampsEditorEditTitle => 'Edit ramp';
+
+  @override
+  String get rampsEditorBack => 'Back';
+
+  @override
+  String get rampsEditorSave => 'Save';
+
+  @override
+  String get rampsEditorName => 'Name';
+
+  @override
+  String get rampsEditorNameHint => 'e.g. Slow evening';
+
+  @override
+  String get rampsEditorStart => 'Start';
+
+  @override
+  String get rampsEditorStartHint => 'First base';
+
+  @override
+  String get rampsEditorEnd => 'End';
+
+  @override
+  String get rampsEditorEndHint => 'Last base, then it stays';
+
+  @override
+  String get rampsEditorStep => 'Step';
+
+  @override
+  String get rampsEditorStepHint => 'Added per step';
+
+  @override
+  String get rampsEditorInterval => 'Every';
+
+  @override
+  String get rampsEditorIntervalHint => 'Between two steps';
+
+  @override
+  String get rampsEditorMinutes => 'min';
+
+  @override
+  String rampsEditorStepValue(int step) {
+    return '+$step°';
+  }
+
+  @override
+  String rampsEditorSteps(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count steps',
+      one: '1 step',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get rampsEditorStartField => 'start';
+
+  @override
+  String get rampsEditorEndField => 'end';
+
+  @override
+  String get rampsEditorStepField => 'step size';
+
+  @override
+  String get rampsEditorIntervalField => 'interval';
+
+  @override
+  String rampsEditorLower(String field) {
+    return 'Lower $field';
+  }
+
+  @override
+  String rampsEditorRaise(String field) {
+    return 'Raise $field';
+  }
+
+  @override
+  String get rampsEditorDelete => 'Delete ramp';
+
+  @override
+  String get rampsEditorDeleteConfirm => 'Tap again to delete';
+
+  @override
+  String get rampsSaved => 'Ramp saved';
+
+  @override
+  String get rampsDeleted => 'Ramp deleted';
+
+  @override
   String get rampsStart => 'Start ramp';
 
   @override

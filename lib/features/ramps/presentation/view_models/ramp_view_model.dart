@@ -14,18 +14,26 @@ import '../../../portable/domain/repositories/portable_repository.dart';
 import '../../domain/models/ramp_profile.dart';
 import '../../domain/models/ramp_run.dart';
 import '../../domain/repositories/ramp_run_repository.dart';
+import '../../domain/repositories/ramps_repository.dart';
 import '../../domain/services/ramp_service.dart';
+import '../../domain/use_cases/find_ramp_use_case.dart';
+import '../../domain/use_cases/load_ramps_use_case.dart';
 import '../../domain/use_cases/start_ramp_use_case.dart';
 import '../../domain/use_cases/stop_ramp_use_case.dart';
 import '../extensions/ramp_profile_x.dart';
 import '../extensions/ramp_run_x.dart';
+import '../navigation/ramps_navigator.dart';
 
 /// State of the ramp card (Setup tab) and banner (Control tab). Everything
 /// but the countdown clock lives in repository signals, so each widget may
-/// own an instance.
+/// own an instance. The card offers the presets and the user's own ramps.
 class RampViewModel {
   RampViewModel({
     RampRunRepository? runs,
+    RampsRepository? userRamps,
+    FindRampUseCase? findRamp,
+    LoadRampsUseCase? loadRamps,
+    RampsNavigator? navigator,
     PortableRepository? portable,
     ConnectionRepository? connection,
     RampService? ramps,
@@ -37,6 +45,10 @@ class RampViewModel {
     DateTime Function()? clock,
     this._refresh = const Duration(seconds: 1),
   }) : _runs = runs ?? sl<RampRunRepository>(),
+       _userRamps = userRamps ?? sl<RampsRepository>(),
+       _findRamp = findRamp ?? sl<FindRampUseCase>(),
+       _loadRamps = loadRamps ?? sl<LoadRampsUseCase>(),
+       _navigator = navigator ?? sl<RampsNavigator>(),
        _portable = portable ?? sl<PortableRepository>(),
        _connection = connection ?? sl<ConnectionRepository>(),
        _ramps = ramps ?? sl<RampService>(),
@@ -58,9 +70,14 @@ class RampViewModel {
         if (running) _now.value = _clock();
       });
     });
+    unawaited(_load());
   }
 
   final RampRunRepository _runs;
+  final RampsRepository _userRamps;
+  final FindRampUseCase _findRamp;
+  final LoadRampsUseCase _loadRamps;
+  final RampsNavigator _navigator;
   final PortableRepository _portable;
   final ConnectionRepository _connection;
   final RampService _ramps;
@@ -77,13 +94,33 @@ class RampViewModel {
 
   List<RampProfile> get presets => RampService.presets;
 
-  late final Computed<int> selectedIndex = computed(
-    () => presets.indexOf(_runs.selected.value),
+  /// The user's own ramps, in the order they were made.
+  ReadonlySignal<List<RampProfile>> get userRamps => _userRamps.ramps;
+
+  /// The running ramp as it started (even if edited or deleted since);
+  /// otherwise the chosen ramp, or the default preset once the chosen one
+  /// was deleted.
+  late final Computed<RampProfile> selected = computed(() {
+    final run = activeRun.value;
+    if (run != null) return run.profile;
+    return _findRamp(_runs.selectedId.value).toNullable() ??
+        RampService.defaultPreset;
+  });
+
+  /// The presets, then the user's ramps: the tiles of the ramp card.
+  late final Computed<List<RampProfile>> options = computed(
+    () => [...presets, ...userRamps.value],
   );
 
-  /// `+5° every 2 min · 8 min` for the chosen preset.
+  /// Index of the chosen ramp in [options].
+  late final Computed<int?> selectedIndex = computed(() {
+    final index = options.value.indexWhere((p) => p.id == selected.value.id);
+    return index < 0 ? null : index;
+  });
+
+  /// `+5° every 2 min · 8 min` for the chosen ramp.
   late final Computed<String> selectedSummary = computed(() {
-    final profile = _runs.selected.value;
+    final profile = selected.value;
     return profile.summary(_l10n.strings, _ramps.duration(profile));
   });
 
@@ -121,21 +158,32 @@ class RampViewModel {
     return run.statusLine(_l10n.strings, _now.value);
   });
 
-  String nameOf(RampProfile profile) => profile.name(_l10n.strings);
+  String nameOf(RampProfile profile) => profile.displayName(_l10n.strings);
 
   String rangeOf(RampProfile profile) => profile.range(_l10n.strings);
 
+  /// Chooses the ramp at [index] of [options].
   void select(int index) {
-    if (activeRun.value != null || index < 0 || index >= presets.length) {
-      return;
-    }
-    unawaited(_haptics.tick());
-    _runs.select(presets[index]);
+    final all = options.value;
+    if (index < 0 || index >= all.length) return;
+    selectRamp(all[index].id);
   }
+
+  /// Chooses the preset or user ramp [id]; not while a ramp runs.
+  void selectRamp(String id) {
+    if (activeRun.value != null || id == _runs.selectedId.value) return;
+    unawaited(_haptics.tick());
+    _runs.select(id);
+  }
+
+  /// A new ramp, starting with the chosen ramp's values.
+  void newRamp() => _navigator.openEditor(from: selected.value.id);
+
+  void edit(String id) => _navigator.openEditor(id: id);
 
   Future<void> start() async {
     unawaited(_haptics.tick());
-    (await _startRamp(_runs.selected.value)).match(_showError, (_) {
+    (await _startRamp(selected.value)).match(_showError, (_) {
       unawaited(_haptics.success());
     });
   }
@@ -143,6 +191,10 @@ class RampViewModel {
   Future<void> stop() async {
     unawaited(_haptics.tick());
     (await _stopRamp()).match(_showError, (_) {});
+  }
+
+  Future<void> _load() async {
+    (await _loadRamps()).match(_showError, (_) {});
   }
 
   void _showError(AppError error) {
@@ -154,6 +206,8 @@ class RampViewModel {
     _disposeTicker();
     _timer?.cancel();
     _now.dispose();
+    selected.dispose();
+    options.dispose();
     selectedIndex.dispose();
     selectedSummary.dispose();
     activeRun.dispose();

@@ -8,7 +8,7 @@ void main() {
   final classic = RampService.presets[1];
 
   RampProfile profile(int start, int step, int end) => RampProfile(
-    preset: RampPreset.gentle,
+    id: 'test',
     startCelsius: start,
     stepCelsius: step,
     interval: const Duration(minutes: 1),
@@ -17,6 +17,7 @@ void main() {
 
   test('steps from start to end', () {
     expect(service.targets(classic), [180, 185, 190, 195, 200]);
+    expect(service.stepCount(classic), 4);
     expect(service.duration(classic), const Duration(minutes: 6));
   });
 

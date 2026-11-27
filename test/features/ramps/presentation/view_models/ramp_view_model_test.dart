@@ -5,7 +5,11 @@ import 'package:kiln/core/services/toast_service.dart';
 import 'package:kiln/features/portable/domain/models/heater_mode.dart';
 import 'package:kiln/features/portable/domain/models/portable_status.dart';
 import 'package:kiln/features/ramps/domain/models/ramp_run.dart';
+import 'package:kiln/features/ramps/data/models/ramp_dto.dart';
 import 'package:kiln/features/ramps/domain/repositories/ramp_run_repository.dart';
+import 'package:kiln/features/ramps/domain/repositories/ramps_repository.dart';
+import 'package:kiln/features/ramps/domain/use_cases/find_ramp_use_case.dart';
+import 'package:kiln/features/ramps/domain/use_cases/load_ramps_use_case.dart';
 import 'package:kiln/features/ramps/domain/services/ramp_service.dart';
 import 'package:kiln/features/ramps/presentation/view_models/ramp_view_model.dart';
 import 'package:mocktail/mocktail.dart';
@@ -23,6 +27,8 @@ void main() {
   late Signal<String?> activeId;
   late DateTime now;
   late RampViewModel vm;
+  late RampsRepository userRamps;
+  late MockRampsNavigator navigator;
 
   final t0 = DateTime(2026, 11, 23, 21);
   final classic = RampService.presets[1];
@@ -52,8 +58,23 @@ void main() {
     when(() => haptics.warning()).thenAnswer((_) async {});
     toast = MockToastService();
     now = t0;
+    userRamps = fakeRampsRepository([
+      const RampDto(
+        id: 'user.1',
+        name: 'Evening',
+        startCelsius: 172,
+        endCelsius: 196,
+        stepCelsius: 4,
+        intervalSeconds: 60,
+      ),
+    ]);
+    navigator = MockRampsNavigator();
     vm = RampViewModel(
       runs: runs,
+      userRamps: userRamps,
+      findRamp: FindRampUseCase(repository: userRamps),
+      loadRamps: LoadRampsUseCase(repository: userRamps),
+      navigator: navigator,
       portable: portable,
       connection: connection,
       ramps: RampService(),
@@ -79,6 +100,55 @@ void main() {
     expect(vm.selectedSummary.value, '+5° every 1 min 30 s · 6 min');
     vm.select(2);
     expect(vm.selectedIndex.value, 2);
+  });
+
+  test('user ramps follow the presets; choosing one by index', () async {
+    await pumpEventQueue();
+    expect(vm.userRamps.value.map((r) => r.name), ['Evening']);
+    expect(vm.options.value, hasLength(4));
+    vm.select(3);
+    expect(vm.selected.value.name, 'Evening');
+    expect(vm.selectedIndex.value, 3);
+    expect(vm.selectedSummary.value, '+4° every 1 min · 6 min');
+    await vm.start();
+    verify(() => start(userRamps.byId('user.1')!)).called(1);
+  });
+
+  test('a deleted choice falls back to Classic', () async {
+    await pumpEventQueue();
+    vm.selectRamp('user.1');
+    await userRamps.delete('user.1');
+    expect(vm.selected.value, classic);
+    expect(vm.selectedIndex.value, 1);
+  });
+
+  test('while a ramp runs, the card shows it even if deleted', () async {
+    await pumpEventQueue();
+    vm.select(3);
+    final evening = vm.selected.value;
+    runs.update(
+      RampRun(
+        profile: evening,
+        deviceId: 'v',
+        session: 1,
+        target: 172,
+        nextTarget: 176,
+        nextStepAt: t0,
+      ),
+    );
+    await userRamps.delete('user.1');
+    expect(vm.selected.value, evening);
+    expect(vm.selectedIndex.value, isNull);
+    expect(vm.selectedSummary.value, '+4° every 1 min · 6 min');
+  });
+
+  test('New ramp starts from the chosen ramp; edit opens the ramp', () {
+    vm
+      ..select(2)
+      ..newRamp()
+      ..edit('user.1');
+    verify(() => navigator.openEditor(from: 'preset.quick')).called(1);
+    verify(() => navigator.openEditor(id: 'user.1')).called(1);
   });
 
   test('start uses the chosen preset; errors become a toast', () async {

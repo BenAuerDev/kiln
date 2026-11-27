@@ -18,6 +18,7 @@ class PortableLadderRow extends StatelessWidget {
     required this.onRaise,
     this.subAccent = false,
     this.enabled = true,
+    this.divider = true,
     super.key,
   });
 
@@ -35,12 +36,17 @@ class PortableLadderRow extends StatelessWidget {
   final VoidCallback onRaise;
   final bool enabled;
 
+  /// A line above the row, between it and the one before.
+  final bool divider;
+
   @override
   Widget build(BuildContext context) {
     final kiln = context.kiln;
     return DecoratedBox(
       decoration: BoxDecoration(
-        border: Border(top: BorderSide(color: kiln.surfaces.border)),
+        border: divider
+            ? Border(top: BorderSide(color: kiln.surfaces.border))
+            : null,
       ),
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 14),

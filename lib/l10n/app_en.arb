@@ -765,6 +765,72 @@
       }
     }
   },
+  "rampsNewShort": "New",
+  "rampsEdit": "Edit",
+  "rampsNew": "New ramp",
+  "rampsEditSemantics": "Edit {name}",
+  "@rampsEditSemantics": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "rampsEditorNewTitle": "New ramp",
+  "rampsEditorEditTitle": "Edit ramp",
+  "rampsEditorBack": "Back",
+  "rampsEditorSave": "Save",
+  "rampsEditorName": "Name",
+  "rampsEditorNameHint": "e.g. Slow evening",
+  "rampsEditorStart": "Start",
+  "rampsEditorStartHint": "First base",
+  "rampsEditorEnd": "End",
+  "rampsEditorEndHint": "Last base, then it stays",
+  "rampsEditorStep": "Step",
+  "rampsEditorStepHint": "Added per step",
+  "rampsEditorInterval": "Every",
+  "rampsEditorIntervalHint": "Between two steps",
+  "rampsEditorMinutes": "min",
+  "rampsEditorStepValue": "+{step}°",
+  "@rampsEditorStepValue": {
+    "placeholders": {
+      "step": {
+        "type": "int"
+      }
+    }
+  },
+  "rampsEditorSteps": "{count, plural, =1{1 step} other{{count} steps}}",
+  "@rampsEditorSteps": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "rampsEditorStartField": "start",
+  "rampsEditorEndField": "end",
+  "rampsEditorStepField": "step size",
+  "rampsEditorIntervalField": "interval",
+  "rampsEditorLower": "Lower {field}",
+  "@rampsEditorLower": {
+    "placeholders": {
+      "field": {
+        "type": "String"
+      }
+    }
+  },
+  "rampsEditorRaise": "Raise {field}",
+  "@rampsEditorRaise": {
+    "placeholders": {
+      "field": {
+        "type": "String"
+      }
+    }
+  },
+  "rampsEditorDelete": "Delete ramp",
+  "rampsEditorDeleteConfirm": "Tap again to delete",
+  "rampsSaved": "Ramp saved",
+  "rampsDeleted": "Ramp deleted",
   "rampsStart": "Start ramp",
   "rampsStop": "Stop ramp",
   "rampsNotWhileBoosting": "Not while boosting",

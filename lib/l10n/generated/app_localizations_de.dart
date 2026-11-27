@@ -957,6 +957,115 @@ class AppLocalizationsDe extends AppLocalizations {
   }
 
   @override
+  String get rampsNewShort => 'Neu';
+
+  @override
+  String get rampsEdit => 'Bearbeiten';
+
+  @override
+  String get rampsNew => 'Neue Rampe';
+
+  @override
+  String rampsEditSemantics(String name) {
+    return '$name bearbeiten';
+  }
+
+  @override
+  String get rampsEditorNewTitle => 'Neue Rampe';
+
+  @override
+  String get rampsEditorEditTitle => 'Rampe bearbeiten';
+
+  @override
+  String get rampsEditorBack => 'Zurück';
+
+  @override
+  String get rampsEditorSave => 'Speichern';
+
+  @override
+  String get rampsEditorName => 'Name';
+
+  @override
+  String get rampsEditorNameHint => 'z. B. Ruhiger Abend';
+
+  @override
+  String get rampsEditorStart => 'Start';
+
+  @override
+  String get rampsEditorStartHint => 'Erste Basis';
+
+  @override
+  String get rampsEditorEnd => 'Ende';
+
+  @override
+  String get rampsEditorEndHint => 'Letzte Basis, dann bleibt sie';
+
+  @override
+  String get rampsEditorStep => 'Schritt';
+
+  @override
+  String get rampsEditorStepHint => 'Plus pro Schritt';
+
+  @override
+  String get rampsEditorInterval => 'Alle';
+
+  @override
+  String get rampsEditorIntervalHint => 'Zwischen zwei Schritten';
+
+  @override
+  String get rampsEditorMinutes => 'Min.';
+
+  @override
+  String rampsEditorStepValue(int step) {
+    return '+$step°';
+  }
+
+  @override
+  String rampsEditorSteps(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count Schritte',
+      one: '1 Schritt',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get rampsEditorStartField => 'Start';
+
+  @override
+  String get rampsEditorEndField => 'Ende';
+
+  @override
+  String get rampsEditorStepField => 'Schrittgröße';
+
+  @override
+  String get rampsEditorIntervalField => 'Intervall';
+
+  @override
+  String rampsEditorLower(String field) {
+    return '$field senken';
+  }
+
+  @override
+  String rampsEditorRaise(String field) {
+    return '$field erhöhen';
+  }
+
+  @override
+  String get rampsEditorDelete => 'Rampe löschen';
+
+  @override
+  String get rampsEditorDeleteConfirm => 'Zum Löschen nochmal tippen';
+
+  @override
+  String get rampsSaved => 'Rampe gespeichert';
+
+  @override
+  String get rampsDeleted => 'Rampe gelöscht';
+
+  @override
   String get rampsStart => 'Rampe starten';
 
   @override

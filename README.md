@@ -25,7 +25,8 @@ An unofficial, open-source app for Storz & Bickel vaporizers: **Volcano Hybrid**
 - Device settings: charge limit, battery saver, vibrate when ready, boost on
   the LEDs, °C/°F, find my device
 - Ramps: the base rises step by step during a session (Gentle, Classic,
-  Quick); boost still works, and the ramp catches up when boost ends
+  Quick, or your own: start, end, step and interval); boost still works,
+  and the ramp catches up when boost ends
 - Haptic feedback for every step and a "Saved" confirmation
 
 ### Volcano Hybrid

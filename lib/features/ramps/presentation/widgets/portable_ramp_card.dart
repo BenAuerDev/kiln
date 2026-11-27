@@ -7,10 +7,11 @@ import '../../../../core/l10n/get_app_localizations.dart';
 import '../../../../core/service_locator.dart';
 import '../../../../core/theme/build_context_x.dart';
 import '../../../portable/presentation/widgets/common/portable_card.dart';
-import '../../../portable/presentation/widgets/setup/portable_quick_setup_control.dart';
 import '../view_models/ramp_view_model.dart';
+import 'ramp_choice_grid.dart';
 
-/// Choose and run a ramp (Setup tab). Self-contained (ARCHITECTURE.md,
+/// Choose and run a ramp (Setup tab): the presets and the user's own ramps
+/// in one grid with "+ New", and "Edit" for a chosen user ramp. Self-contained (ARCHITECTURE.md,
 /// screens and widgets): its state lives in repository signals.
 class PortableRampCard extends HookWidget {
   const PortableRampCard({super.key});
@@ -25,6 +26,7 @@ class PortableRampCard extends HookWidget {
         final kiln = context.kiln;
         final running = vm.activeRun.value != null;
         final line = vm.statusLine.value;
+        final selected = vm.selected.value;
         return PortableCard(
           padding: const EdgeInsets.all(16),
           child: Column(
@@ -42,19 +44,38 @@ class PortableRampCard extends HookWidget {
                   OiLabel.small(l10n.rampsIntro, color: kiln.surfaces.muted),
                 ],
               ),
-              PortableQuickSetupControl(
+              RampChoiceGrid(
                 options: [
-                  for (final profile in vm.presets)
+                  for (final profile in vm.options.value)
                     (name: vm.nameOf(profile), range: vm.rangeOf(profile)),
                 ],
                 checkedIndex: vm.selectedIndex.value,
                 onSelect: vm.select,
+                onNew: vm.newRamp,
                 semanticLabel: l10n.rampsChoose,
+                newLabel: l10n.rampsNewShort,
+                newSemanticLabel: l10n.rampsNew,
                 enabled: !running,
               ),
-              OiLabel.small(
-                vm.selectedSummary.value,
-                color: kiln.surfaces.muted,
+              Row(
+                spacing: 8,
+                children: [
+                  Expanded(
+                    child: OiLabel.small(
+                      vm.selectedSummary.value,
+                      color: kiln.surfaces.muted,
+                    ),
+                  ),
+                  if (!selected.isPreset && !running)
+                    OiButton.ghost(
+                      label: l10n.rampsEdit,
+                      icon: OiIcons.pencil,
+                      semanticLabel: l10n.rampsEditSemantics(
+                        vm.nameOf(selected),
+                      ),
+                      onTap: () => vm.edit(selected.id),
+                    ),
+                ],
               ),
               if (line.isNotEmpty)
                 OiLabel.smallStrong(line, color: kiln.accent.accentText),
