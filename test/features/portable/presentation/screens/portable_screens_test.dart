@@ -75,7 +75,8 @@ void main() {
       await pumpKiln(tester, const PortableSetupScreen());
 
       expect(find.text('Veazy'), findsOneWidget);
-      expect(find.text('Connected · 80% battery'), findsOneWidget);
+      expect(find.text('Connected'), findsOneWidget);
+      expect(find.bySemanticsLabel('80% battery'), findsOneWidget);
       for (final text in ['Base', 'Boost', 'Superboost', '180°', '+15°']) {
         expect(find.text(text), findsWidgets);
       }
@@ -132,7 +133,8 @@ void main() {
       await pumpKiln(tester, const PortableControlScreen());
 
       expect(find.text('kiln'), findsOneWidget);
-      expect(find.text('Veazy · 80% battery'), findsOneWidget);
+      expect(find.text('Veazy'), findsOneWidget);
+      expect(find.bySemanticsLabel('80% battery'), findsOneWidget);
       expect(find.text('HEATER OFF'), findsOneWidget);
       expect(find.text('target temperature'), findsOneWidget);
       expect(find.text('180°'), findsNWidgets(2));
@@ -226,6 +228,7 @@ void main() {
       ]) {
         expect(find.text(text), findsOneWidget, reason: text);
       }
+      expect(find.bySemanticsLabel('80% battery'), findsOneWidget);
       expect(find.textContaining('device check'), findsNothing);
     });
 

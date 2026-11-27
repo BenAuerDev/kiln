@@ -33,7 +33,7 @@ class HomeWidgetSnapshotService {
     }
     return PortableWidgetSnapshot(
       model: device.model,
-      batteryPercent: status.batteryPercent,
+      battery: status.battery,
       ladder: _ladder.ladder(status),
       heaterMode: status.heaterMode,
       phase: status.heatPhase,

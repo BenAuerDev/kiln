@@ -9,6 +9,7 @@ import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.LinearGradient
 import android.graphics.Paint
+import android.graphics.Path
 import android.graphics.RectF
 import android.graphics.Shader
 import android.os.Bundle
@@ -25,6 +26,8 @@ import org.json.JSONObject
  * row (the ladder as three temperatures); from two rows the full card.
  * Live and offline as described in [KilnWidgets]; offline it keeps the
  * last values (the battery ring turns grey) and a tap anywhere opens kiln.
+ * A nearly empty battery turns the ring and % red; charging adds a bolt
+ * (only while live: offline both may be stale).
  */
 class PortableWidgetProvider : HomeWidgetProvider() {
     override fun onUpdate(
@@ -99,10 +102,19 @@ class PortableWidgetProvider : HomeWidgetProvider() {
             fun text(key: String) = values.optString(key)
             fun text(liveKey: String, offlineKey: String) = text(if (live) liveKey else offlineKey)
 
-            views.setImageViewBitmap(R.id.widget_ring, ring(context, values, live, colors, compact))
-            views.setContentDescription(R.id.widget_ring, text("ringDescription"))
+            val low = live && values.optBoolean("batteryLow")
+            val charging = live && values.optBoolean("charging")
+            views.setImageViewBitmap(R.id.widget_ring, ring(context, values, live, low, charging, colors, compact))
+            views.setContentDescription(R.id.widget_ring, text("ringDescription", "offlineRingDescription"))
             views.setTextViewText(R.id.widget_battery, text("battery"))
-            views.setTextColor(R.id.widget_battery, if (live) colors.text else colors.muted)
+            views.setTextColor(
+                R.id.widget_battery,
+                when {
+                    low -> colors.low
+                    live -> colors.text
+                    else -> colors.muted
+                },
+            )
 
             views.setTextViewText(R.id.widget_name, text("name"))
             views.setTextViewText(R.id.widget_status, text("status", "offlineStatus"))
@@ -115,6 +127,8 @@ class PortableWidgetProvider : HomeWidgetProvider() {
             views.setTextViewText(R.id.widget_boost, text("boost"))
             views.setTextViewText(R.id.widget_super, text("superBoost"))
             if (compact) {
+                views.setViewVisibility(R.id.widget_battery_bolt, if (charging) View.VISIBLE else View.GONE)
+                views.setInt(R.id.widget_battery_bolt, "setColorFilter", colors.accentText)
                 views.setContentDescription(R.id.widget_steps, text("ladderDescription"))
             } else {
                 views.setImageViewBitmap(R.id.widget_ladder, ladder(context, values, ladderWidthDp, colors))
@@ -146,26 +160,60 @@ class PortableWidgetProvider : HomeWidgetProvider() {
         }
 
         /**
-         * The battery gauge (grey while offline) with the device's line
-         * drawing inside; the full card has the % in the gap below it.
+         * The battery gauge (grey while offline, red when [low]) with the
+         * device's line drawing inside; the full card has the % in the gap
+         * below it and, while [charging], a bolt between drawing and %, so
+         * the % stays centred in the gap (the compact card puts the bolt
+         * next to its %).
          */
         private fun ring(
             context: Context,
             values: JSONObject,
             live: Boolean,
+            low: Boolean,
+            charging: Boolean,
             colors: KilnWidgets.Colors,
             compact: Boolean,
         ): Bitmap {
             val level = values.optDouble("batteryLevel", 0.0).toFloat()
+            val (start, end) = when {
+                low -> colors.low to colors.low
+                live -> colors.gradientStart to colors.gradientEnd
+                else -> colors.muted to colors.muted
+            }
             val bitmap = KilnWidgets.gauge(
-                context, if (compact) COMPACT_RING_DP else RING_DP, level,
-                if (live) colors.gradientStart else colors.muted,
-                if (live) colors.gradientEnd else colors.muted,
+                context, if (compact) COMPACT_RING_DP else RING_DP, level, start, end,
             )
             val size = bitmap.width.toFloat()
             val centre = if (compact) size * 0.5f else size * 0.45f
-            glyph(Canvas(bitmap), values.optString("glyph"), size * 0.46f, size / 2, centre, colors.accent)
+            val canvas = Canvas(bitmap)
+            glyph(canvas, values.optString("glyph"), size * 0.46f, size / 2, centre, colors.accent)
+            if (charging && !compact) bolt(canvas, size * 0.1f, size / 2, size * 0.72f, colors.accentText)
             return bitmap
+        }
+
+        /**
+         * The charging bolt of widget_bolt.xml (10×12 grid, the visible
+         * shape 8.8 high around (5, 6)), [height] high and centred on
+         * ([cx], [cy]).
+         */
+        private fun bolt(canvas: Canvas, height: Float, cx: Float, cy: Float, color: Int) {
+            val path = Path().apply {
+                moveTo(6.3f, 1.6f)
+                lineTo(1.3f, 6.8f)
+                lineTo(4.7f, 6.8f)
+                lineTo(3.7f, 10.4f)
+                lineTo(8.7f, 5.2f)
+                lineTo(5.3f, 5.2f)
+                close()
+            }
+            val unit = height / 8.8f
+            canvas.save()
+            canvas.translate(cx, cy)
+            canvas.scale(unit, unit)
+            canvas.translate(-5f, -6f)
+            canvas.drawPath(path, Paint(Paint.ANTI_ALIAS_FLAG).apply { this.color = color })
+            canvas.restore()
         }
 
         /**

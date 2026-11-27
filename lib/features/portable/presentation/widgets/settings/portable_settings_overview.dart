@@ -1,10 +1,12 @@
 import 'package:flutter/widgets.dart';
+import 'package:obers_ui/obers_ui.dart';
 import 'package:signals_flutter/signals_flutter.dart';
 
 import '../../../../../core/l10n/get_app_localizations.dart';
+import '../../../../../core/theme/build_context_x.dart';
 import '../../../domain/extensions/portable_status_x.dart';
-import '../../extensions/portable_battery_x.dart';
 import '../../view_models/portable_settings_view_model.dart';
+import '../common/portable_battery_indicator.dart';
 import 'portable_device_summary.dart';
 import 'portable_find_device_button.dart';
 
@@ -27,7 +29,12 @@ class PortableSettingsOverview extends SignalWidget {
         PortableDeviceSummary(
           name: name,
           model: vm.device.value?.model,
-          detail: status?.battery.label(l10n) ?? l10n.portableNoTemperature,
+          detail: status == null
+              ? OiLabel.small(
+                  l10n.portableNoTemperature,
+                  color: context.kiln.surfaces.muted,
+                )
+              : PortableBatteryIndicator(battery: status.battery),
         ),
         PortableFindDeviceButton(
           title: finding

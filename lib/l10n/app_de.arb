@@ -26,6 +26,8 @@
   "navWorkflows": "Abläufe",
   "portableDefaultName": "Vaporizer",
   "portableBatteryLevel": "{percent} % Akku",
+  "portableBatteryPercent": "{percent} %",
+  "portableBatteryLow": "{percent} % Akku, fast leer",
   "portableBatteryCharging": "{percent} % · lädt",
   "portableStatusLine": "{first} · {second}",
   "portableOpenSettings": "Einstellungen für {deviceName}",
@@ -293,5 +295,7 @@
   "homeWidgetSuperBoost": "Superboost",
   "homeWidgetBoostOff": "Boost aus",
   "homeWidgetPortableRing": "{device}, Akku {percent} %",
+  "homeWidgetPortableRingLow": "{device}, Akku {percent} %, fast leer",
+  "homeWidgetPortableRingCharging": "{device}, Akku {percent} %, lädt",
   "homeWidgetPortableLadder": "Basis {base}°, Boost {boost}°, Superboost {superBoost}°"
 }

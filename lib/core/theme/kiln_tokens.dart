@@ -44,6 +44,7 @@ class KilnSurfaceTokens {
     required this.muted,
     required this.border,
     required this.track,
+    required this.low,
     required this.toastBackground,
     required this.toastText,
   });
@@ -55,6 +56,9 @@ class KilnSurfaceTokens {
   final Color muted;
   final Color border;
   final Color track;
+
+  /// Warning red, e.g. a nearly empty battery.
+  final Color low;
   final Color toastBackground;
   final Color toastText;
 }

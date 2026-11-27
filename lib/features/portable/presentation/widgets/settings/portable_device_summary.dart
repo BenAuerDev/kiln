@@ -6,7 +6,7 @@ import '../../../../devices/domain/models/device_model.dart';
 import '../../../../devices/presentation/widgets/common/device_glyph.dart';
 import '../common/portable_card.dart';
 
-/// Device glyph with glow, name and battery line.
+/// Device glyph with glow, name and a detail line (the battery).
 class PortableDeviceSummary extends StatelessWidget {
   const PortableDeviceSummary({
     required this.name,
@@ -16,7 +16,7 @@ class PortableDeviceSummary extends StatelessWidget {
   });
 
   final String name;
-  final String detail;
+  final Widget detail;
   final DeviceModel? model;
 
   @override
@@ -58,7 +58,7 @@ class PortableDeviceSummary extends StatelessWidget {
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                 ),
-                OiLabel.small(detail, color: kiln.surfaces.muted),
+                detail,
               ],
             ),
           ),

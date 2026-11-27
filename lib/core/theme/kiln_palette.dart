@@ -107,6 +107,7 @@ abstract final class KilnPalette {
     muted: Color(0xFF9CA3AF),
     border: Color(0xFF1F2937),
     track: Color(0xFF1F2937),
+    low: Color(0xFFF87171),
     toastBackground: Color(0xFFF9FAFB),
     toastText: Color(0xFF111827),
   );
@@ -119,6 +120,7 @@ abstract final class KilnPalette {
     muted: Color(0xFF5A5A5A),
     border: Color(0xFFE5E7EB),
     track: Color(0xFFE5E7EB),
+    low: Color(0xFFDC2626),
     toastBackground: Color(0xFF111827),
     toastText: Color(0xFFF9FAFB),
   );

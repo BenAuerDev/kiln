@@ -254,6 +254,18 @@ abstract class AppLocalizations {
   /// **'{percent}% battery'**
   String portableBatteryLevel(int percent);
 
+  /// No description provided for @portableBatteryPercent.
+  ///
+  /// In en, this message translates to:
+  /// **'{percent}%'**
+  String portableBatteryPercent(int percent);
+
+  /// No description provided for @portableBatteryLow.
+  ///
+  /// In en, this message translates to:
+  /// **'{percent}% battery, low'**
+  String portableBatteryLow(int percent);
+
   /// No description provided for @portableBatteryCharging.
   ///
   /// In en, this message translates to:
@@ -1855,6 +1867,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{device}, battery {percent}%'**
   String homeWidgetPortableRing(String device, int percent);
+
+  /// No description provided for @homeWidgetPortableRingLow.
+  ///
+  /// In en, this message translates to:
+  /// **'{device}, battery {percent}%, low'**
+  String homeWidgetPortableRingLow(String device, int percent);
+
+  /// No description provided for @homeWidgetPortableRingCharging.
+  ///
+  /// In en, this message translates to:
+  /// **'{device}, battery {percent}%, charging'**
+  String homeWidgetPortableRingCharging(String device, int percent);
 
   /// No description provided for @homeWidgetPortableLadder.
   ///

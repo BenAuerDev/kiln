@@ -105,6 +105,16 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String portableBatteryPercent(int percent) {
+    return '$percent%';
+  }
+
+  @override
+  String portableBatteryLow(int percent) {
+    return '$percent% battery, low';
+  }
+
+  @override
   String portableBatteryCharging(int percent) {
     return '$percent% · charging';
   }
@@ -1087,6 +1097,16 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String homeWidgetPortableRing(String device, int percent) {
     return '$device, battery $percent%';
+  }
+
+  @override
+  String homeWidgetPortableRingLow(String device, int percent) {
+    return '$device, battery $percent%, low';
+  }
+
+  @override
+  String homeWidgetPortableRingCharging(String device, int percent) {
+    return '$device, battery $percent%, charging';
   }
 
   @override

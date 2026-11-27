@@ -1,6 +1,7 @@
 import '../../../devices/domain/models/device_finish.dart';
 import '../../../devices/domain/models/device_model.dart';
 import '../../../portable/domain/models/heater_mode.dart';
+import '../../../portable/domain/models/portable_battery.dart';
 import '../../../portable/domain/models/portable_heat_phase.dart';
 import '../../../portable/domain/models/portable_ladder.dart';
 
@@ -9,7 +10,7 @@ import '../../../portable/domain/models/portable_ladder.dart';
 class PortableWidgetSnapshot {
   const PortableWidgetSnapshot({
     required this.model,
-    required this.batteryPercent,
+    required this.battery,
     required this.ladder,
     required this.heaterMode,
     required this.phase,
@@ -18,7 +19,7 @@ class PortableWidgetSnapshot {
   });
 
   final DeviceModel model;
-  final int batteryPercent;
+  final PortableBattery battery;
   final PortableLadder ladder;
   final HeaterMode heaterMode;
   final PortableHeatPhase phase;
@@ -31,7 +32,7 @@ class PortableWidgetSnapshot {
   bool operator ==(Object other) =>
       other is PortableWidgetSnapshot &&
       other.model == model &&
-      other.batteryPercent == batteryPercent &&
+      other.battery == battery &&
       other.ladder == ladder &&
       other.heaterMode == heaterMode &&
       other.phase == phase &&
@@ -41,7 +42,7 @@ class PortableWidgetSnapshot {
   @override
   int get hashCode => Object.hash(
     model,
-    batteryPercent,
+    battery,
     ladder,
     heaterMode,
     phase,

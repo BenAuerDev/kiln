@@ -5,6 +5,7 @@ import 'package:kiln/features/devices/domain/models/device_model.dart';
 import 'package:kiln/features/home_widgets/domain/models/volcano_widget_snapshot.dart';
 import 'package:kiln/features/home_widgets/domain/services/home_widget_snapshot_service.dart';
 import 'package:kiln/features/portable/domain/models/heater_mode.dart';
+import 'package:kiln/features/portable/domain/models/portable_battery.dart';
 import 'package:kiln/features/portable/domain/models/portable_heat_phase.dart';
 import 'package:kiln/features/portable/domain/services/portable_ladder_service.dart';
 import 'package:kiln/features/volcano/domain/models/volcano_heat_phase.dart';
@@ -29,7 +30,10 @@ void main() {
         ),
       )!;
       expect(snapshot.model, DeviceModel.veazy);
-      expect(snapshot.batteryPercent, 80);
+      expect(
+        snapshot.battery,
+        const PortableBattery(percent: 80, charging: false),
+      );
       expect(snapshot.ladder.base, 185);
       expect(snapshot.ladder.boostTemperature, 200);
       // Capped at the device maximum.

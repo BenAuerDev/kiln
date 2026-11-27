@@ -131,6 +131,7 @@ object KilnWidgets {
     class Colors(context: Context, values: JSONObject) {
         val text = context.getColor(R.color.widget_text)
         val muted = context.getColor(R.color.widget_muted)
+        val low = context.getColor(R.color.widget_low)
         val accent = values.color("accent") ?: text
         val accentText = values.color("accentText") ?: accent
         val onAccent = values.color("onAccent") ?: context.getColor(R.color.widget_background)

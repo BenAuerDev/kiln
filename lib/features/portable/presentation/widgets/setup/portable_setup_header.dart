@@ -8,8 +8,8 @@ import '../../../../../core/theme/build_context_x.dart';
 import '../../../../devices/domain/models/connection_status.dart';
 import '../../../../devices/presentation/extensions/connection_status_x.dart';
 import '../../../domain/extensions/portable_status_x.dart';
-import '../../extensions/portable_battery_x.dart';
 import '../../view_models/portable_setup_view_model.dart';
+import '../common/portable_battery_indicator.dart';
 import '../common/portable_round_button.dart';
 import '../common/portable_status_line.dart';
 
@@ -48,12 +48,10 @@ class PortableSetupHeader extends SignalWidget {
                   ),
                   PortableStatusLine(
                     active: connection == ConnectionStatus.connected,
-                    text: status == null
-                        ? connectionLabel
-                        : l10n.portableStatusLine(
-                            connectionLabel,
-                            status.battery.label(l10n),
-                          ),
+                    text: connectionLabel,
+                    trailing: status == null
+                        ? null
+                        : PortableBatteryIndicator(battery: status.battery),
                   ),
                 ],
               ),

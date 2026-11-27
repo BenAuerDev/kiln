@@ -12,6 +12,7 @@ import 'package:kiln/features/home_widgets/domain/models/volcano_widget_snapshot
 import 'package:kiln/features/home_widgets/presentation/extensions/portable_widget_snapshot_x.dart';
 import 'package:kiln/features/home_widgets/presentation/extensions/volcano_widget_snapshot_x.dart';
 import 'package:kiln/features/portable/domain/models/heater_mode.dart';
+import 'package:kiln/features/portable/domain/models/portable_battery.dart';
 import 'package:kiln/features/portable/domain/models/portable_heat_phase.dart';
 import 'package:kiln/features/portable/domain/services/portable_ladder_service.dart';
 import 'package:kiln/features/volcano/domain/models/volcano_heat_phase.dart';
@@ -95,7 +96,7 @@ final en = lookupAppLocalizations(const Locale('en'));
 
 final veazySnapshot = PortableWidgetSnapshot(
   model: DeviceModel.veazy,
-  batteryPercent: 72,
+  battery: const PortableBattery(percent: 72, charging: false),
   ladder: PortableLadderService().ladder(testStatus(target: 180)),
   heaterMode: HeaterMode.normal,
   phase: PortableHeatPhase.heating,

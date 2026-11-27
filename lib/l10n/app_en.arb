@@ -81,6 +81,22 @@
       }
     }
   },
+  "portableBatteryPercent": "{percent}%",
+  "@portableBatteryPercent": {
+    "placeholders": {
+      "percent": {
+        "type": "int"
+      }
+    }
+  },
+  "portableBatteryLow": "{percent}% battery, low",
+  "@portableBatteryLow": {
+    "placeholders": {
+      "percent": {
+        "type": "int"
+      }
+    }
+  },
   "portableBatteryCharging": "{percent}% · charging",
   "@portableBatteryCharging": {
     "placeholders": {
@@ -933,6 +949,28 @@
   "homeWidgetBoostOff": "Boost off",
   "homeWidgetPortableRing": "{device}, battery {percent}%",
   "@homeWidgetPortableRing": {
+    "placeholders": {
+      "device": {
+        "type": "String"
+      },
+      "percent": {
+        "type": "int"
+      }
+    }
+  },
+  "homeWidgetPortableRingLow": "{device}, battery {percent}%, low",
+  "@homeWidgetPortableRingLow": {
+    "placeholders": {
+      "device": {
+        "type": "String"
+      },
+      "percent": {
+        "type": "int"
+      }
+    }
+  },
+  "homeWidgetPortableRingCharging": "{device}, battery {percent}%, charging",
+  "@homeWidgetPortableRingCharging": {
     "placeholders": {
       "device": {
         "type": "String"

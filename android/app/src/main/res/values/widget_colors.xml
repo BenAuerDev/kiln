@@ -8,6 +8,8 @@
     <color name="widget_raised">#FF1C1C26</color>
     <color name="widget_border">#FF1F2937</color>
     <color name="widget_track">#FF1F2937</color>
+    <!-- Nearly empty battery: KilnPalette.darkSurfaces.low. -->
+    <color name="widget_low">#FFF87171</color>
     <!-- Filled buttons: white, tinted with the accent at runtime. -->
     <color name="widget_tint_base">#FFFFFFFF</color>
 </resources>

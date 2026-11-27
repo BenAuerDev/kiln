@@ -7,7 +7,8 @@ import '../../domain/models/portable_widget_content.dart';
 import '../../domain/models/portable_widget_snapshot.dart';
 
 extension PortableWidgetSnapshotX on PortableWidgetSnapshot {
-  /// Battery ring with the device, status, the base → boost → superboost
+  /// Battery ring with the device (red when low, a bolt by the % while
+  /// charging), status, the base → boost → superboost
   /// ladder and Heat / Boost (the wide card of design/Widgets.dc.html, with
   /// the Veazy tile's values). A button that is on is filled with the
   /// accent and names what a tap does next, like the app's Boost button.
@@ -18,11 +19,21 @@ extension PortableWidgetSnapshotX on PortableWidgetSnapshot {
     return PortableWidgetContent(
       glyph: model.name,
       name: model.displayName,
-      battery: l10n.homeWidgetBattery(batteryPercent),
-      batteryLevel: (batteryPercent / 100).clamp(0.0, 1.0),
-      ringDescription: l10n.homeWidgetPortableRing(
+      battery: l10n.homeWidgetBattery(battery.percent),
+      batteryLevel: (battery.percent / 100).clamp(0.0, 1.0),
+      batteryLow: battery.low,
+      charging: battery.charging,
+      ringDescription: battery.charging
+          ? l10n.homeWidgetPortableRingCharging(
+              model.displayName,
+              battery.percent,
+            )
+          : battery.low
+          ? l10n.homeWidgetPortableRingLow(model.displayName, battery.percent)
+          : l10n.homeWidgetPortableRing(model.displayName, battery.percent),
+      offlineRingDescription: l10n.homeWidgetPortableRing(
         model.displayName,
-        batteryPercent,
+        battery.percent,
       ),
       status: switch (phase) {
         PortableHeatPhase.off => l10n.homeWidgetHeaterOff(ladder.base),

@@ -7,11 +7,11 @@ import '../../../../../core/l10n/get_app_localizations.dart';
 import '../../../../devices/domain/models/connection_status.dart';
 import '../../../../devices/presentation/extensions/connection_status_x.dart';
 import '../../../domain/extensions/portable_status_x.dart';
-import '../../extensions/portable_battery_x.dart';
 import '../../view_models/portable_control_view_model.dart';
+import '../common/portable_battery_indicator.dart';
 import '../common/portable_status_line.dart';
 
-/// "kiln" plus "Veazy · 72% battery".
+/// "kiln" plus "Veazy", then the battery (or the connection state).
 class PortableControlHeader extends SignalWidget {
   const PortableControlHeader({required this.vm, super.key});
 
@@ -22,9 +22,7 @@ class PortableControlHeader extends SignalWidget {
     final l10n = getAppLocalizations(context);
     final connection = vm.connectionStatus.value;
     final status = vm.status.value;
-    final detail = status == null
-        ? connection.label(l10n)
-        : status.battery.label(l10n);
+    final name = vm.deviceName.value;
     return Row(
       children: [
         Expanded(
@@ -35,7 +33,12 @@ class PortableControlHeader extends SignalWidget {
               OiLabel.h4(l10n.appTitle),
               PortableStatusLine(
                 active: connection == ConnectionStatus.connected,
-                text: l10n.portableStatusLine(vm.deviceName.value, detail),
+                text: status == null
+                    ? l10n.portableStatusLine(name, connection.label(l10n))
+                    : name,
+                trailing: status == null
+                    ? null
+                    : PortableBatteryIndicator(battery: status.battery),
               ),
             ],
           ),

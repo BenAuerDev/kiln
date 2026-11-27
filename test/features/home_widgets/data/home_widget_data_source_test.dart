@@ -44,7 +44,10 @@ void main() {
           name: 'Veazy',
           battery: '72%',
           batteryLevel: 0.72,
+          batteryLow: false,
+          charging: true,
           ringDescription: 'r',
+          offlineRingDescription: 'o',
           status: 'Heating to 180°',
           statusAccent: true,
           baseLabel: 'Base',
@@ -89,6 +92,9 @@ void main() {
       expect(json['superBoost'], '210°');
       expect(json['glyph'], 'veazy');
       expect(json['batteryLevel'], 0.72);
+      expect(json['batteryLow'], isFalse);
+      expect(json['charging'], isTrue);
+      expect(json['offlineRingDescription'], 'o');
       expect(json['heatActive'], isTrue);
       // Above 2^31: Kotlin reads it as a Long and narrows it to an ARGB Int.
       expect(json['accentText'], 0xFF6AA6FF);

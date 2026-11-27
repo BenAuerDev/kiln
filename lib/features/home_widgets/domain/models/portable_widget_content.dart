@@ -7,7 +7,10 @@ class PortableWidgetContent {
     required this.name,
     required this.battery,
     required this.batteryLevel,
+    required this.batteryLow,
+    required this.charging,
     required this.ringDescription,
+    required this.offlineRingDescription,
     required this.status,
     required this.statusAccent,
     required this.baseLabel,
@@ -41,7 +44,17 @@ class PortableWidgetContent {
 
   /// Battery ring arc, 0–1.
   final double batteryLevel;
+
+  /// Ring and % in red: nearly empty, not charging.
+  final bool batteryLow;
+
+  /// A bolt next to the %.
+  final bool charging;
   final String ringDescription;
+
+  /// Without "low" or "charging": offline the ring is grey and the
+  /// bolt hidden, as those may be stale.
+  final String offlineRingDescription;
   final String status;
   final bool statusAccent;
   final String baseLabel;
@@ -74,7 +87,10 @@ class PortableWidgetContent {
     name,
     battery,
     batteryLevel,
+    batteryLow,
+    charging,
     ringDescription,
+    offlineRingDescription,
     status,
     statusAccent,
     baseLabel,

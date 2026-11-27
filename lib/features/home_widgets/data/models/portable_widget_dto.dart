@@ -6,7 +6,10 @@ class PortableWidgetDto {
     required this.name,
     required this.battery,
     required this.batteryLevel,
+    required this.batteryLow,
+    required this.charging,
     required this.ringDescription,
+    required this.offlineRingDescription,
     required this.status,
     required this.statusAccent,
     required this.baseLabel,
@@ -37,7 +40,10 @@ class PortableWidgetDto {
   final String name;
   final String battery;
   final double batteryLevel;
+  final bool batteryLow;
+  final bool charging;
   final String ringDescription;
+  final String offlineRingDescription;
   final String status;
   final bool statusAccent;
   final String baseLabel;
@@ -68,7 +74,10 @@ class PortableWidgetDto {
     'name': name,
     'battery': battery,
     'batteryLevel': batteryLevel,
+    'batteryLow': batteryLow,
+    'charging': charging,
     'ringDescription': ringDescription,
+    'offlineRingDescription': offlineRingDescription,
     'status': status,
     'statusAccent': statusAccent,
     'baseLabel': baseLabel,
